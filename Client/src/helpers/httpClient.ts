@@ -1,12 +1,16 @@
 import axios from 'axios'
 
+const instance = axios.create({
+  baseURL: 'https://localhost:7204/api',
+})
+
 function HttpClient() {
   return {
-    get: axios.get,
-    post: axios.post,
-    patch: axios.patch,
-    put: axios.put,
-    delete: axios.delete,
+    get: instance.get,
+    post: instance.post,
+    patch: instance.patch,
+    put: instance.put,
+    delete: instance.delete,
   }
 }
 
