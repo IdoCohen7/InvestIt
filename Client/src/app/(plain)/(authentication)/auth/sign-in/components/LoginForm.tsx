@@ -10,30 +10,13 @@ const LoginForm = () => {
 
   return (
     <form className="mt-sm-4" onSubmit={login}>
-      <TextFormInput
-        name="email"
-        type="email"
-        placeholder="Enter email"
-        control={control}
-        containerClassName="mb-3 input-group-lg"
-      />
+      <TextFormInput name="email" type="email" placeholder="Enter email" control={control} containerClassName="mb-3 input-group-lg" />
       <div className="mb-3 position-relative">
-        <PasswordFormInput
-          name="password"
-          placeholder="Enter password"
-          control={control}
-          size="lg"
-          containerClassName="w-100"
-        />
+        <PasswordFormInput name="password" placeholder="Enter password" control={control} size="lg" containerClassName="w-100" />
       </div>
       <div className="mb-3 d-sm-flex justify-content-between">
         <div>
-          <FormCheck
-            type="checkbox"
-            label="Remember me?"
-            id="rememberCheck"
-            {...register('rememberMe')}
-          />
+          <FormCheck type="checkbox" label="Remember me?" id="rememberCheck" {...register('rememberMe')} />
         </div>
         <Link to="/auth/forgot-pass">Forgot password?</Link>
       </div>

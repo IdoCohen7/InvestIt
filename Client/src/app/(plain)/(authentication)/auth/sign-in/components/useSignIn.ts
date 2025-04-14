@@ -1,13 +1,10 @@
 import { yupResolver } from '@hookform/resolvers/yup'
-import type { AxiosResponse } from 'axios'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import * as yup from 'yup'
-
 import { useAuthContext } from '@/context/useAuthContext'
 import { useNotificationContext } from '@/context/useNotificationContext'
-import httpClient from '@/helpers/httpClient'
 import type { UserType } from '@/types/auth'
 
 const useSignIn = () => {
@@ -44,22 +41,24 @@ const useSignIn = () => {
 
   const login = handleSubmit(async (values: LoginFormFields) => {
     try {
-      const res: AxiosResponse<UserType> = await httpClient.post('/login', values)
-      if (res.data.token) {
-        saveSession({
-          ...(res.data ?? {}),
-          token: res.data.token,
-        })
-        redirectUser()
-        showNotification({ message: 'Successfully logged in. Redirecting....', variant: 'success' })
+      setLoading(true)
+
+      const queryParams = new URLSearchParams({
+        email: values.email,
+        password: values.password,
+      })
+
+      const res = await fetch(`https://localhost:7204/api/User/Login?${queryParams.toString()}`, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      if (!res.ok) {
+        throw new Error(`Server responded with status ${res.status}`)
       }
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (e: any) {
-      if (e.response?.data?.error) {
-        showNotification({ message: e.response?.data?.error, variant: 'danger' })
-      }
-<<<<<<< Updated upstream
-=======
 
       const data: UserType = await res.json()
 
@@ -71,7 +70,6 @@ const useSignIn = () => {
     } catch (e) {
       console.error('Login error:', e)
       showNotification({ message: 'Login failed. Please try again.', variant: 'danger' })
->>>>>>> Stashed changes
     } finally {
       setLoading(false)
     }
