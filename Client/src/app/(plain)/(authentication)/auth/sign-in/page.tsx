@@ -4,11 +4,10 @@ import { Link } from 'react-router-dom'
 import PageMetaData from '@/components/PageMetaData'
 import AuthLayout from '../components/AuthLayout'
 
-
 const SignIn = () => {
   return (
     <>
-      <PageMetaData title='Sign In' />
+      <PageMetaData title="Sign In" />
       <AuthLayout>
         <Card className="card-body text-center p-4 p-sm-5">
           <h1 className="mb-2">Sign in</h1>
