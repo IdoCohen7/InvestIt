@@ -1,6 +1,6 @@
-import { lazy, Suspense } from "react"
+import { lazy, Suspense } from 'react'
 
-const TopHeader = lazy(() => import("@/components/layout/TopHeader"))
+const TopHeader = lazy(() => import('@/components/layout/TopHeader'))
 import GlightBox from '@/components/GlightBox'
 import { useFetchData } from '@/hooks/useFetchData'
 import type { ChildrenType } from '@/types/component'
@@ -42,7 +42,7 @@ import { FaPlus } from 'react-icons/fa6'
 import { PROFILE_MENU_ITEMS } from '@/assets/data/menu-items'
 import { getAllUsers } from '@/helpers/data'
 
-import avatar7 from '@/assets/images/avatar/07.jpg'
+import placeHolder from '@/assets/images/avatar/placeholder.jpg'
 import background5 from '@/assets/images/bg/05.jpg'
 
 import album1 from '@/assets/images/albums/01.jpg'
@@ -50,10 +50,11 @@ import album2 from '@/assets/images/albums/02.jpg'
 import album3 from '@/assets/images/albums/03.jpg'
 import album4 from '@/assets/images/albums/04.jpg'
 import album5 from '@/assets/images/albums/05.jpg'
-import { experienceData } from "@/assets/data/layout"
-import { Link, useLocation } from "react-router-dom"
-import FallbackLoading from "@/components/FallbackLoading"
-import Preloader from "@/components/Preloader"
+import { experienceData } from '@/assets/data/layout'
+import { Link, useLocation } from 'react-router-dom'
+import FallbackLoading from '@/components/FallbackLoading'
+import Preloader from '@/components/Preloader'
+import { useAuthContext } from '@/context/useAuthContext'
 
 const Experience = () => {
   return (
@@ -61,7 +62,6 @@ const Experience = () => {
       <CardHeader className="d-flex justify-content-between border-0">
         <h5 className="card-title">Experience</h5>
         <Button variant="primary-soft" size="sm">
-          
           <FaPlus />
         </Button>
       </CardHeader>
@@ -70,7 +70,6 @@ const Experience = () => {
           <div className="d-flex" key={idx}>
             <div className="avatar me-3">
               <span role="button">
-                
                 <img className="avatar-img rounded-circle" src={experience.logo} alt="" />
               </span>
             </div>
@@ -98,7 +97,6 @@ const Photos = () => {
       <CardHeader className="d-sm-flex justify-content-between border-0">
         <CardTitle>Photos</CardTitle>
         <Button variant="primary-soft" size="sm">
-          
           See all photo
         </Button>
       </CardHeader>
@@ -145,7 +143,6 @@ const Friends = () => {
           Friends <span className="badge bg-danger bg-opacity-10 text-danger">230</span>
         </CardTitle>
         <Button variant="primary-soft" size="sm">
-          
           See all friends
         </Button>
       </CardHeader>
@@ -161,18 +158,15 @@ const Friends = () => {
                     </span>
                   </div>
                   <h6 className="card-title mb-1 mt-3">
-                    
                     <Link to=""> {friend.name} </Link>
                   </h6>
                   <p className="mb-0 small lh-sm">{friend.mutualCount} mutual connections</p>
                 </CardBody>
                 <div className="card-footer p-2 border-0">
                   <button className="btn btn-sm btn-primary me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Send message">
-                    
                     <BsChatLeftText />
                   </button>
                   <button className="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove friend">
-                    
                     <BsPersonX />
                   </button>
                 </div>
@@ -185,13 +179,13 @@ const Friends = () => {
   )
 }
 
-
 const ProfileLayout = ({ children }: ChildrenType) => {
   const { pathname } = useLocation()
+  const { user } = useAuthContext()
 
   return (
     <>
-      <Suspense fallback={<Preloader/>}>
+      <Suspense fallback={<Preloader />}>
         <TopHeader />
       </Suspense>
 
@@ -213,18 +207,22 @@ const ProfileLayout = ({ children }: ChildrenType) => {
                   <div className="d-sm-flex align-items-start text-center text-sm-start">
                     <div>
                       <div className="avatar avatar-xxl mt-n5 mb-3">
-                        <img className="avatar-img rounded-circle border border-white border-3" src={avatar7} alt="avatar" />
+                        <img
+                          className="avatar-img rounded-circle border border-white border-3"
+                          src={user ? user.profilePic || placeHolder : placeHolder}
+                          alt="avatar"
+                        />
                       </div>
                     </div>
                     <div className="ms-sm-4 mt-sm-3">
                       <h1 className="mb-0 h5">
-                        Sam Lanson <BsPatchCheckFill className="text-success small" />
+                        {user ? user.firstName + ' ' + user.lastName : 'Guest'}
+                        <BsPatchCheckFill className="text-success small" />
                       </h1>
                       <p>250 connections</p>
                     </div>
                     <div className="d-flex mt-3 justify-content-center ms-sm-auto">
                       <Button variant="danger-soft" className="me-2" type="button">
-                        
                         <BsPencilFill size={19} className="pe-1" /> Edit profile
                       </Button>
                       <Dropdown>
@@ -236,28 +234,24 @@ const ProfileLayout = ({ children }: ChildrenType) => {
                           data-bs-toggle="dropdown"
                           aria-expanded="false">
                           <span>
-                            
                             <BsThreeDots />
                           </span>
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-end" aria-labelledby="profileAction2">
                           <li>
                             <DropdownItem>
-                              
                               <BsBookmark size={22} className="fa-fw pe-2" />
                               Share profile in a message
                             </DropdownItem>
                           </li>
                           <li>
                             <DropdownItem>
-                              
                               <BsFileEarmarkPdf size={22} className="fa-fw pe-2" />
                               Save your profile to PDF
                             </DropdownItem>
                           </li>
                           <li>
                             <DropdownItem>
-                              
                               <BsLock size={22} className="fa-fw pe-2" />
                               Lock profile
                             </DropdownItem>
@@ -267,7 +261,6 @@ const ProfileLayout = ({ children }: ChildrenType) => {
                           </li>
                           <li>
                             <DropdownItem>
-                              
                               <BsGear size={22} className="fa-fw pe-2" />
                               Profile settings
                             </DropdownItem>
@@ -278,13 +271,13 @@ const ProfileLayout = ({ children }: ChildrenType) => {
                   </div>
                   <ul className="list-inline mb-0 text-center text-sm-start mt-3 mt-sm-0">
                     <li className="list-inline-item">
-                      <BsBriefcase className="me-1" /> Lead Developer
+                      <BsBriefcase className="me-1" /> {user ? user.experienceLevel || 'No Level' : 'No Level'}
                     </li>
                     <li className="list-inline-item">
                       <BsGeoAlt className="me-1" /> New Hampshire
                     </li>
                     <li className="list-inline-item">
-                      <BsCalendar2Plus className="me-1" /> Joined on Nov 26, 2019
+                      <BsCalendar2Plus className="me-1" /> Joined on {user ? user.createdAt : 'No Date'}
                     </li>
                   </ul>
                 </CardBody>
@@ -292,9 +285,7 @@ const ProfileLayout = ({ children }: ChildrenType) => {
                   <ul className="nav nav-bottom-line align-items-center justify-content-center justify-content-md-start mb-0 border-0">
                     {PROFILE_MENU_ITEMS.map((item, idx) => (
                       <li className="nav-item" key={idx}>
-                        
                         <Link className={clsx('nav-link', { active: pathname === item.url })} to={item.url ?? ''}>
-                          
                           {item.label} {item.badge && <span className="badge bg-success bg-opacity-10 text-success small"> {item.badge.text}</span>}
                         </Link>
                       </li>
@@ -302,7 +293,7 @@ const ProfileLayout = ({ children }: ChildrenType) => {
                   </ul>
                 </CardFooter>
               </Card>
-              <Suspense fallback={<FallbackLoading/>}> {children}</Suspense>
+              <Suspense fallback={<FallbackLoading />}> {children}</Suspense>
             </Col>
             <Col lg={4}>
               <Row className="g-4">
@@ -315,15 +306,12 @@ const ProfileLayout = ({ children }: ChildrenType) => {
                       <p>He moonlights difficult engrossed it, sportsmen. Interested has all Devonshire difficulty gay assistance joy.</p>
                       <ul className="list-unstyled mt-3 mb-0">
                         <li className="mb-2">
-                          
                           <BsCalendarDate size={18} className="fa-fw pe-1" /> Born: <strong> October 20, 1990 </strong>
                         </li>
                         <li className="mb-2">
-                          
                           <BsHeart size={18} className="fa-fw pe-1" /> Status: <strong> Single </strong>
                         </li>
                         <li>
-                          
                           <BsEnvelope size={18} className="fa-fw pe-1" /> Email: <strong> webestica@gmail.com </strong>
                         </li>
                       </ul>

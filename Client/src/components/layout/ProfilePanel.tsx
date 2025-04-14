@@ -1,9 +1,8 @@
-
 import { currentYear, developedBy, developedByLink } from '@/context/constants'
 import type { ProfilePanelLink } from '@/types/data'
 import { Card, CardBody, CardFooter } from 'react-bootstrap'
-
-import avatar7 from '@/assets/images/avatar/07.jpg'
+import { useAuthContext } from '@/context/useAuthContext'
+import placeHolder from '@/assets/images/avatar/placeholder.jpg'
 import bgBannerImg from '@/assets/images/bg/01.jpg'
 import { Link } from 'react-router-dom'
 
@@ -12,6 +11,8 @@ type ProfilePanelProps = {
 }
 
 const ProfilePanel = ({ links }: ProfilePanelProps) => {
+  const { user } = useAuthContext()
+
   return (
     <>
       <Card className="overflow-hidden h-100">
@@ -24,16 +25,21 @@ const ProfilePanel = ({ links }: ProfilePanelProps) => {
           <div className="text-center">
             <div className="avatar avatar-lg mt-n5 mb-3">
               <span role="button">
-                <img height={64} width={64} src={avatar7} alt="avatar" className="avatar-img rounded border border-white border-3" />
+                <img
+                  height={64}
+                  width={64}
+                  src={user ? user.profilePic || placeHolder : placeHolder}
+                  alt="avatar"
+                  className="avatar-img rounded border border-white border-3"
+                />
               </span>
             </div>
 
             <h5 className="mb-0">
-              
-              <Link to="">Sam Lanson </Link>
+              <Link to="">{user ? user.firstName + ' ' + user.lastName : 'Guest'}</Link>
             </h5>
-            <small>Web Developer at Webestica</small>
-            <p className="mt-3">I&apos;d love to change the world, but they won’t give me the source code.</p>
+            <small>{user ? user.experienceLevel : 'No Level of Experience'}</small>
+            <p className="mt-3">{user ? user.bio : 'No bio available'}</p>
 
             <div className="hstack gap-2 gap-xl-3 justify-content-center">
               <div>
@@ -68,7 +74,7 @@ const ProfilePanel = ({ links }: ProfilePanelProps) => {
         </CardBody>
 
         <CardFooter className="text-center py-2">
-          <Link  className="btn btn-sm btn-link" to="/profile/feed">
+          <Link className="btn btn-sm btn-link" to="/profile/feed">
             View Profile
           </Link>
         </CardFooter>
@@ -109,7 +115,6 @@ const ProfilePanel = ({ links }: ProfilePanelProps) => {
       <p className="small text-center mt-1">
         ©{currentYear}
         <a className="text-reset" target="_blank" rel="noreferrer" href={developedByLink}>
-          
           {developedBy}
         </a>
       </p>
