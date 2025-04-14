@@ -7,4 +7,9 @@ export type UserType = {
   lastName: string
   role: string
   token: string
+  profilePic?: string
+  experienceLevel?: string
+  bio?: string
+  createdAt?: string
+  isActive?: boolean
 }
