@@ -1,4 +1,3 @@
-
 import { currentYear, developedBy, developedByLink } from '@/context/constants'
 import { Link } from 'react-router-dom'
 import useSignIn from './useSignIn'
@@ -7,7 +6,7 @@ import PasswordFormInput from '@/components/form/PasswordFormInput'
 import { Button, FormCheck } from 'react-bootstrap'
 
 const LoginForm = () => {
-  const { loading, login, control } = useSignIn()
+  const { loading, login, control, register } = useSignIn()
 
   return (
     <form className="mt-sm-4" onSubmit={login}>
@@ -17,7 +16,7 @@ const LoginForm = () => {
       </div>
       <div className="mb-3 d-sm-flex justify-content-between">
         <div>
-          <FormCheck type="checkbox" label="Remember me?" id="rememberCheck" />
+          <FormCheck type="checkbox" label="Remember me?" id="rememberCheck" {...register('rememberMe')} />
         </div>
         <Link to="/auth/forgot-pass">Forgot password?</Link>
       </div>
@@ -36,4 +35,5 @@ const LoginForm = () => {
     </form>
   )
 }
+
 export default LoginForm

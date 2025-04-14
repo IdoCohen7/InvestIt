@@ -1,13 +1,12 @@
 import type { UserType } from '@/types/auth'
 import type { ChildrenType } from '@/types/component'
-import { deleteCookie, getCookie, hasCookie, setCookie } from 'cookies-next'
 import { createContext, useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export type AuthContextType = {
   user: UserType | undefined
   isAuthenticated: boolean
-  saveSession: (session: UserType) => void
+  saveSession: (session: UserType, remember: boolean) => void
   removeSession: () => void
 }
 
@@ -26,21 +25,26 @@ const authSessionKey = '_SOCIAL_AUTH_KEY_'
 export function AuthProvider({ children }: ChildrenType) {
   const navigate = useNavigate()
 
-  const getSession = (): AuthContextType['user'] => {
-    const fetchedCookie = getCookie(authSessionKey)?.toString()
-    if (!fetchedCookie) return
-    else return JSON.parse(fetchedCookie)
+  const getSession = (): UserType | undefined => {
+    const stored = localStorage.getItem(authSessionKey) || sessionStorage.getItem(authSessionKey)
+    if (!stored) return undefined
+    return JSON.parse(stored)
   }
 
   const [user, setUser] = useState<UserType | undefined>(getSession())
 
-  const saveSession = (user: UserType) => {
-    setCookie(authSessionKey, JSON.stringify(user))
+  const saveSession = (user: UserType, remember: boolean) => {
+    if (remember) {
+      localStorage.setItem(authSessionKey, JSON.stringify(user))
+    } else {
+      sessionStorage.setItem(authSessionKey, JSON.stringify(user))
+    }
     setUser(user)
   }
 
   const removeSession = () => {
-    deleteCookie(authSessionKey)
+    localStorage.removeItem(authSessionKey)
+    sessionStorage.removeItem(authSessionKey)
     setUser(undefined)
     navigate('/auth/sign-in')
   }
@@ -49,7 +53,7 @@ export function AuthProvider({ children }: ChildrenType) {
     <AuthContext.Provider
       value={{
         user,
-        isAuthenticated: hasCookie(authSessionKey),
+        isAuthenticated: !!user,
         saveSession,
         removeSession,
       }}>
