@@ -66,6 +66,18 @@ export type VideoType = {
   uploadTime?: Date
 }
 
+export type NewsItem = {
+  id: number
+  category: string
+  datetime: number
+  headline: string
+  image: string
+  related: string
+  source: string
+  summary: string
+  url: string
+}
+
 export type ChatMessageType = {
   id: IdType
   from: UserType

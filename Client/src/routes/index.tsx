@@ -9,7 +9,8 @@ const HomeVideo = lazy(() => import('@/app/(social)/feed/(no-container)/videos/p
 const HomeEvent = lazy(() => import('@/app/(plain)/event/page'))
 const LandingPage = lazy(() => import('@/app/(plain)/landing/page'))
 const AppDownloadPage = lazy(() => import('@/app/(plain)/download/page'))
-
+const NewsPage = lazy(() => import('@/app/(social)/(with-topbar)/news/page'))
+const GroupsPage = lazy(() => import('@/app/(social)/(with-topbar)/groups/page'))
 
 //pages
 const Albums = lazy(() => import('@/app/(social)/feed/(container)/albums/page'))
@@ -61,7 +62,6 @@ const NotFoundPage = lazy(() => import('@/app/(social)/(with-topbar)/not-found/p
 const OfflinePage = lazy(() => import('@/app/(plain)/offline/page'))
 const PrivacyAndTermPage = lazy(() => import('@/app/(social)/(with-topbar)/privacy-terms/page'))
 
-
 export type RoutesProps = {
   path: RouteProps['path']
   name: string
@@ -75,7 +75,6 @@ const initialRoutes: RoutesProps[] = [
     name: 'root',
     element: <Navigate to="/feed/home" />,
   },
- 
 ]
 
 // feed with container
@@ -186,7 +185,7 @@ const otherRoutes: RoutesProps[] = [
   },
 ]
 
-export const settingPagesRoutes:RoutesProps[]=[
+export const settingPagesRoutes: RoutesProps[] = [
   {
     path: '/settings/account',
     name: 'Account Settings',
@@ -220,11 +219,16 @@ export const settingPagesRoutes:RoutesProps[]=[
 ]
 
 //social pages with topbar
-export  const socialWithTopbarRoutes: RoutesProps[] = [
+export const socialWithTopbarRoutes: RoutesProps[] = [
   {
     path: '/posts',
     name: 'Home Posts',
     element: <HomePost />,
+  },
+  {
+    path: '/groups',
+    name: 'Groups',
+    element: <GroupsPage />,
   },
   {
     path: '/messaging',
@@ -260,6 +264,11 @@ export  const socialWithTopbarRoutes: RoutesProps[] = [
     path: '/privacy-terms',
     name: 'Privacy And Terms',
     element: <PrivacyAndTermPage />,
+  },
+  {
+    path: '/news',
+    name: 'News',
+    element: <NewsPage />,
   },
   {
     path: '*',
@@ -344,11 +353,6 @@ export const authRoutes: RoutesProps[] = [
   },
 ]
 
-export const appRoutes = [
-  ...otherRoutes,
-]
+export const appRoutes = [...otherRoutes]
 
-export const feedRoutes = [
-  ...initialRoutes,
-  ...generalRoutes,
-]
+export const feedRoutes = [...initialRoutes, ...generalRoutes]
