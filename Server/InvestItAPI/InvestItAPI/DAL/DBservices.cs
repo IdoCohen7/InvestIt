@@ -333,41 +333,61 @@ namespace InvestItAPI.DAL
         }
 
 
-        public int Register(User user)
+        public User? Register(User user)
         {
             SqlConnection con = null;
             SqlCommand cmd;
 
             try
             {
-                con = connect("myProjDB"); // create the connection
-                cmd = CreateCommandWithStoredProcedure_User("SP_Register", con, user); // create the command
+                con = connect("myProjDB");
+                cmd = CreateCommandWithStoredProcedure_User("SP_Register", con, user);
 
-                int numEffected = cmd.ExecuteNonQuery(); // execute the command
+                SqlDataReader reader = cmd.ExecuteReader();
 
-                if (numEffected == -1)
+                if (reader.HasRows && reader.Read())
                 {
-                    throw new Exception("Email already exists.");
+                    User newUser = new User
+                    {
+                        UserId = Convert.ToInt32(reader["user_id"]),
+                        FirstName = reader["firstName"].ToString(),
+                        LastName = reader["lastName"].ToString(),
+                        Email = reader["email"].ToString(),
+                        PasswordHash = reader["password_hash"].ToString(),
+                        ProfilePic = reader["profile_pic"] != DBNull.Value ? reader["profile_pic"].ToString() : null,
+                        ExperienceLevel = reader["experience_level"] != DBNull.Value ? reader["experience_level"].ToString() : null,
+                        Bio = reader["bio"] != DBNull.Value ? reader["bio"].ToString() : null,
+                        CreatedAt = Convert.ToDateTime(reader["created_at"]).ToString("dd/MM/yyyy"),
+                        IsActive = true
+                    };
+
+                    reader.Close();
+                    return newUser;
                 }
 
-                return numEffected; // 1 = success
+                reader.Close();
+                return null; // אם לא התקבל משתמש – ייתכן שהאימייל כבר קיים
             }
-            catch (SqlException ex) when (ex.Number == 2627) // Handle SQL unique constraint error
+            catch (SqlException ex)
             {
-                return -1;
+                if (ex.Message.Contains("Email already exists"))
+                {
+                    return null;
+                }
+
+                throw new Exception("SQL error during registration: " + ex.Message);
             }
             catch (Exception ex)
             {
-                throw new Exception("Couldn't register", ex);
+                throw new Exception("Couldn't register user", ex);
             }
             finally
             {
                 if (con != null)
-                {
                     con.Close();
-                }
             }
         }
+
 
         public User Login(string email, string password)
         {

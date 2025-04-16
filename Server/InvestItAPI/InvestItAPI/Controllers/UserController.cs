@@ -96,10 +96,25 @@ namespace InvestItAPI.Controllers
 
         // POST api/<UserController>
         [HttpPost]
-        public int? Post([FromBody] User user)
+        public IActionResult Post([FromBody] User user)
         {
-            return InvestItAPI.Models.User.RegisterUser(user);
+            try
+            {
+                User? registeredUser = InvestItAPI.Models.User.RegisterUser(user);
+
+                if (registeredUser != null)
+                {
+                    return Ok(registeredUser);
+                }
+
+                return BadRequest(new { message = "Email already exists or registration failed." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
         }
+
 
         // PUT api/<UserController>/5
         [HttpPut("update")]
