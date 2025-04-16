@@ -45,3 +45,4 @@ Server/InvestItAPI/InvestItAPI/obj/Debug/net6.0/refint/InvestItAPI.dll
 Server/InvestItAPI/InvestItAPI/obj/InvestItAPI.csproj.nuget.dgspec.json
 Server/InvestItAPI/InvestItAPI/obj/project.assets.json
 Server/InvestItAPI/InvestItAPI/obj/project.nuget.cache
+Server/InvestItAPI/InvestItAPI/appsettings.json
