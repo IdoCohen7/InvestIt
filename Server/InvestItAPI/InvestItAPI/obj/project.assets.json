@@ -1298,19 +1298,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\idoco\\.nuget\\packages\\": {}
+    "C:\\Users\\ayabr\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\idoco\\source\\repos\\InvestItAPI\\InvestItAPI\\InvestItAPI.csproj",
+      "projectUniqueName": "C:\\Users\\ayabr\\OneDrive\\שולחן העבודה\\Invest It\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\InvestItAPI.csproj",
       "projectName": "InvestItAPI",
-      "projectPath": "C:\\Users\\idoco\\source\\repos\\InvestItAPI\\InvestItAPI\\InvestItAPI.csproj",
-      "packagesPath": "C:\\Users\\idoco\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\idoco\\source\\repos\\InvestItAPI\\InvestItAPI\\obj\\",
+      "projectPath": "C:\\Users\\ayabr\\OneDrive\\שולחן העבודה\\Invest It\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\InvestItAPI.csproj",
+      "packagesPath": "C:\\Users\\ayabr\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\ayabr\\OneDrive\\שולחן העבודה\\Invest It\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\idoco\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\ayabr\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -1377,7 +1377,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.205\\RuntimeIdentifierGraph.json"
       }
     }
   }
