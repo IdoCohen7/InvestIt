@@ -56,28 +56,24 @@ const ActionMenu = ({ name }: { name?: string }) => {
       <DropdownMenu className="dropdown-menu-end" aria-labelledby="cardFeedAction">
         <li>
           <DropdownItem>
-            
             <BsBookmark size={22} className="fa-fw pe-2" />
             Save post
           </DropdownItem>
         </li>
         <li>
           <DropdownItem>
-            
             <BsPersonX size={22} className="fa-fw pe-2" />
             Unfollow {name}
           </DropdownItem>
         </li>
         <li>
           <DropdownItem>
-            
             <BsXCircle size={22} className="fa-fw pe-2" />
             Hide post
           </DropdownItem>
         </li>
         <li>
           <DropdownItem>
-            
             <BsSlashCircle size={22} className="fa-fw pe-2" />
             Block
           </DropdownItem>
@@ -87,7 +83,6 @@ const ActionMenu = ({ name }: { name?: string }) => {
         </li>
         <li>
           <DropdownItem>
-            
             <BsFlag size={22} className="fa-fw pe-2" />
             Report post
           </DropdownItem>
@@ -105,7 +100,6 @@ const SponsoredCard = () => {
           <div className="d-flex align-items-center">
             <div className="avatar me-2">
               <span role="button">
-                
                 <img className="avatar-img rounded-circle" src={logo12} alt="image" />
               </span>
             </div>
@@ -138,7 +132,6 @@ const SponsoredCard = () => {
       <CardFooter className="border-0 d-flex justify-content-between align-items-center">
         <p className="mb-0">Currently v5.1.3 </p>
         <Button variant="primary-soft" size="sm">
-          
           Download now
         </Button>
       </CardFooter>
@@ -154,14 +147,12 @@ const Post2 = () => {
           <div className="d-flex align-items-center">
             <div className="avatar me-2">
               <span role="button">
-                
                 <img className="avatar-img rounded-circle" src={logo13} alt="logo" />
               </span>
             </div>
 
             <div>
               <h6 className="card-title mb-0">
-                
                 <Link to=""> Apple Education </Link>
               </h6>
               <p className="mb-0 small">9 November at 23:29</p>
@@ -187,7 +178,6 @@ const Post2 = () => {
           </li>
           <li className="nav-item ms-sm-auto">
             <Link className="nav-link" to="">
-              
               <BsChatFill size={18} className="pe-1" />
               Comments (12)
             </Link>
@@ -199,7 +189,6 @@ const Post2 = () => {
         <ul className="nav nav-fill nav-stack small">
           <li className="nav-item">
             <Link className="nav-link mb-0 active" to="">
-              
               <BsHeart className="pe-1" size={18} />
               Liked (56)
             </Link>
@@ -214,28 +203,24 @@ const Post2 = () => {
             <DropdownMenu className="dropdown-menu-end" aria-labelledby="cardShareAction6">
               <li>
                 <DropdownItem>
-                  
                   <BsEnvelope size={22} className="fa-fw pe-2" />
                   Send via Direct Message
                 </DropdownItem>
               </li>
               <li>
                 <DropdownItem>
-                  
                   <BsBookmarkCheck size={22} className="fa-fw pe-2" />
                   Bookmark
                 </DropdownItem>
               </li>
               <li>
                 <DropdownItem>
-                  
                   <BsLink size={22} className="fa-fw pe-2" />
                   Copy link to post
                 </DropdownItem>
               </li>
               <li>
                 <DropdownItem>
-                  
                   <BsShare size={22} className="fa-fw pe-2" />
                   Share post via …
                 </DropdownItem>
@@ -245,7 +230,6 @@ const Post2 = () => {
               </li>
               <li>
                 <DropdownItem>
-                  
                   <BsPencilSquare size={22} className="fa-fw pe-2" />
                   Share to News Feed
                 </DropdownItem>
@@ -255,7 +239,6 @@ const Post2 = () => {
 
           <li className="nav-item">
             <Link className="nav-link mb-0" to="">
-              
               <BsSendFill className="pe-1" size={18} />
               Send
             </Link>
@@ -274,14 +257,12 @@ const CommonPost = ({ children }: { children: ReactNode }) => {
           <div className="d-flex align-items-center">
             <div className="avatar me-2">
               <span role="button">
-                
                 <img className="avatar-img rounded-circle" src={avatar4} alt="image-4" />
               </span>
             </div>
 
             <div>
               <h6 className="card-title mb-0">
-                
                 <Link to=""> All in the Mind </Link>
               </h6>
               <p className="mb-0 small">9 November at 23:29</p>
@@ -320,7 +301,6 @@ const CommonPost = ({ children }: { children: ReactNode }) => {
           </li>
           <li className="nav-item ms-sm-auto">
             <Link className="nav-link" to="">
-              
               <BsChatFill size={18} className="pe-1" />
               Comments (12)
             </Link>
@@ -332,7 +312,6 @@ const CommonPost = ({ children }: { children: ReactNode }) => {
         <ul className="nav nav-fill nav-stack small">
           <li className="nav-item">
             <Link className="nav-link mb-0 active" to="">
-              
               <BsHeart className="pe-1" size={18} />
               Liked (56)
             </Link>
@@ -347,28 +326,24 @@ const CommonPost = ({ children }: { children: ReactNode }) => {
             <DropdownMenu className="dropdown-menu-end" aria-labelledby="cardShareAction6">
               <li>
                 <DropdownItem>
-                  
                   <BsEnvelope size={22} className="fa-fw pe-2" />
                   Send via Direct Message
                 </DropdownItem>
               </li>
               <li>
                 <DropdownItem>
-                  
                   <BsBookmarkCheck size={22} className="fa-fw pe-2" />
                   Bookmark
                 </DropdownItem>
               </li>
               <li>
                 <DropdownItem>
-                  
                   <BsLink size={22} className="fa-fw pe-2" />
                   Copy link to post
                 </DropdownItem>
               </li>
               <li>
                 <DropdownItem>
-                  
                   <BsShare size={22} className="fa-fw pe-2" />
                   Share post via …
                 </DropdownItem>
@@ -378,7 +353,6 @@ const CommonPost = ({ children }: { children: ReactNode }) => {
               </li>
               <li>
                 <DropdownItem>
-                  
                   <BsPencilSquare size={22} className="fa-fw pe-2" />
                   Share to News Feed
                 </DropdownItem>
@@ -388,7 +362,6 @@ const CommonPost = ({ children }: { children: ReactNode }) => {
 
           <li className="nav-item">
             <Link className="nav-link mb-0" to="">
-              
               <BsSendFill className="pe-1" size={18} />
               Send
             </Link>
@@ -407,13 +380,11 @@ const Post3 = () => {
           <div className="d-flex align-items-center">
             <div className="avatar me-2">
               <span role="button">
-                
                 <img className="avatar-img rounded-circle" src={logo11} alt="logo" />
               </span>
             </div>
             <div>
               <h6 className="card-title mb-0">
-                
                 <Link to=""> Webestica </Link>
               </h6>
               <p className="small mb-0">9 December at 10:00 </p>
@@ -431,7 +402,6 @@ const Post3 = () => {
       </CardBody>
 
       <span role="button">
-        
         <img src={postImg4} alt="post-image" />
       </span>
 
@@ -447,14 +417,12 @@ const Post3 = () => {
         <ul className="nav nav-fill nav-stack small">
           <li className="nav-item">
             <Link className="nav-link mb-0 active" to="">
-              
               <BsHeart size={18} className="pe-1" />
               Liked (56)
             </Link>
           </li>
           <li className="nav-item">
             <Link className="nav-link mb-0" to="">
-              
               <BsChatFill size={18} className="pe-1" />
               Comments (12)
             </Link>
@@ -469,28 +437,24 @@ const Post3 = () => {
             <DropdownMenu className="dropdown-menu-end" aria-labelledby="cardShareAction6">
               <li>
                 <DropdownItem>
-                  
                   <BsEnvelope size={22} className="fa-fw pe-2" />
                   Send via Direct Message
                 </DropdownItem>
               </li>
               <li>
                 <DropdownItem>
-                  
                   <BsBookmarkCheck size={22} className="fa-fw pe-2" />
                   Bookmark
                 </DropdownItem>
               </li>
               <li>
                 <DropdownItem>
-                  
                   <BsLink size={22} className="fa-fw pe-2" />
                   Copy link to post
                 </DropdownItem>
               </li>
               <li>
                 <DropdownItem>
-                  
                   <BsShare size={22} className="fa-fw pe-2" />
                   Share post via …
                 </DropdownItem>
@@ -500,7 +464,6 @@ const Post3 = () => {
               </li>
               <li>
                 <DropdownItem>
-                  
                   <BsPencilSquare size={22} className="fa-fw pe-2" />
                   Share to News Feed
                 </DropdownItem>
@@ -510,7 +473,6 @@ const Post3 = () => {
 
           <li className="nav-item">
             <Link className="nav-link mb-0" to="">
-              
               <BsSendFill size={18} className="pe-1" />
               Send
             </Link>
@@ -521,7 +483,7 @@ const Post3 = () => {
   )
 }
 
-const Feeds =  () => {
+const Feeds = () => {
   const postData = [
     { progress: 25, title: 'We have cybersecurity insurance coverage' },
     { progress: 15, title: 'Our dedicated staff will protect us' },
@@ -531,9 +493,7 @@ const Feeds =  () => {
   const allPosts = useFetchData(getAllFeeds)
   return (
     <>
-      {allPosts?.map((post, idx) => (
-        <PostCard {...post} key={idx} />
-      ))}
+      {allPosts?.map((post, idx) => <PostCard {...post} key={idx} />)}
 
       <SponsoredCard />
       <Post2 />

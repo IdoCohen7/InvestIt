@@ -268,7 +268,7 @@ namespace InvestItAPI.DAL
 
 
 
-        public List<Post> GetPosts()
+        public List<object> GetPosts()
         {
             SqlConnection con = null;
             SqlCommand cmd;
@@ -276,52 +276,41 @@ namespace InvestItAPI.DAL
             try
             {
                 con = connect("myProjDB"); // יצירת חיבור
-                cmd = CreateCommandWithStoredProcedureNoParameters("SP_GetAllPosts", con); // יצירת פקודה
+                cmd = CreateCommandWithStoredProcedureNoParameters("SP_GetAllPosts", con); // קריאה ל-SP
 
-                List<Post> posts = new List<Post>();
+                List<object> posts = new List<object>();
 
                 SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dataReader.Read())
                 {
-                    Post p = new Post();
-                    p.PostId = Convert.ToInt32(dataReader["post_id"]);
-                    p.UserId = Convert.ToInt32(dataReader["user_id"]);
-                    p.Content = dataReader["content"].ToString();
-                    p.CreatedAt = Convert.ToDateTime(dataReader["created_at"]).ToString("dd/MM/yyyy");
-                    p.UpdatedAt = dataReader["updated_at"] != DBNull.Value
-    ? Convert.ToDateTime(dataReader["updated_at"]).ToString("dd/MM/yyyy")
-    : null;
-                    // 🔹 שליפת הווקטור כשדה `NVARCHAR(MAX)`
-                    if (!dataReader.IsDBNull(dataReader.GetOrdinal("post_vector")))
+                    var post = new
                     {
-                        string vectorJson = dataReader["post_vector"].ToString(); // ✅ קריאה כמחרוזת
-                        Console.WriteLine($"📢 Loaded Vector JSON: {vectorJson}");
+                        PostId = Convert.ToInt32(dataReader["post_id"]),
+                        UserId = Convert.ToInt32(dataReader["user_id"]),
+                        Content = dataReader["content"].ToString(),
+                        CreatedAt = Convert.ToDateTime(dataReader["created_at"]).ToString("dd/MM/yyyy"),
+                        UpdatedAt = dataReader["updated_at"] != DBNull.Value
+                            ? Convert.ToDateTime(dataReader["updated_at"]).ToString("dd/MM/yyyy")
+                            : null,
+                        Vector = dataReader["post_vector"] != DBNull.Value
+                            ? dataReader["post_vector"].ToString()
+                            : null,
+                        LikesCount = Convert.ToInt32(dataReader["likesCount"]),
+                        CommentsCount = Convert.ToInt32(dataReader["commentsCount"]),
+                        FullName = dataReader["fullName"].ToString(),
+                        UserProfilePic = dataReader["userProfilePic"].ToString(),
+                        UserExperienceLevel = dataReader["userExperienceLevel"].ToString()
+                    };
 
-                        try
-                        {
-                            p.Vector = vectorJson; // ✅ שומרים את ה-JSON ישירות
-                        }
-                        catch (Exception ex)
-                        {
-                            Console.WriteLine($"❌ Error parsing vector: {ex.Message}");
-                            p.Vector = null;
-                        }
-                    }
-                    else
-                    {
-                        Console.WriteLine($"❌ No Vector for Post {p.PostId}");
-                        p.Vector = null;
-                    }
-
-                    posts.Add(p);
+                    posts.Add(post);
                 }
 
                 return posts;
             }
             catch (Exception ex)
             {
-                throw (ex);
+                throw new Exception("Error while retrieving posts", ex);
             }
             finally
             {
@@ -331,6 +320,8 @@ namespace InvestItAPI.DAL
                 }
             }
         }
+
+
 
 
         public User? Register(User user)

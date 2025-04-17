@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import type { CommentType, SocialPostType } from '@/types/data'
 import { timeSince } from '@/utils/date'
-
+import { useState } from 'react'
 import { getAllFeeds } from '@/helpers/data'
 import GlightBox from '@/components/GlightBox'
 import {
@@ -62,32 +62,27 @@ const ActionMenu = ({ name }: { name?: string }) => {
       <DropdownToggle as="a" className="text-secondary btn btn-secondary-soft-hover py-1 px-2 content-none cursor-pointer" id="cardFeedAction">
         <BsThreeDots />
       </DropdownToggle>
-
       <DropdownMenu className="dropdown-menu-end" aria-labelledby="cardFeedAction">
         <li>
           <DropdownItem>
-            
             <BsBookmark size={22} className="fa-fw pe-2" />
             Save post
           </DropdownItem>
         </li>
         <li>
           <DropdownItem>
-            
             <BsPersonX size={22} className="fa-fw pe-2" />
             Unfollow {name}
           </DropdownItem>
         </li>
         <li>
           <DropdownItem>
-            
             <BsXCircle size={22} className="fa-fw pe-2" />
             Hide post
           </DropdownItem>
         </li>
         <li>
           <DropdownItem>
-            
             <BsSlashCircle size={22} className="fa-fw pe-2" />
             Block
           </DropdownItem>
@@ -97,7 +92,6 @@ const ActionMenu = ({ name }: { name?: string }) => {
         </li>
         <li>
           <DropdownItem>
-            
             <BsFlag size={22} className="fa-fw pe-2" />
             Report post
           </DropdownItem>
@@ -122,7 +116,6 @@ const CommentItem = ({ comment, likesCount, children, socialUser, createdAt, ima
               <div className="bg-light rounded-start-top-0 p-3 rounded">
                 <div className="d-flex justify-content-between">
                   <h6 className="mb-1">
-                    
                     <Link to=""> {socialUser.name} </Link>
                   </h6>
                   <small className="ms-2">{timeSince(createdAt)}</small>
@@ -138,20 +131,17 @@ const CommentItem = ({ comment, likesCount, children, socialUser, createdAt, ima
               <ul className="nav nav-divider py-2 small">
                 <li className="nav-item">
                   <Link className="nav-link" to="">
-                    
                     Like ({likesCount})
                   </Link>
                 </li>
                 <li className="nav-item">
                   <Link className="nav-link" to="">
-                    
                     Reply
                   </Link>
                 </li>
                 {children?.length && children?.length > 0 && (
                   <li className="nav-item">
                     <Link className="nav-link" to="">
-                      
                       View {children?.length} replies
                     </Link>
                   </li>
@@ -170,7 +160,26 @@ const CommentItem = ({ comment, likesCount, children, socialUser, createdAt, ima
   )
 }
 
-const PostCard = ({ createdAt, likesCount, caption, comments, commentsCount, image, socialUser, photos, isVideo }: SocialPostType) => {
+const PostCard = ({ postId, createdAt, likesCount, content, commentsCount, image, socialUser, photos, isVideo }: SocialPostType) => {
+  const [comments, setComments] = useState<CommentType[]>([])
+  const [commentsVisible, setCommentsVisible] = useState(false)
+
+  const fetchComments = async () => {
+    try {
+      const res = await fetch(`https://localhost:7204/api/Comment?postId=${postId}`)
+      const data = await res.json()
+      setComments(data)
+    } catch (err) {
+      console.error('Failed to fetch comments', err)
+    }
+  }
+
+  const handleToggleComments = () => {
+    console.log('clicked!')
+    if (!commentsVisible) fetchComments()
+    setCommentsVisible(!commentsVisible)
+  }
+
   return (
     <Card>
       <CardHeader className="border-0 pb-0">
@@ -179,19 +188,16 @@ const PostCard = ({ createdAt, likesCount, caption, comments, commentsCount, ima
             <div className="avatar avatar-story me-2">
               {socialUser?.avatar && (
                 <span role="button">
-                  
                   <img className="avatar-img rounded-circle" src={socialUser.avatar} alt={socialUser.name} />
                 </span>
               )}
             </div>
-
             <div>
               <div className="nav nav-divider">
                 <h6 className="nav-item card-title mb-0">
-                  
-                  <Link to="">{socialUser?.name} </Link>
+                  <Link to="">{socialUser?.name}</Link>
                 </h6>
-                <span className="nav-item small"> {timeSince(createdAt)}</span>
+                <span className="nav-item small">{timeSince(createdAt)}</span>
               </div>
               <p className="mb-0 small">Web Developer at Webestica</p>
             </div>
@@ -199,153 +205,44 @@ const PostCard = ({ createdAt, likesCount, caption, comments, commentsCount, ima
           <ActionMenu name={socialUser?.name} />
         </div>
       </CardHeader>
-
       <CardBody>
-        {caption && <p>{caption}</p>}
-
+        {content && <p>{content}</p>}
         {image && <img className="card-img" src={image} alt="Post" />}
         {isVideo && <VideoPlayer />}
-
         {photos && (
           <div className="d-flex justify-content-between">
-            <Row className="g-3">
-              <Col xs={6}>
-                <GlightBox className="h-100" href={postImg3} data-gallery="image-popup">
-                  <img className="rounded img-fluid" src={postImg3} alt="Image" />
-                </GlightBox>
-              </Col>
-              <Col xs={6}>
-                <GlightBox href={postImg1} data-glightbox data-gallery="image-popup">
-                  <img className="rounded img-fluid" src={postImg1} alt="Image" />
-                </GlightBox>
-                <div className="position-relative bg-dark mt-3 rounded">
-                  <div className="hover-actions-item position-absolute top-50 start-50 translate-middle z-index-9">
-                    <Link className="btn btn-link text-white" to="">
-                      
-                      View all
-                    </Link>
-                  </div>
-                  <GlightBox href={postImg2} data-glightbox data-gallery="image-popup">
-                    <img className="img-fluid opacity-50 rounded" src={postImg2} alt="image" />
-                  </GlightBox>
-                </div>
-              </Col>
-            </Row>
+            <Row className="g-3">{/* תמונות נוספות אם יש */}</Row>
           </div>
         )}
         <ul className="nav nav-stack py-3 small">
           <li className="nav-item">
-            <Link
-              className="nav-link active"
-              to=""
-              data-bs-container="body"
-              data-bs-toggle="tooltip"
-              data-bs-placement="top"
-              data-bs-html="true"
-              data-bs-custom-class="tooltip-text-start"
-              data-bs-title="Frances Guerrero<br> Lori Stevens<br> Billy Vasquez<br> Judy Nguyen<br> Larry Lawson<br> Amanda Reed<br> Louis Crawford">
-              
+            <span className="nav-link">
               <BsHandThumbsUpFill size={18} className="pe-1" />
               Liked ({likesCount})
-            </Link>
+            </span>
           </li>
           <li className="nav-item">
-            <Link className="nav-link" to="">
-              
+            <span role="button" className="nav-link" onClick={handleToggleComments}>
               <BsChatFill size={18} className="pe-1" />
               Comments ({commentsCount})
-            </Link>
+            </span>
           </li>
-
-          <Dropdown className="nav-item ms-sm-auto">
-            <DropdownToggle
-              as="a"
-              className="nav-link mb-0 content-none cursor-pointer"
-              id="cardShareAction"
-              data-bs-toggle="dropdown"
-              aria-expanded="false">
-              <BsReplyFill size={16} className="flip-horizontal ps-1" />
-              Share (3)
-            </DropdownToggle>
-
-            <DropdownMenu className="dropdown-menu-end" aria-labelledby="cardShareAction">
-              <li>
-                <DropdownItem>
-                  
-                  <BsEnvelope size={20} className="fa-fw pe-2" />
-                  Send via Direct Message
-                </DropdownItem>
-              </li>
-              <li>
-                <DropdownItem>
-                  
-                  <BsBookmarkCheck size={20} className="fa-fw pe-2" />
-                  Bookmark
-                </DropdownItem>
-              </li>
-              <li>
-                <DropdownItem>
-                  
-                  <BsLink size={20} className="fa-fw pe-2" />
-                  Copy link to post
-                </DropdownItem>
-              </li>
-              <li>
-                <DropdownItem>
-                  
-                  <BsShare size={20} className="fa-fw pe-2" />
-                  Share post via …
-                </DropdownItem>
-              </li>
-              <li>
-                <DropdownDivider />
-              </li>
-              <li>
-                <DropdownItem>
-                  
-                  <BsPencilSquare size={20} className="fa-fw pe-2" />
-                  Share to News Feed
-                </DropdownItem>
-              </li>
-            </DropdownMenu>
-          </Dropdown>
         </ul>
-        {comments && (
-          <>
-            <div className="d-flex mb-3">
-              <div className="avatar avatar-xs me-2">
-                <span role="button">
-                  
-                  <img className="avatar-img rounded-circle" src={avatar12} alt="avatar12" />
-                </span>
-              </div>
 
-              <form className="w-100 position-relative">
-                <textarea data-autoresize className="form-control pe-4 bg-light" rows={1} placeholder="Add a comment..." defaultValue={''} />
-                <div className="position-absolute top-0 end-0">
-                  <button className="btn" type="button">
-                    🙂
-                  </button>
-                </div>
-                <Button variant="primary" size="sm" className="mb-0 rounded mt-2" type="button">
-                  Post
-                </Button>
-              </form>
-            </div>
-
-            <ul className="comment-wrap list-unstyled">
-              {comments.map((comment) => (
-                <CommentItem {...comment} key={comment.id} />
-              ))}
-            </ul>
-          </>
+        {commentsVisible && (
+          <ul className="comment-wrap list-unstyled">
+            {comments.map((comment) => (
+              <CommentItem key={comment.commentId} {...comment} />
+            ))}
+          </ul>
         )}
       </CardBody>
-
-      <CardFooter className="border-0 pt-0">{comments && <LoadContentButton name=" Load more comments" />}</CardFooter>
+      <CardFooter className="border-0 pt-0">{commentsVisible && <LoadContentButton name="Load more comments" />}</CardFooter>
     </Card>
   )
 }
+
+export default PostCard
 
 const SponsoredCard = () => {
   return (
@@ -355,7 +252,6 @@ const SponsoredCard = () => {
           <div className="d-flex align-items-center">
             <div className="avatar me-2">
               <span role="button">
-                
                 <img className="avatar-img rounded-circle" src={logo12} alt="image" />
               </span>
             </div>
@@ -388,7 +284,6 @@ const SponsoredCard = () => {
       <CardFooter className="border-0 d-flex justify-content-between align-items-center">
         <p className="mb-0">Currently v5.1.3 </p>
         <Button variant="primary-soft" size="sm">
-          
           Download now
         </Button>
       </CardFooter>
@@ -404,14 +299,12 @@ const Post2 = () => {
           <div className="d-flex align-items-center">
             <div className="avatar me-2">
               <span role="button">
-                
                 <img className="avatar-img rounded-circle" src={logo13} alt="logo" />
               </span>
             </div>
 
             <div>
               <h6 className="card-title mb-0">
-                
                 <Link to=""> Apple Education </Link>
               </h6>
               <p className="mb-0 small">9 November at 23:29</p>
@@ -437,7 +330,6 @@ const Post2 = () => {
           </li>
           <li className="nav-item ms-sm-auto">
             <Link className="nav-link" to="">
-              
               <BsChatFill size={18} className="pe-1" />
               Comments (12)
             </Link>
@@ -449,7 +341,6 @@ const Post2 = () => {
         <ul className="nav nav-fill nav-stack small">
           <li className="nav-item">
             <Link className="nav-link mb-0 active" to="">
-              
               <BsHeart className="pe-1" size={18} />
               Liked (56)
             </Link>
@@ -464,28 +355,24 @@ const Post2 = () => {
             <DropdownMenu className="dropdown-menu-end" aria-labelledby="cardShareAction6">
               <li>
                 <DropdownItem>
-                  
                   <BsEnvelope className="fa-fw pe-2" />
                   Send via Direct Message
                 </DropdownItem>
               </li>
               <li>
                 <DropdownItem>
-                  
                   <BsBookmarkCheck className="fa-fw pe-2" />
                   Bookmark
                 </DropdownItem>
               </li>
               <li>
                 <DropdownItem>
-                  
                   <BsLink className="fa-fw pe-2" />
                   Copy link to post
                 </DropdownItem>
               </li>
               <li>
                 <DropdownItem>
-                  
                   <BsShare className="fa-fw pe-2" />
                   Share post via …
                 </DropdownItem>
@@ -495,7 +382,6 @@ const Post2 = () => {
               </li>
               <li>
                 <DropdownItem>
-                  
                   <BsPencilSquare className="fa-fw pe-2" />
                   Share to News Feed
                 </DropdownItem>
@@ -505,7 +391,6 @@ const Post2 = () => {
 
           <li className="nav-item">
             <Link className="nav-link mb-0" to="">
-              
               <BsSendFill className="pe-1" size={18} />
               Send
             </Link>
@@ -524,14 +409,12 @@ const CommonPost = ({ children }: { children: ReactNode }) => {
           <div className="d-flex align-items-center">
             <div className="avatar me-2">
               <span role="button">
-                
                 <img className="avatar-img rounded-circle" src={avatar4} alt="image-4" />
               </span>
             </div>
 
             <div>
               <h6 className="card-title mb-0">
-                
                 <Link to=""> All in the Mind </Link>
               </h6>
               <p className="mb-0 small">9 November at 23:29</p>
@@ -570,7 +453,6 @@ const CommonPost = ({ children }: { children: ReactNode }) => {
           </li>
           <li className="nav-item ms-sm-auto">
             <Link className="nav-link" to="">
-              
               <BsChatFill size={18} className="pe-1" />
               Comments (12)
             </Link>
@@ -582,7 +464,6 @@ const CommonPost = ({ children }: { children: ReactNode }) => {
         <ul className="nav nav-fill nav-stack small">
           <li className="nav-item">
             <Link className="nav-link mb-0 active" to="">
-              
               <BsHeart className="pe-1" size={18} />
               Liked (56)
             </Link>
@@ -597,28 +478,24 @@ const CommonPost = ({ children }: { children: ReactNode }) => {
             <DropdownMenu className="dropdown-menu-end" aria-labelledby="cardShareAction6">
               <li>
                 <DropdownItem>
-                  
                   <BsEnvelope size={20} className="fa-fw pe-2" />
                   Send via Direct Message
                 </DropdownItem>
               </li>
               <li>
                 <DropdownItem>
-                  
                   <BsBookmarkCheck size={20} className="fa-fw pe-2" />
                   Bookmark
                 </DropdownItem>
               </li>
               <li>
                 <DropdownItem>
-                  
                   <BsLink size={20} className="fa-fw pe-2" />
                   Copy link to post
                 </DropdownItem>
               </li>
               <li>
                 <DropdownItem>
-                  
                   <BsShare size={20} className="fa-fw pe-2" />
                   Share post via …
                 </DropdownItem>
@@ -628,7 +505,6 @@ const CommonPost = ({ children }: { children: ReactNode }) => {
               </li>
               <li>
                 <DropdownItem>
-                  
                   <BsPencilSquare size={20} className="fa-fw pe-2" />
                   Share to News Feed
                 </DropdownItem>
@@ -638,7 +514,6 @@ const CommonPost = ({ children }: { children: ReactNode }) => {
 
           <li className="nav-item">
             <Link className="nav-link mb-0" to="">
-              
               <BsSendFill className="pe-1" size={18} />
               Send
             </Link>
@@ -657,13 +532,11 @@ const Post3 = () => {
           <div className="d-flex align-items-center">
             <div className="avatar me-2">
               <span role="button">
-                
                 <img className="avatar-img rounded-circle" src={logo11} alt="logo" />
               </span>
             </div>
             <div>
               <h6 className="card-title mb-0">
-                
                 <Link to=""> Webestica </Link>
               </h6>
               <p className="small mb-0">9 December at 10:00 </p>
@@ -681,7 +554,6 @@ const Post3 = () => {
       </CardBody>
 
       <span role="button">
-        
         <img src={postImg4} alt="post-image" />
       </span>
 
@@ -697,14 +569,12 @@ const Post3 = () => {
         <ul className="nav nav-fill nav-stack small">
           <li className="nav-item">
             <span className="nav-link mb-0 active" role="button">
-              
               <BsHeart size={18} className="pe-1" />
               Liked (56)
             </span>
           </li>
           <li className="nav-item">
             <span className="nav-link mb-0" role="button">
-              
               <BsChatFill size={18} className="pe-1" />
               Comments (12)
             </span>
@@ -719,28 +589,24 @@ const Post3 = () => {
             <DropdownMenu className="dropdown-menu-end" aria-labelledby="cardShareAction6">
               <li>
                 <DropdownItem>
-                  
                   <BsEnvelope size={20} className="fa-fw pe-2" />
                   Send via Direct Message
                 </DropdownItem>
               </li>
               <li>
                 <DropdownItem>
-                  
                   <BsBookmarkCheck size={20} className="fa-fw pe-2" />
                   Bookmark
                 </DropdownItem>
               </li>
               <li>
                 <DropdownItem>
-                  
                   <BsLink size={20} className="fa-fw pe-2" />
                   Copy link to post
                 </DropdownItem>
               </li>
               <li>
                 <DropdownItem>
-                  
                   <BsShare size={20} className="fa-fw pe-2" />
                   Share post via …
                 </DropdownItem>
@@ -750,7 +616,6 @@ const Post3 = () => {
               </li>
               <li>
                 <DropdownItem>
-                  
                   <BsPencilSquare size={20} className="fa-fw pe-2" />
                   Share to News Feed
                 </DropdownItem>
@@ -760,7 +625,6 @@ const Post3 = () => {
 
           <li className="nav-item">
             <Link className="nav-link mb-0" to="">
-              
               <BsSendFill size={18} className="pe-1" />
               Send
             </Link>
@@ -771,7 +635,7 @@ const Post3 = () => {
   )
 }
 
-const Feeds =  () => {
+const Feeds = () => {
   const postData = [
     { progress: 25, title: 'We have cybersecurity insurance coverage' },
     { progress: 15, title: 'Our dedicated staff will protect us' },
@@ -781,9 +645,7 @@ const Feeds =  () => {
   const allPosts = useFetchData(getAllFeeds)
   return (
     <>
-      {allPosts?.map((post, idx) => (
-        <PostCard {...post} key={idx} />
-      ))}
+      {allPosts?.map((post, idx) => <PostCard {...post} key={idx} />)}
 
       <SponsoredCard />
       <Post2 />
@@ -855,4 +717,5 @@ const Feeds =  () => {
     </>
   )
 }
+
 export default Feeds

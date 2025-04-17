@@ -24,32 +24,29 @@ export type UserType = {
 }
 
 export type CommentType = {
-  id: IdType
-  postId: SocialPostType['id']
-  socialUserId: UserType['id']
-  socialUser?: UserType
-  replyTo?: CommentType['id']
+  commentId: number
+  postId: number
+  userId: number
   comment: string
-  likesCount: number
-  image?: string
-  createdAt: Date
-  children?: CommentType[]
+  createdAt: string
+  profilePic: string
+  firstName: string
+  lastName: string
 }
 
 export type SocialPostType = {
-  id: IdType
-  socialUserId: UserType['id']
-  image?: string
-  socialUser?: UserType
-  caption?: string
-  createdAt: Date
+  id: number
+  userId: number
+  content: string
+  createdAt: string // כי אתה מקבל תאריך מומר למחרוזת מהשרת
+  updatedAt: string | null
+  vector: string | null
   likesCount: number
-  commentsCount?: number
-  liked?: boolean
-  comments?: CommentType[]
-  photos?: string[]
-  isVideo?: boolean
-  isSponsored?: boolean
+  commentsCount: number
+  fullName: string
+  userProfilePic: string
+  userExperienceLevel: string
+  showComments?: boolean
 }
 
 export type VideoType = {

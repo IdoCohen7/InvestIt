@@ -153,19 +153,23 @@ export const getUserForAllComments = (commentsData: CommentType[]): CommentType[
 }
 
 export const getAllFeeds = async (): Promise<SocialPostType[]> => {
-  const data = socialPostsData.map((post) => {
-    const socialUser = users.find((user) => user.id === post.socialUserId)
-    const commentsData = socialCommentsData.filter((comment) => comment.postId === post.id)
-    let comments: CommentType[] | undefined
-    if (commentsData.length) {
-      comments = getUserForAllComments(commentsData)
+  try {
+    const res = await fetch('https://localhost:7204/api/Post', {
+      method: 'GET',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+
+    if (!res.ok) {
+      throw new Error(`Failed to fetch posts: ${res.statusText}`)
     }
-    return {
-      ...post,
-      socialUser,
-      comments,
-    }
-  })
-  await sleep()
-  return data
+    const data = await res.json()
+    console.log(data)
+    return data
+  } catch (err) {
+    console.error('getAllFeeds error:', err)
+    throw err
+  }
 }
