@@ -35,7 +35,7 @@ export type CommentType = {
 }
 
 export type SocialPostType = {
-  id: number
+  postId: number
   userId: number
   content: string
   createdAt: string // כי אתה מקבל תאריך מומר למחרוזת מהשרת

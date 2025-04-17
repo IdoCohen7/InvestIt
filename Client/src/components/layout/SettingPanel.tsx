@@ -3,7 +3,7 @@ import type { ProfilePanelLink } from '@/types/data'
 import clsx from 'clsx'
 
 import { Link, useLocation } from 'react-router-dom'
-import {  Card, CardBody, CardFooter } from 'react-bootstrap'
+import { Card, CardBody, CardFooter } from 'react-bootstrap'
 type settingPanelProps = {
   links: ProfilePanelLink[]
 }
@@ -17,7 +17,6 @@ const SettingPanel = ({ links }: settingPanelProps) => {
             {links.map((item, idx) => (
               <li className="nav-item" key={idx}>
                 <Link className={clsx('nav-link d-flex mb-0', { active: pathname === item.link })} to={item.link}>
-                  
                   <img height={20} width={19} className="me-2 h-20px fa-fw" src={item.image} alt="image" />
                   <span>{item.name} </span>
                 </Link>

@@ -4,6 +4,7 @@ import { interestsData } from './data'
 import PageMetaData from '@/components/PageMetaData'
 import { BsBriefcase, BsCalendarDate, BsEnvelope, BsGeoAlt, BsHeart, BsPencilSquare, BsPlusCircleDotted, BsThreeDots, BsTrash } from 'react-icons/bs'
 import { Link } from 'react-router-dom'
+import { useAuthContext } from '@/context/useAuthContext'
 
 const Interests = () => {
   return (
@@ -11,7 +12,6 @@ const Interests = () => {
       <CardHeader className="d-sm-flex justify-content-between border-0 pb-0">
         <CardTitle>Interests</CardTitle>
         <Button variant="primary-soft" size="sm">
-          
           See all
         </Button>
       </CardHeader>
@@ -25,7 +25,6 @@ const Interests = () => {
                 </div>
                 <div className="ms-2">
                   <h6 className="mb-0">
-                    
                     <Link className="stretched-link" to="">
                       {item.name}
                     </Link>
@@ -56,14 +55,12 @@ const ActionDropdown = () => {
       <DropdownMenu className="dropdown-menu-end" aria-labelledby="aboutAction">
         <li>
           <DropdownItem>
-            
             <BsPencilSquare size={22} className="fa-fw pe-2" />
             Edit
           </DropdownItem>
         </li>
         <li>
           <DropdownItem>
-            
             <BsTrash size={22} className="fa-fw pe-2" />
             Delete
           </DropdownItem>
@@ -74,9 +71,11 @@ const ActionDropdown = () => {
 }
 
 const About = () => {
+  const { user } = useAuthContext()
+
   return (
     <>
-    <PageMetaData title='About'/>
+      <PageMetaData title="About" />
       <Card>
         <CardHeader className="border-0 pb-0">
           <CardTitle> Profile Info</CardTitle>
@@ -136,21 +135,19 @@ const About = () => {
             <Col sm={6}>
               <div className="d-flex align-items-center rounded border px-3 py-2">
                 <p className="mb-0">
-                  <BsEnvelope className="fa-fw me-2" /> Email: <strong> webestica@gmail.com </strong>
+                  <BsEnvelope className="fa-fw me-2" /> Email: <strong>{user?.email || 'N/A'}</strong>
                 </p>
                 <ActionDropdown />
               </div>
             </Col>
             <Col sm={6} className="position-relative">
               <Link className="btn btn-dashed rounded w-100 icons-center justify-content-center" to="">
-                
                 <BsPlusCircleDotted className="me-1" />
                 Add a workplace
               </Link>
             </Col>
             <Col sm={6} className="position-relative">
               <Link className="btn btn-dashed rounded w-100 icons-center justify-content-center" to="">
-                
                 <BsPlusCircleDotted className="me-1" />
                 Add a education
               </Link>

@@ -4,7 +4,7 @@ import PageMetaData from '@/components/PageMetaData'
 const Account = () => {
   return (
     <>
-      <PageMetaData title='Account Settings' />
+      <PageMetaData title="Account Settings" />
       <AccountSettings />
     </>
   )

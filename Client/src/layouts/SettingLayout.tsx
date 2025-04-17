@@ -1,10 +1,9 @@
-
 import { lazy, Suspense } from 'react'
 import { settingPanelLinksData } from '@/assets/data/layout'
 import SettingPanel from '@/components/layout/SettingPanel'
 import { useLayoutContext } from '@/context/useLayoutContext'
 import useViewPort from '@/hooks/useViewPort'
-const TopHeader = lazy(() => import("@/components/layout/TopHeader"))
+const TopHeader = lazy(() => import('@/components/layout/TopHeader'))
 import type { ChildrenType } from '@/types/component'
 import { Col, Container, Offcanvas, OffcanvasBody, OffcanvasHeader, Row } from 'react-bootstrap'
 import { FaSlidersH } from 'react-icons/fa'
@@ -39,16 +38,12 @@ const SettingLayout = ({ children }: ChildrenType) => {
               </div>
               <nav className="navbar navbar-light navbar-expand-lg mx-0">
                 {width >= 992 ? (
-                  <div className="p-0">
-                    <SettingPanel links={settingPanelLinksData} />
-                  </div>
+                  <div className="p-0"></div>
                 ) : (
                   <Offcanvas show={startOffcanvas.open} onHide={startOffcanvas.toggle} placement="start" tabIndex={-1} id="offcanvasNavbar">
                     <OffcanvasHeader closeButton />
                     <OffcanvasBody className="p-0">
-                      <div>
-                        <SettingPanel links={settingPanelLinksData} />
-                      </div>
+                      <div></div>
                     </OffcanvasBody>
                   </Offcanvas>
                 )}
@@ -56,9 +51,7 @@ const SettingLayout = ({ children }: ChildrenType) => {
             </Col>
             <Col lg={6} className="vstack gap-4">
               <div className="tab-content py-0 mb-0">
-                <Suspense fallback={<Preloader/>}>
-                  {children}
-                </Suspense>
+                <Suspense fallback={<Preloader />}>{children}</Suspense>
               </div>
             </Col>
           </Row>

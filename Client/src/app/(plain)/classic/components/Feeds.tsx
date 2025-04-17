@@ -1,23 +1,19 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import type { CommentType, SocialPostType } from '@/types/data'
-import { timeSince } from '@/utils/date'
 import { useState } from 'react'
 import { getAllFeeds } from '@/helpers/data'
-import GlightBox from '@/components/GlightBox'
 import {
   Button,
   Card,
   CardBody,
   CardFooter,
   CardHeader,
-  Col,
   Dropdown,
   DropdownDivider,
   DropdownItem,
   DropdownMenu,
   DropdownToggle,
-  Row,
 } from 'react-bootstrap'
 import {
   BsBookmark,
@@ -41,15 +37,10 @@ import {
 } from 'react-icons/bs'
 import People from './People'
 import SuggestedStories from './SuggestedStories'
-import VideoPlayer from './VideoPlayer'
 import LoadContentButton from '@/components/LoadContentButton'
 import LoadMoreButton from './LoadMoreButton'
-
 import avatar4 from '@/assets/images/avatar/04.jpg'
-import avatar12 from '@/assets/images/avatar/12.jpg'
-import postImg1 from '@/assets/images/post/3by2/01.jpg'
 import postImg2 from '@/assets/images/post/3by2/02.jpg'
-import postImg3 from '@/assets/images/post/1by1/03.jpg'
 import postImg4 from '@/assets/images/post/3by2/03.jpg'
 import logo11 from '@/assets/images/logo/11.svg'
 import logo12 from '@/assets/images/logo/12.svg'
@@ -101,7 +92,7 @@ const ActionMenu = ({ name }: { name?: string }) => {
   )
 }
 
-const CommentItem = ({ comment, likesCount, children, socialUser, createdAt, image }: CommentType) => {
+const CommentItem = ({ comment, socialUser, createdAt, image }: CommentType) => {
   return (
     <li className="comment-item">
       {socialUser && (
@@ -118,7 +109,7 @@ const CommentItem = ({ comment, likesCount, children, socialUser, createdAt, ima
                   <h6 className="mb-1">
                     <Link to=""> {socialUser.name} </Link>
                   </h6>
-                  <small className="ms-2">{timeSince(createdAt)}</small>
+                  <small className="ms-2">{createdAt}</small>
                 </div>
                 <p className="small mb-0">{comment}</p>
                 {image && (
@@ -160,7 +151,7 @@ const CommentItem = ({ comment, likesCount, children, socialUser, createdAt, ima
   )
 }
 
-const PostCard = ({ postId, createdAt, likesCount, content, commentsCount, image, socialUser, photos, isVideo }: SocialPostType) => {
+const PostCard = ({ postId, createdAt, likesCount, content, commentsCount, userProfilePic, fullName }: SocialPostType) => {
   const [comments, setComments] = useState<CommentType[]>([])
   const [commentsVisible, setCommentsVisible] = useState(false)
 
@@ -186,34 +177,27 @@ const PostCard = ({ postId, createdAt, likesCount, content, commentsCount, image
         <div className="d-flex align-items-center justify-content-between">
           <div className="d-flex align-items-center">
             <div className="avatar avatar-story me-2">
-              {socialUser?.avatar && (
+              {userProfilePic && (
                 <span role="button">
-                  <img className="avatar-img rounded-circle" src={socialUser.avatar} alt={socialUser.name} />
+                  <img className="avatar-img rounded-circle" src={userProfilePic} alt={fullName} />
                 </span>
               )}
             </div>
             <div>
               <div className="nav nav-divider">
                 <h6 className="nav-item card-title mb-0">
-                  <Link to="">{socialUser?.name}</Link>
+                  <Link to="">{fullName}</Link>
                 </h6>
-                <span className="nav-item small">{timeSince(createdAt)}</span>
+                <span className="nav-item small">{createdAt}</span>
               </div>
               <p className="mb-0 small">Web Developer at Webestica</p>
             </div>
           </div>
-          <ActionMenu name={socialUser?.name} />
+          <ActionMenu name={fullName} />
         </div>
       </CardHeader>
       <CardBody>
         {content && <p>{content}</p>}
-        {image && <img className="card-img" src={image} alt="Post" />}
-        {isVideo && <VideoPlayer />}
-        {photos && (
-          <div className="d-flex justify-content-between">
-            <Row className="g-3">{/* תמונות נוספות אם יש */}</Row>
-          </div>
-        )}
         <ul className="nav nav-stack py-3 small">
           <li className="nav-item">
             <span className="nav-link">

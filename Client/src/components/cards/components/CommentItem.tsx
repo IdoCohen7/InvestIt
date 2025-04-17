@@ -1,6 +1,5 @@
 import LoadContentButton from '@/components/LoadContentButton'
 import type { CommentType } from '@/types/data'
-import { timeSince } from '@/utils/date'
 import clsx from 'clsx'
 
 import { Link } from 'react-router-dom'
@@ -40,7 +39,7 @@ const CommentItem = ({
                   <h6 className="mb-1">
                     <Link to="">{socialUser.name}</Link>
                   </h6>
-                  <small className="ms-2">{timeSince(createdAt)}</small>
+                  <small className="ms-2">{createdAt}</small>
                 </div>
                 <p className="small mb-0">{comment}</p>
                 {image && (
