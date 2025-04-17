@@ -1,12 +1,24 @@
+// PostCard.tsx
 import { useState } from 'react'
 import { Card, CardBody, CardFooter, CardHeader, Dropdown, DropdownDivider, DropdownItem, DropdownMenu, DropdownToggle } from 'react-bootstrap'
-import { BsBookmark, BsChatFill, BsFlag, BsHandThumbsUpFill, BsPersonX, BsSendFill, BsSlashCircle, BsThreeDots, BsXCircle } from 'react-icons/bs'
+import {
+  BsBookmark,
+  BsChatFill,
+  BsFlag,
+  BsHandThumbsUpFill,
+  BsPersonX,
+  BsSendFill,
+  BsSlashCircle,
+  BsThreeDots,
+  BsXCircle,
+  BsTrashFill,
+} from 'react-icons/bs'
 import LoadContentButton from '../LoadContentButton'
 import CommentItem from './components/CommentItem'
 import { Link } from 'react-router-dom'
-
 import avatar12 from '@/assets/images/avatar/12.jpg'
 import type { CommentType } from '@/types/data'
+import { useAuthContext } from '@/context/useAuthContext'
 
 interface PostCardProps {
   postId: number
@@ -20,6 +32,7 @@ interface PostCardProps {
   fullName: string
   userProfilePic: string
   userExperienceLevel: string
+  onDelete?: (postId: number) => void
 }
 
 const ActionMenu = ({ name }: { name?: string }) => (
@@ -60,9 +73,21 @@ const ActionMenu = ({ name }: { name?: string }) => (
   </Dropdown>
 )
 
-const PostCard = ({ postId, createdAt, likesCount, content, commentsCount, userExperienceLevel, userProfilePic, fullName }: PostCardProps) => {
+const PostCard = ({
+  postId,
+  userId,
+  createdAt,
+  likesCount,
+  content,
+  commentsCount,
+  userExperienceLevel,
+  userProfilePic,
+  fullName,
+  onDelete,
+}: PostCardProps) => {
   const [commentsVisible, setCommentsVisible] = useState(false)
   const [comments, setComments] = useState<CommentType[]>([])
+  const { user } = useAuthContext()
 
   const handleToggleComments = async () => {
     if (!commentsVisible) {
@@ -70,9 +95,7 @@ const PostCard = ({ postId, createdAt, likesCount, content, commentsCount, userE
         const res = await fetch(`https://localhost:7204/api/Comment?postId=${postId}`)
         const raw = await res.text()
         const data = raw ? JSON.parse(raw) : []
-
-        // התאמת הפורמט ל־CommentType
-        const formatted: CommentType[] = data.map((c: CommentType) => ({
+        const formatted: CommentType[] = data.map((c: any) => ({
           id: c.commentId,
           postId: c.postId,
           socialUserId: c.userId,
@@ -86,14 +109,26 @@ const PostCard = ({ postId, createdAt, likesCount, content, commentsCount, userE
             isStory: false,
           },
         }))
-
         setComments(formatted)
       } catch (err) {
         console.error('Failed to fetch comments:', err)
       }
     }
-
     setCommentsVisible(!commentsVisible)
+  }
+
+  const handleDelete = async () => {
+    if (confirm('Are you sure you want to delete this post?')) {
+      try {
+        const res = await fetch(`https://localhost:7204/api/Post/delete?postId=${postId}&userId=${user?.userId}`, {
+          method: 'DELETE',
+        })
+        if (!res.ok) throw new Error('Failed to delete post')
+        if (onDelete) onDelete(postId)
+      } catch (err) {
+        console.error('Error deleting post:', err)
+      }
+    }
   }
 
   return (
@@ -118,7 +153,14 @@ const PostCard = ({ postId, createdAt, likesCount, content, commentsCount, userE
               <p className="mb-0 small">{userExperienceLevel}</p>
             </div>
           </div>
-          <ActionMenu name={fullName} />
+          <div className="d-flex align-items-center gap-2">
+            {user?.userId === userId && (
+              <button onClick={handleDelete} className="btn btn-sm btn-danger-soft" title="Delete post">
+                <BsTrashFill />
+              </button>
+            )}
+            <ActionMenu name={fullName} />
+          </div>
         </div>
       </CardHeader>
 
@@ -152,10 +194,9 @@ const PostCard = ({ postId, createdAt, likesCount, content, commentsCount, userE
                 </button>
               </form>
             </div>
-
             <ul className="comment-wrap list-unstyled">
               {comments.map((comment) => (
-                <CommentItem key={comment.id} {...comment} />
+                <CommentItem key={comment.commentId} {...comment} />
               ))}
             </ul>
           </>
