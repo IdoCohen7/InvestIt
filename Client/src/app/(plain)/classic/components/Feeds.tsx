@@ -242,8 +242,6 @@ const PostCard = ({ postId, createdAt, likesCount, content, commentsCount, image
   )
 }
 
-export default PostCard
-
 const SponsoredCard = () => {
   return (
     <Card>
