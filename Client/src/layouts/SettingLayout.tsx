@@ -1,6 +1,4 @@
 import { lazy, Suspense } from 'react'
-import { settingPanelLinksData } from '@/assets/data/layout'
-import SettingPanel from '@/components/layout/SettingPanel'
 import { useLayoutContext } from '@/context/useLayoutContext'
 import useViewPort from '@/hooks/useViewPort'
 const TopHeader = lazy(() => import('@/components/layout/TopHeader'))

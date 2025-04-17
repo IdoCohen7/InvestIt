@@ -79,38 +79,6 @@ const ProfilePanel = ({ links }: ProfilePanelProps) => {
           </Link>
         </CardFooter>
       </Card>
-      <ul className="nav small mt-4 justify-content-center lh-1">
-        <li className="nav-item">
-          <Link className="nav-link" to="/profile/about">
-            About
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link className="nav-link" to="/settings/account">
-            Settings
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link className="nav-link" target="_blank" rel="noreferrer" to={developedByLink}>
-            Support
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link className="nav-link" target="_blank" rel="noreferrer" to="">
-            Docs
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link className="nav-link" to="/help">
-            Help
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link className="nav-link" to="/privacy-terms">
-            Privacy &amp; terms
-          </Link>
-        </li>
-      </ul>
 
       <p className="small text-center mt-1">
         ©{currentYear}

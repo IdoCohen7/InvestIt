@@ -1,17 +1,9 @@
-type CurrencyType = '₹' | '$' | '€'
-
-export const currency: CurrencyType = '$'
-
 export const currentYear = new Date().getFullYear()
 
-export const developedByLink = 'https://coderthemes.com/'
+export const developedByLink = 'https://investit.com/'
 
-export const developedBy = 'Coderthemes'
-
-export const contactUs = 'mailto:support@coderthemes.com'
-
-export const buyLink = ''
+export const developedBy = 'The Invest-It Team: Ido, Aya, Ofri'
 
 export const basePath = ''
 
-export const DEFAULT_PAGE_TITLE = 'Social React | Network, Community and Event Theme'
+export const DEFAULT_PAGE_TITLE = 'Invest It'

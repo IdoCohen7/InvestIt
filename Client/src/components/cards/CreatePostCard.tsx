@@ -1,37 +1,15 @@
-
-
+import { Button, Card, Col, Modal, ModalBody, ModalFooter, ModalHeader, OverlayTrigger, Row, Tooltip } from 'react-bootstrap'
 import {
-  Button,
-  Card,
-  Col,
-  Dropdown,
-  DropdownDivider,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Modal,
-  ModalBody,
-  ModalFooter,
-  ModalHeader,
-  OverlayTrigger,
-  Row,
-  Tooltip,
-} from 'react-bootstrap'
-import {
-  BsBookmarkCheck,
   BsCalendar2EventFill,
   BsCameraReels,
   BsCameraReelsFill,
   BsCameraVideoFill,
   BsEmojiSmileFill,
-  BsEnvelope,
   BsFileEarmarkText,
   BsGeoAltFill,
   BsImageFill,
   BsImages,
-  BsPencilSquare,
   BsTagFill,
-  BsThreeDots,
 } from 'react-icons/bs'
 import * as yup from 'yup'
 import { useForm } from 'react-hook-form'
@@ -76,7 +54,6 @@ const CreatePostCard = () => {
         <div className="d-flex mb-3">
           <div className="avatar avatar-xs me-2">
             <span role="button">
-              
               <img className="avatar-img rounded-circle" src={avatar3} alt="avatar3" />
             </span>
           </div>
@@ -89,69 +66,16 @@ const CreatePostCard = () => {
         <ul className="nav nav-pills nav-stack small fw-normal">
           <li className="nav-item">
             <a className="nav-link bg-light py-1 px-2 mb-0" onClick={togglePhotoModel}>
-              
               <BsImageFill size={20} className="text-success pe-2" />
               Photo
             </a>
           </li>
-          <li className="nav-item">
-            <a className="nav-link bg-light py-1 px-2 mb-0" onClick={toggleVideoModel}>
-              
-              <BsCameraReelsFill size={20} className="text-info pe-2" />
-              Video
-            </a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link bg-light py-1 px-2 mb-0" onClick={toggleEvent}>
-              
-              <BsCalendar2EventFill size={20} className="text-danger pe-2" />
-              Event
-            </a>
-          </li>
-          <li className="nav-item">
-            <a className="nav-link bg-light py-1 px-2 mb-0" onClick={togglePost}>
-              
-              <BsEmojiSmileFill size={20} className="text-warning pe-2" />
-              Feeling /Activity
-            </a>
-          </li>
-          <Dropdown drop="start" className="nav-item ms-lg-auto">
-            <DropdownToggle
-              as="a"
-              className="nav-link bg-light py-1 px-2 mb-0 content-none"
-              id="feedActionShare"
-              data-bs-toggle="dropdown"
-              aria-expanded="false">
-              <BsThreeDots />
-            </DropdownToggle>
 
-            <DropdownMenu className="dropdown-menu-end" aria-labelledby="feedActionShare">
-              <li>
-                <DropdownItem>
-                  
-                  <BsEnvelope size={21} className="fa-fw pe-2" />
-                  Create a poll
-                </DropdownItem>
-              </li>
-              <li>
-                <DropdownItem>
-                  
-                  <BsBookmarkCheck size={21} className="fa-fw pe-2" />
-                  Ask a question
-                </DropdownItem>
-              </li>
-              <li>
-                <DropdownDivider />
-              </li>
-              <li>
-                <DropdownItem>
-                  
-                  <BsPencilSquare size={21} className="fa-fw pe-2" />
-                  Help
-                </DropdownItem>
-              </li>
-            </DropdownMenu>
-          </Dropdown>
+          <div className="nav-item ms-lg-auto">
+            <button type="button" className="btn btn-success-soft">
+              Post
+            </button>
+          </div>
         </ul>
       </Card>
 
@@ -287,7 +211,6 @@ const CreatePostCard = () => {
           </ModalBody>
           <ModalFooter>
             <Button variant="danger-soft" type="button" className="me-2" onClick={toggleEvent}>
-              
               Cancel
             </Button>
             <Button variant="success-soft" type="submit">
@@ -316,37 +239,31 @@ const CreatePostCard = () => {
           <div className="hstack gap-2">
             <OverlayTrigger overlay={<Tooltip>Photo</Tooltip>}>
               <Link className="icon-md bg-success bg-opacity-10 text-success rounded-circle" to="">
-                
                 <BsImageFill />
               </Link>
             </OverlayTrigger>
             <OverlayTrigger overlay={<Tooltip>Video</Tooltip>}>
               <Link className="icon-md bg-info bg-opacity-10 text-info rounded-circle" to="">
-                
                 <BsCameraReelsFill />
               </Link>
             </OverlayTrigger>
             <OverlayTrigger overlay={<Tooltip>Events</Tooltip>}>
               <Link className="icon-md bg-danger bg-opacity-10 text-danger rounded-circle" to="">
-                
                 <BsCalendar2EventFill />
               </Link>
             </OverlayTrigger>
             <OverlayTrigger overlay={<Tooltip>Feeling/Activity</Tooltip>}>
               <Link className="icon-md bg-warning bg-opacity-10 text-warning rounded-circle" to="">
-                
                 <BsEmojiSmileFill />
               </Link>
             </OverlayTrigger>
             <OverlayTrigger overlay={<Tooltip>Check in</Tooltip>}>
               <Link className="icon-md bg-light text-secondary rounded-circle" to="">
-                
                 <BsGeoAltFill />
               </Link>
             </OverlayTrigger>
             <OverlayTrigger overlay={<Tooltip>Tag people on top</Tooltip>}>
               <Link className="icon-md bg-primary bg-opacity-10 text-primary rounded-circle" to="">
-                
                 <BsTagFill />
               </Link>
             </OverlayTrigger>
@@ -367,7 +284,6 @@ const CreatePostCard = () => {
           </Col>
           <Col lg={8} className="text-sm-end">
             <Button variant="danger-soft" type="button" className="me-2">
-              
               <BsCameraVideoFill className="pe-1" /> Live video
             </Button>
             <Button variant="success-soft" type="button">
