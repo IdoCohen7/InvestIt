@@ -75,6 +75,7 @@ const ProfileLayout = ({ children }: ChildrenType) => {
   const { user, saveSession } = useAuthContext()
   const [showCamera, setShowCamera] = useState(false)
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleImageUpload = async (relativePath: string) => {
     if (!user) return
 

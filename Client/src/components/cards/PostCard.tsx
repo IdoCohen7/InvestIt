@@ -16,7 +16,6 @@ import {
 } from 'react-icons/bs'
 import LoadContentButton from '../LoadContentButton'
 import CommentItem from './components/CommentItem'
-import { Link } from 'react-router-dom'
 import type { CommentType } from '@/types/data'
 import { useAuthContext } from '@/context/useAuthContext'
 import placeHolder from '@/assets/images/avatar/placeholder.jpg'
@@ -92,9 +91,9 @@ const PostCard = ({
   const [comments, setComments] = useState<CommentType[]>([])
   const [newComment, setNewComment] = useState('')
   const [localCommentsCount, setLocalCommentsCount] = useState(commentsCount)
+  const [visibleCommentsCount, setVisibleCommentsCount] = useState(3)
   const [localLikesCount, setLocalLikesCount] = useState(likesCount)
   const [hasLiked, setHasLiked] = useState(false)
-
   const [isEditing, setIsEditing] = useState(false)
   const [editContent, setEditContent] = useState(content)
   const [editedAt, setEditedAt] = useState<string | null>(updatedAt ?? null)
@@ -102,6 +101,12 @@ const PostCard = ({
   const fetchComments = async () => {
     try {
       const res = await fetch(`https://localhost:7204/api/Comment?postId=${postId}`)
+
+      if (res.status == 204) {
+        setComments([])
+        return
+      }
+
       const data = await res.json()
       const formatted: CommentType[] = data.map((c: any) => ({
         commentId: c.commentId,
@@ -306,7 +311,7 @@ const PostCard = ({
             </div>
 
             <ul className="comment-wrap list-unstyled">
-              {comments.map((comment) => (
+              {comments.slice(0, visibleCommentsCount).map((comment) => (
                 <CommentItem key={comment.commentId} {...comment} onDelete={() => handleDeleteComment(comment.commentId)} />
               ))}
             </ul>
@@ -314,7 +319,11 @@ const PostCard = ({
         )}
       </CardBody>
 
-      <CardFooter className="border-0 pt-0">{commentsVisible && <LoadContentButton name="Load more comments" />}</CardFooter>
+      <CardFooter className="border-0 pt-0">
+        {commentsVisible && comments.length > visibleCommentsCount && (
+          <LoadContentButton name="Load more comments" onClick={() => setVisibleCommentsCount((prev) => prev + 3)} />
+        )}
+      </CardFooter>
     </Card>
   )
 }

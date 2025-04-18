@@ -10,6 +10,7 @@ import { useAuthContext } from '@/context/useAuthContext'
 
 const CommentItem = ({
   commentId,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   postId,
   userId,
   comment,

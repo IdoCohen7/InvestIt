@@ -50,7 +50,7 @@ const ActionMenu = ({ name }: { name?: string }) => {
     </Dropdown>
   )
 }
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const SponsoredCard = () => (
   <Card>
     <CardHeader>
