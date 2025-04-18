@@ -12,13 +12,14 @@ import {
   BsThreeDots,
   BsXCircle,
   BsTrashFill,
+  BsPencilSquare,
 } from 'react-icons/bs'
 import LoadContentButton from '../LoadContentButton'
 import CommentItem from './components/CommentItem'
 import { Link } from 'react-router-dom'
-import avatar12 from '@/assets/images/avatar/12.jpg'
 import type { CommentType } from '@/types/data'
 import { useAuthContext } from '@/context/useAuthContext'
+import placeHolder from '@/assets/images/avatar/placeholder.jpg'
 
 interface PostCardProps {
   postId: number
@@ -77,6 +78,7 @@ const PostCard = ({
   postId,
   userId,
   createdAt,
+  updatedAt,
   likesCount,
   content,
   commentsCount,
@@ -85,49 +87,118 @@ const PostCard = ({
   fullName,
   onDelete,
 }: PostCardProps) => {
+  const { user } = useAuthContext()
   const [commentsVisible, setCommentsVisible] = useState(false)
   const [comments, setComments] = useState<CommentType[]>([])
-  const { user } = useAuthContext()
+  const [newComment, setNewComment] = useState('')
+  const [localCommentsCount, setLocalCommentsCount] = useState(commentsCount)
+  const [localLikesCount, setLocalLikesCount] = useState(likesCount)
+  const [hasLiked, setHasLiked] = useState(false)
+
+  const [isEditing, setIsEditing] = useState(false)
+  const [editContent, setEditContent] = useState(content)
+  const [editedAt, setEditedAt] = useState<string | null>(updatedAt ?? null)
+
+  const fetchComments = async () => {
+    try {
+      const res = await fetch(`https://localhost:7204/api/Comment?postId=${postId}`)
+      const data = await res.json()
+      const formatted: CommentType[] = data.map((c: any) => ({
+        commentId: c.commentId,
+        postId: c.postId,
+        userId: c.userId,
+        comment: c.content,
+        createdAt: c.createdAt,
+        firstName: c.firstName,
+        lastName: c.lastName,
+        profilePic: c.profilePic,
+      }))
+      setComments(formatted)
+    } catch (err) {
+      console.error('Failed to fetch comments:', err)
+    }
+  }
+
+  const handleAddComment = async () => {
+    if (!newComment.trim()) return
+    try {
+      await fetch('https://localhost:7204/api/Comment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          commentId: 0,
+          postId,
+          userId: user?.userId,
+          content: newComment,
+          createdAt: new Date().toISOString(),
+        }),
+      })
+      setNewComment('')
+      setLocalCommentsCount((prev) => prev + 1)
+      fetchComments()
+    } catch (err) {
+      console.error('Error posting comment:', err)
+    }
+  }
+
+  const handleDeleteComment = (commentId: number) => {
+    setComments((prev) => prev.filter((c) => c.commentId !== commentId))
+    setLocalCommentsCount((prev) => Math.max(prev - 1, 0))
+  }
 
   const handleToggleComments = async () => {
-    if (!commentsVisible) {
-      try {
-        const res = await fetch(`https://localhost:7204/api/Comment?postId=${postId}`)
-        const raw = await res.text()
-        const data = raw ? JSON.parse(raw) : []
-        const formatted: CommentType[] = data.map((c: any) => ({
-          id: c.commentId,
-          postId: c.postId,
-          socialUserId: c.userId,
-          comment: c.content,
-          createdAt: c.createdAt,
-          likesCount: 0,
-          socialUser: {
-            id: c.userId,
-            name: `${c.firstName} ${c.lastName}`,
-            avatar: c.profilePic,
-            isStory: false,
-          },
-        }))
-        setComments(formatted)
-      } catch (err) {
-        console.error('Failed to fetch comments:', err)
-      }
-    }
+    if (!commentsVisible) await fetchComments()
     setCommentsVisible(!commentsVisible)
   }
 
-  const handleDelete = async () => {
+  const handleDeletePost = async () => {
     if (confirm('Are you sure you want to delete this post?')) {
       try {
         const res = await fetch(`https://localhost:7204/api/Post/delete?postId=${postId}&userId=${user?.userId}`, {
           method: 'DELETE',
         })
         if (!res.ok) throw new Error('Failed to delete post')
-        if (onDelete) onDelete(postId)
+        onDelete?.(postId)
       } catch (err) {
         console.error('Error deleting post:', err)
       }
+    }
+  }
+
+  const handleLike = async () => {
+    try {
+      const res = await fetch(`https://localhost:7204/api/Post/${postId}/like?userId=${user?.userId}`, {
+        method: 'POST',
+      })
+      const data = await res.json()
+      if (data.status === 'Liked') {
+        setLocalLikesCount((prev) => prev + 1)
+        setHasLiked(true)
+      } else if (data.status === 'Unliked') {
+        setLocalLikesCount((prev) => Math.max(prev - 1, 0))
+        setHasLiked(false)
+      }
+    } catch (err) {
+      console.error('Error liking post:', err)
+    }
+  }
+
+  const handleEditPost = async () => {
+    if (!editContent.trim()) return
+    try {
+      const res = await fetch(`https://localhost:7204/api/Post/edit?postId=${postId}&userId=${user?.userId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editContent),
+      })
+
+      if (!res.ok) throw new Error('Failed to edit post')
+
+      // אין צורך ב-res.json(), פשוט נעדכן מקומית
+      setIsEditing(false)
+      setEditedAt(new Date().toISOString())
+    } catch (err) {
+      console.error('Error editing post:', err)
     }
   }
 
@@ -137,17 +208,11 @@ const PostCard = ({
         <div className="d-flex align-items-center justify-content-between">
           <div className="d-flex align-items-center">
             <div className="avatar avatar-story me-2">
-              {userProfilePic && (
-                <span role="button">
-                  <img className="avatar-img rounded-circle" src={userProfilePic} alt={fullName} />
-                </span>
-              )}
+              <img className="avatar-img rounded-circle" src={userProfilePic || placeHolder} alt={fullName} />
             </div>
             <div>
               <div className="nav nav-divider">
-                <h6 className="nav-item card-title mb-0">
-                  <span role="button">{fullName}</span>
-                </h6>
+                <h6 className="nav-item card-title mb-0">{fullName}</h6>
                 <span className="nav-item small">{createdAt}</span>
               </div>
               <p className="mb-0 small">{userExperienceLevel}</p>
@@ -155,9 +220,14 @@ const PostCard = ({
           </div>
           <div className="d-flex align-items-center gap-2">
             {user?.userId === userId && (
-              <button onClick={handleDelete} className="btn btn-sm btn-danger-soft" title="Delete post">
-                <BsTrashFill />
-              </button>
+              <>
+                <button onClick={() => setIsEditing((prev) => !prev)} className="btn btn-sm btn-primary-soft" title="Edit post">
+                  <BsPencilSquare />
+                </button>
+                <button onClick={handleDeletePost} className="btn btn-sm btn-danger-soft" title="Delete post">
+                  <BsTrashFill />
+                </button>
+              </>
             )}
             <ActionMenu name={fullName} />
           </div>
@@ -165,16 +235,41 @@ const PostCard = ({
       </CardHeader>
 
       <CardBody>
-        {content && <p>{content}</p>}
+        {isEditing ? (
+          <>
+            <textarea className="form-control mb-2" rows={3} value={editContent} onChange={(e) => setEditContent(e.target.value)} />
+            <button className="btn btn-success btn-sm" onClick={handleEditPost}>
+              Save
+            </button>
+          </>
+        ) : (
+          <>
+            <p>{editContent}</p>
+            {editedAt && !isEditing && !isNaN(Date.parse(editedAt)) && (
+              <p className="text-muted small mb-1">
+                Edited on{' '}
+                {new Date(editedAt).toLocaleString(undefined, {
+                  day: '2-digit',
+                  month: '2-digit',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit',
+                })}
+              </p>
+            )}
+          </>
+        )}
+
         <ul className="nav nav-stack py-3 small">
           <li className="nav-item">
-            <Link className="nav-link active icons-center" to="">
-              <BsHandThumbsUpFill className="pe-1" /> Liked ({likesCount})
-            </Link>
+            <span className="nav-link icons-center" role="button" onClick={handleLike}>
+              <BsHandThumbsUpFill className="pe-1" />
+              {hasLiked ? 'Unlike' : 'Like'} ({localLikesCount})
+            </span>
           </li>
           <li className="nav-item">
             <span role="button" className="nav-link icons-center" onClick={handleToggleComments}>
-              <BsChatFill className="pe-1" /> Comments ({commentsCount})
+              <BsChatFill className="pe-1" /> Comments ({localCommentsCount})
             </span>
           </li>
         </ul>
@@ -183,20 +278,36 @@ const PostCard = ({
           <>
             <div className="d-flex mb-3">
               <div className="avatar avatar-xs me-2">
-                <span role="button">
-                  <img className="avatar-img rounded-circle" src={avatar12} alt="avatar12" />
-                </span>
+                <img className="avatar-img rounded-circle" src={user?.profilePic || placeHolder} alt="avatar" />
               </div>
-              <form className="nav nav-item w-100 position-relative">
-                <textarea className="form-control pe-5 bg-light" rows={1} placeholder="Add a comment..." defaultValue={''} />
-                <button className="nav-link bg-transparent px-3 position-absolute top-50 end-0 translate-middle-y border-0" type="button">
+              <form
+                className="nav nav-item w-100 position-relative"
+                onSubmit={(e) => {
+                  e.preventDefault()
+                  handleAddComment()
+                }}>
+                <textarea
+                  className="form-control pe-5 bg-light"
+                  rows={1}
+                  placeholder="Add a comment..."
+                  value={newComment}
+                  onChange={(e) => setNewComment(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                      e.preventDefault()
+                      handleAddComment()
+                    }
+                  }}
+                />
+                <button className="nav-link bg-transparent px-3 position-absolute top-50 end-0 translate-middle-y border-0" type="submit">
                   <BsSendFill />
                 </button>
               </form>
             </div>
+
             <ul className="comment-wrap list-unstyled">
               {comments.map((comment) => (
-                <CommentItem key={comment.commentId} {...comment} />
+                <CommentItem key={comment.commentId} {...comment} onDelete={() => handleDeleteComment(comment.commentId)} />
               ))}
             </ul>
           </>

@@ -46,3 +46,5 @@ Server/InvestItAPI/InvestItAPI/obj/InvestItAPI.csproj.nuget.dgspec.json
 Server/InvestItAPI/InvestItAPI/obj/project.assets.json
 Server/InvestItAPI/InvestItAPI/obj/project.nuget.cache
 Server/InvestItAPI/InvestItAPI/appsettings.json
+/Server/InvestItAPI/InvestItAPI/uploadedFiles/profilePics
+/Server/InvestItAPI/.vs

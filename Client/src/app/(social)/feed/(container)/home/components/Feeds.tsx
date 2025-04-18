@@ -102,7 +102,7 @@ const Feeds = () => {
       {allPosts
         ?.filter((post) => !deletedPostIds.includes(post.postId))
         .slice(0, visibleCount)
-        .map((post, idx) => <PostCard {...post} key={idx} onDelete={handlePostDelete} />)}
+        .map((post) => <PostCard {...post} key={post.postId} onDelete={handlePostDelete} />)}
 
       {allPosts && visibleCount < allPosts.length && <LoadMoreButton onClick={handleLoadMore} />}
     </>

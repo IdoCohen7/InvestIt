@@ -1,4 +1,5 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useState } from 'react'
+import CameraModal from '@/components/cameraModal'
 
 const TopHeader = lazy(() => import('@/components/layout/TopHeader'))
 import GlightBox from '@/components/GlightBox'
@@ -57,31 +58,13 @@ const Photos = () => {
       </CardHeader>
       <CardBody className="position-relative pt-0">
         <Row className="g-2">
-          <Col xs={6}>
-            <GlightBox href={album1} data-gallery="image-popup">
-              <img className="rounded img-fluid" src={album1} alt="album-image" />
-            </GlightBox>
-          </Col>
-          <Col xs={6}>
-            <GlightBox href={album2} data-gallery="image-popup">
-              <img className="rounded img-fluid" src={album2} alt="album-image" />
-            </GlightBox>
-          </Col>
-          <Col xs={4}>
-            <GlightBox href={album3} data-gallery="image-popup">
-              <img className="rounded img-fluid" src={album3} alt="album-image" />
-            </GlightBox>
-          </Col>
-          <Col xs={4}>
-            <GlightBox href={album4} data-gallery="image-popup">
-              <img className="rounded img-fluid" src={album4} alt="album-image" />
-            </GlightBox>
-          </Col>
-          <Col xs={4}>
-            <GlightBox href={album5} data-gallery="image-popup">
-              <img className="rounded img-fluid" src={album5} alt="album-image" />
-            </GlightBox>
-          </Col>
+          {[album1, album2, album3, album4, album5].map((album, index) => (
+            <Col key={index} xs={index < 2 ? 6 : 4}>
+              <GlightBox href={album} data-gallery="image-popup">
+                <img className="rounded img-fluid" src={album} alt="album-image" />
+              </GlightBox>
+            </Col>
+          ))}
         </Row>
       </CardBody>
     </Card>
@@ -89,7 +72,32 @@ const Photos = () => {
 }
 
 const ProfileLayout = ({ children }: ChildrenType) => {
-  const { user } = useAuthContext()
+  const { user, saveSession } = useAuthContext()
+  const [showCamera, setShowCamera] = useState(false)
+
+  const handleImageUpload = async (relativePath: string) => {
+    if (!user) return
+
+    const fullPath = `https://localhost:7204/uploadedFiles/profilePics/${user.userId}.jpg`
+
+    try {
+      const res = await fetch(`https://localhost:7204/api/User/ProfilePic/${user.userId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(fullPath),
+      })
+
+      if (!res.ok) throw new Error('Failed to update profile picture')
+
+      // עדכון context
+      const updatedUser = { ...user, profilePic: fullPath }
+      saveSession(updatedUser, true)
+      setShowCamera(false)
+      window.location.reload()
+    } catch (err) {
+      console.error('Error updating profile picture:', err)
+    }
+  }
 
   return (
     <>
@@ -114,7 +122,7 @@ const ProfileLayout = ({ children }: ChildrenType) => {
                 <CardBody className="py-0">
                   <div className="d-sm-flex align-items-start text-center text-sm-start">
                     <div>
-                      <div className="avatar avatar-xxl mt-n5 mb-3">
+                      <div className="avatar avatar-xxl mt-n5 mb-3" onClick={() => setShowCamera(true)} role="button">
                         <img
                           className="avatar-img rounded-circle border border-white border-3"
                           src={user ? user.profilePic || placeHolder : placeHolder}
@@ -148,20 +156,17 @@ const ProfileLayout = ({ children }: ChildrenType) => {
                         <DropdownMenu className="dropdown-menu-end" aria-labelledby="profileAction2">
                           <li>
                             <DropdownItem>
-                              <BsBookmark size={22} className="fa-fw pe-2" />
-                              Share profile in a message
+                              <BsBookmark size={22} className="fa-fw pe-2" /> Share profile in a message
                             </DropdownItem>
                           </li>
                           <li>
                             <DropdownItem>
-                              <BsFileEarmarkPdf size={22} className="fa-fw pe-2" />
-                              Save your profile to PDF
+                              <BsFileEarmarkPdf size={22} className="fa-fw pe-2" /> Save your profile to PDF
                             </DropdownItem>
                           </li>
                           <li>
                             <DropdownItem>
-                              <BsLock size={22} className="fa-fw pe-2" />
-                              Lock profile
+                              <BsLock size={22} className="fa-fw pe-2" /> Lock profile
                             </DropdownItem>
                           </li>
                           <li>
@@ -169,8 +174,7 @@ const ProfileLayout = ({ children }: ChildrenType) => {
                           </li>
                           <li>
                             <DropdownItem>
-                              <BsGear size={22} className="fa-fw pe-2" />
-                              Profile settings
+                              <BsGear size={22} className="fa-fw pe-2" /> Profile settings
                             </DropdownItem>
                           </li>
                         </DropdownMenu>
@@ -190,7 +194,7 @@ const ProfileLayout = ({ children }: ChildrenType) => {
                   </ul>
                 </CardBody>
               </Card>
-              <Suspense fallback={<FallbackLoading />}> {children}</Suspense>
+              <Suspense fallback={<FallbackLoading />}>{children}</Suspense>
             </Col>
             <Col lg={4}>
               <Row className="g-4">
@@ -224,6 +228,8 @@ const ProfileLayout = ({ children }: ChildrenType) => {
           </Row>
         </Container>
       </main>
+
+      <CameraModal show={showCamera} onClose={() => setShowCamera(false)} onUploadSuccess={handleImageUpload} />
     </>
   )
 }

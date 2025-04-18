@@ -291,8 +291,9 @@ namespace InvestItAPI.DAL
                         Content = dataReader["content"].ToString(),
                         CreatedAt = Convert.ToDateTime(dataReader["created_at"]).ToString("dd/MM/yyyy"),
                         UpdatedAt = dataReader["updated_at"] != DBNull.Value
-                            ? Convert.ToDateTime(dataReader["updated_at"]).ToString("dd/MM/yyyy")
-                            : null,
+    ? Convert.ToDateTime(dataReader["updated_at"]).ToString("o") // ISO 8601 format
+    : null,
+
                         Vector = dataReader["post_vector"] != DBNull.Value
                             ? dataReader["post_vector"].ToString()
                             : null,
@@ -831,6 +832,34 @@ namespace InvestItAPI.DAL
             catch (Exception ex)
             {
                 throw new Exception("Error checking follow status: " + ex.Message);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+        }
+
+        public bool UpdateProfilePic(int userId, string profilePicFileName)
+        {
+            SqlConnection con = null;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("myProjDB");
+                cmd = new SqlCommand("SP_UpdateProfilePic", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@user_id", userId);
+                cmd.Parameters.AddWithValue("@profile_pic", profilePicFileName);
+
+                int affected = cmd.ExecuteNonQuery();
+                return affected > 0;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error updating profile picture", ex);
             }
             finally
             {

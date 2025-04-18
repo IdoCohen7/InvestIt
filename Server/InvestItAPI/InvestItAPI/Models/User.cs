@@ -156,6 +156,10 @@ namespace InvestItAPI.Models
             return dbServices.IsFollowing(followerId, followingId);
         }
 
-
+        static public bool UploadProfilePic(string profilePic, int userId)
+        {
+            DBservices dbServices = new DBservices();
+            return dbServices.UpdateProfilePic(userId, profilePic);
+        }
     }
 }

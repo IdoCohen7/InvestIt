@@ -30,7 +30,7 @@ const ChangePassword = () => {
     <Card>
       <CardHeader className="border-0 pb-0">
         <CardTitle>Change your password</CardTitle>
-        <p className="mb-0">See resolved goodness felicity shy civility domestic had but.</p>
+        <p className="mb-0">Please pick a strong password.</p>
       </CardHeader>
       <CardBody>
         <form className="row g-3" onSubmit={handleSubmit(() => {})}>

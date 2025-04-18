@@ -22,37 +22,54 @@ namespace InvestItAPI.Controllers
             return "value";
         }
 
-        // POST api/<UploadController>
         [HttpPost]
-        [HttpPost]
-        public async Task<IActionResult> Post([FromForm] List<IFormFile> files)
+        public async Task<IActionResult> Post(
+    [FromForm] List<IFormFile> files,
+    [FromQuery] string type,
+    [FromQuery] int id // userId or postId
+)
         {
+            if (files == null || files.Count == 0)
+                return BadRequest("No files uploaded.");
 
+            if (type != "profile" && type != "post")
+                return BadRequest("Invalid type. Must be 'profile' or 'post'.");
 
-            List<string> imageLinks = new List<string>();
+            string rootPath = Path.Combine(Directory.GetCurrentDirectory(), "uploadedFiles");
+            string folderPath = Path.Combine(rootPath, type == "profile" ? "profilePics" : "postImages");
 
-            string path = System.IO.Directory.GetCurrentDirectory();
+            if (!Directory.Exists(folderPath))
+                Directory.CreateDirectory(folderPath);
 
-            long size = files.Sum(f => f.Length);
+            List<string> savedFileNames = new();
 
-            foreach (var formFile in files)
+            foreach (var file in files)
             {
-                if (formFile.Length > 0)
+                if (file.Length > 0)
                 {
-                    var filePath = Path.Combine(path, "uploadedFiles/" + formFile.FileName);
+                    string extension = Path.GetExtension(file.FileName);
+                    string fileName = $"{id}{extension}";
+                    string fullPath = Path.Combine(folderPath, fileName);
 
-                    using (var stream = System.IO.File.Create(filePath))
+                    // אם כבר קיים קובץ כזה – מחק אותו לפני דריסה
+                    if (System.IO.File.Exists(fullPath))
                     {
-                        await formFile.CopyToAsync(stream);
+                        System.IO.File.Delete(fullPath);
                     }
-                    imageLinks.Add(formFile.FileName);
+
+                    using (var stream = System.IO.File.Create(fullPath))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+
+                    savedFileNames.Add($"{type}/{fileName}");
                 }
             }
 
-            // Return status code  
-            return Ok(imageLinks);
-
+            return Ok(savedFileNames);
         }
+
+
 
         // PUT api/<UploadController>/5
         [HttpPut("{id}")]
