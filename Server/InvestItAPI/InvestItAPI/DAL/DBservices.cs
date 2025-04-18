@@ -268,7 +268,7 @@ namespace InvestItAPI.DAL
 
 
 
-        public List<object> GetPosts()
+        public List<object> GetPosts(int page, int pageSize)
         {
             SqlConnection con = null;
             SqlCommand cmd;
@@ -276,10 +276,16 @@ namespace InvestItAPI.DAL
             try
             {
                 con = connect("myProjDB"); // יצירת חיבור
-                cmd = CreateCommandWithStoredProcedureNoParameters("SP_GetAllPosts", con); // קריאה ל-SP
+
+                // יצירת SqlCommand ידני עם שם ה־SP והגדרת סוגו כ־StoredProcedure
+                cmd = new SqlCommand("SP_GetAllPosts", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                // הוספת פרמטרים לפגינציה
+                cmd.Parameters.AddWithValue("@Page", page);
+                cmd.Parameters.AddWithValue("@PageSize", pageSize);
 
                 List<object> posts = new List<object>();
-
                 SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
                 while (dataReader.Read())
@@ -291,12 +297,9 @@ namespace InvestItAPI.DAL
                         Content = dataReader["content"].ToString(),
                         CreatedAt = Convert.ToDateTime(dataReader["created_at"]).ToString("dd/MM/yyyy"),
                         UpdatedAt = dataReader["updated_at"] != DBNull.Value
-    ? Convert.ToDateTime(dataReader["updated_at"]).ToString("o") // ISO 8601 format
-    : null,
-
-                        Vector = dataReader["post_vector"] != DBNull.Value
-                            ? dataReader["post_vector"].ToString()
+                            ? Convert.ToDateTime(dataReader["updated_at"]).ToString("o")
                             : null,
+                        Vector = dataReader["post_vector"] != DBNull.Value ? dataReader["post_vector"].ToString() : null,
                         LikesCount = Convert.ToInt32(dataReader["likesCount"]),
                         CommentsCount = Convert.ToInt32(dataReader["commentsCount"]),
                         FullName = dataReader["fullName"].ToString(),
@@ -321,6 +324,8 @@ namespace InvestItAPI.DAL
                 }
             }
         }
+
+
 
 
 
@@ -614,7 +619,7 @@ namespace InvestItAPI.DAL
             }
         }
 
-        public List<object> GetAllComments(int postId)
+        public List<object> GetAllComments(int postId, int page, int pageSize)
         {
             SqlConnection con = null;
             List<object> comments = new List<object>();
@@ -624,7 +629,10 @@ namespace InvestItAPI.DAL
                 con = connect("myProjDB");
                 SqlCommand cmd = new SqlCommand("SP_GetAllComments", con);
                 cmd.CommandType = CommandType.StoredProcedure;
+
                 cmd.Parameters.AddWithValue("@postId", postId);
+                cmd.Parameters.AddWithValue("@Page", page);
+                cmd.Parameters.AddWithValue("@PageSize", pageSize);
 
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -643,6 +651,7 @@ namespace InvestItAPI.DAL
 
                     comments.Add(comment);
                 }
+
                 reader.Close();
                 return comments;
             }
@@ -656,6 +665,7 @@ namespace InvestItAPI.DAL
                     con.Close();
             }
         }
+
 
         public bool DeleteComment(int commentId)
         {

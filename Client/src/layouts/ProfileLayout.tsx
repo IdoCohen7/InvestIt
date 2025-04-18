@@ -121,27 +121,47 @@ const ProfileLayout = ({ children }: ChildrenType) => {
                   }}
                 />
                 <CardBody className="py-0">
-                  <div className="d-sm-flex align-items-start text-center text-sm-start">
-                    <div>
-                      <div className="avatar avatar-xxl mt-n5 mb-3" onClick={() => setShowCamera(true)} role="button">
-                        <img
-                          className="avatar-img rounded-circle border border-white border-3"
-                          src={user ? user.profilePic || placeHolder : placeHolder}
-                          alt="avatar"
-                        />
+                  <div className="d-sm-flex align-items-center text-center text-sm-start justify-content-between flex-wrap gap-3">
+                    {/* תמונה */}
+                    <div className="avatar avatar-xxl mt-n5 mb-3" onClick={() => setShowCamera(true)} role="button">
+                      <img
+                        className="avatar-img rounded-circle border border-white border-3"
+                        src={user ? user.profilePic || placeHolder : placeHolder}
+                        alt="avatar"
+                      />
+                    </div>
+
+                    {/* שם + וי + סטטיסטיקות */}
+                    <div className="flex-grow-1 d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">
+                      {/* שם + וי */}
+                      <div className="text-sm-start text-center">
+                        <h1 className="mb-0 h5 d-flex align-items-center justify-content-center justify-content-sm-start">
+                          {user ? user.firstName + ' ' + user.lastName : 'Guest'}
+                          <BsPatchCheckFill className="text-success small ms-2" />
+                        </h1>
+                      </div>
+
+                      {/* סטטיסטיקות */}
+                      <div className="hstack gap-4 justify-content-center">
+                        <div>
+                          <h6 className="mb-0">256</h6>
+                          <small className="text-muted">Post</small>
+                        </div>
+                        <div className="vr" />
+                        <div>
+                          <h6 className="mb-0">2.5K</h6>
+                          <small className="text-muted">Followers</small>
+                        </div>
+                        <div className="vr" />
+                        <div>
+                          <h6 className="mb-0">365</h6>
+                          <small className="text-muted">Following</small>
+                        </div>
                       </div>
                     </div>
-                    <div className="ms-sm-4 mt-sm-3">
-                      <h1 className="mb-0 h5">
-                        {user ? user.firstName + ' ' + user.lastName : 'Guest'}
-                        <BsPatchCheckFill className="text-success small" />
-                      </h1>
-                      <p>250 connections</p>
-                    </div>
+
+                    {/* כפתור תפריט */}
                     <div className="d-flex mt-3 justify-content-center ms-sm-auto">
-                      <Button variant="danger-soft" className="me-2" type="button">
-                        <BsPencilFill size={19} className="pe-1" /> Edit profile
-                      </Button>
                       <Dropdown>
                         <DropdownToggle
                           as="a"
@@ -182,6 +202,8 @@ const ProfileLayout = ({ children }: ChildrenType) => {
                       </Dropdown>
                     </div>
                   </div>
+
+                  {/* שורת מידע נוספת */}
                   <ul className="list-inline mb-0 text-center text-sm-start mt-3 mt-sm-0">
                     <li className="list-inline-item">
                       <BsBriefcase className="me-1" /> {user ? user.experienceLevel || 'No Level' : 'No Level'}

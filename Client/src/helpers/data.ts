@@ -7,9 +7,9 @@ export const getAllNotifications = async (): Promise<NotificationType[]> => {
   return notificationData
 }
 
-export const getAllFeeds = async (): Promise<SocialPostType[]> => {
+export const getAllFeeds = async (page = 1, pageSize = 3): Promise<SocialPostType[]> => {
   try {
-    const res = await fetch('https://localhost:7204/api/Post', {
+    const res = await fetch(`https://localhost:7204/api/Post?page=${page}&pageSize=${pageSize}`, {
       method: 'GET',
       mode: 'cors',
       headers: {
@@ -20,6 +20,7 @@ export const getAllFeeds = async (): Promise<SocialPostType[]> => {
     if (!res.ok) {
       throw new Error(`Failed to fetch posts: ${res.statusText}`)
     }
+
     const data = await res.json()
     return data
   } catch (err) {

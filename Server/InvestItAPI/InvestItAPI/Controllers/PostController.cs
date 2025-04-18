@@ -11,13 +11,12 @@ namespace InvestItAPI.Controllers
     [ApiController]
     public class PostController : ControllerBase
     {
-        // GET: api/<PostController>
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
-                var posts = InvestItAPI.Models.Post.GetPosts();
+                var posts = InvestItAPI.Models.Post.GetPosts(page, pageSize);
 
                 if (posts == null || posts.Count == 0)
                 {
@@ -28,9 +27,14 @@ namespace InvestItAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { error = "An error occurred while retrieving posts.", details = ex.Message });
+                return StatusCode(500, new
+                {
+                    error = "An error occurred while retrieving posts.",
+                    details = ex.Message
+                });
             }
         }
+
 
 
 

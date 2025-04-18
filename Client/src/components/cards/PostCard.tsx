@@ -97,13 +97,17 @@ const PostCard = ({
   const [isEditing, setIsEditing] = useState(false)
   const [editContent, setEditContent] = useState(content)
   const [editedAt, setEditedAt] = useState<string | null>(updatedAt ?? null)
+  const [commentPage, setCommentPage] = useState(1)
+  const [hasMoreComments, setHasMoreComments] = useState(true)
+  const PAGE_SIZE = 3
 
-  const fetchComments = async () => {
+  const fetchComments = async (page = 1) => {
     try {
-      const res = await fetch(`https://localhost:7204/api/Comment?postId=${postId}`)
+      const res = await fetch(`https://localhost:7204/api/Comment?postId=${postId}&page=${page}&pageSize=${PAGE_SIZE}`)
 
-      if (res.status == 204) {
-        setComments([])
+      if (res.status === 204 || res.status === 404) {
+        if (page === 1) setComments([])
+        setHasMoreComments(false)
         return
       }
 
@@ -118,7 +122,9 @@ const PostCard = ({
         lastName: c.lastName,
         profilePic: c.profilePic,
       }))
-      setComments(formatted)
+
+      setComments((prev) => [...prev, ...formatted])
+      setHasMoreComments(formatted.length === PAGE_SIZE)
     } catch (err) {
       console.error('Failed to fetch comments:', err)
     }
@@ -127,20 +133,37 @@ const PostCard = ({
   const handleAddComment = async () => {
     if (!newComment.trim()) return
     try {
-      await fetch('https://localhost:7204/api/Comment', {
+      const commentToSend = {
+        commentId: 0,
+        postId,
+        userId: user?.userId,
+        content: newComment,
+        createdAt: new Date().toISOString(),
+      }
+
+      const res = await fetch('https://localhost:7204/api/Comment', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          commentId: 0,
-          postId,
-          userId: user?.userId,
-          content: newComment,
-          createdAt: new Date().toISOString(),
-        }),
+        body: JSON.stringify(commentToSend),
       })
+
+      if (!res.ok) throw new Error('Failed to post comment')
+
+      // הוספה מקומית לתחילת הרשימה
+      const addedComment: CommentType = {
+        commentId: Math.floor(Math.random() * 1000000), // מזהה זמני עד שתחזור תגובה אמיתית
+        postId,
+        userId: user?.userId ?? 0,
+        comment: newComment,
+        createdAt: new Date().toISOString(),
+        firstName: user?.firstName || '',
+        lastName: user?.lastName || '',
+        profilePic: user?.profilePic || '',
+      }
+
+      setComments((prev) => [addedComment, ...prev])
       setNewComment('')
       setLocalCommentsCount((prev) => prev + 1)
-      fetchComments()
     } catch (err) {
       console.error('Error posting comment:', err)
     }
@@ -152,8 +175,18 @@ const PostCard = ({
   }
 
   const handleToggleComments = async () => {
-    if (!commentsVisible) await fetchComments()
+    if (!commentsVisible) {
+      setCommentPage(1)
+      setComments([])
+      await fetchComments(1)
+    }
     setCommentsVisible(!commentsVisible)
+  }
+
+  const handleLoadMoreComments = async () => {
+    const nextPage = commentPage + 1
+    await fetchComments(nextPage)
+    setCommentPage(nextPage)
   }
 
   const handleDeletePost = async () => {
@@ -311,7 +344,7 @@ const PostCard = ({
             </div>
 
             <ul className="comment-wrap list-unstyled">
-              {comments.slice(0, visibleCommentsCount).map((comment) => (
+              {comments.map((comment) => (
                 <CommentItem key={comment.commentId} {...comment} onDelete={() => handleDeleteComment(comment.commentId)} />
               ))}
             </ul>
@@ -320,9 +353,7 @@ const PostCard = ({
       </CardBody>
 
       <CardFooter className="border-0 pt-0">
-        {commentsVisible && comments.length > visibleCommentsCount && (
-          <LoadContentButton name="Load more comments" onClick={() => setVisibleCommentsCount((prev) => prev + 3)} />
-        )}
+        {commentsVisible && hasMoreComments && <LoadContentButton name="Load more comments" onClick={handleLoadMoreComments} />}
       </CardFooter>
     </Card>
   )

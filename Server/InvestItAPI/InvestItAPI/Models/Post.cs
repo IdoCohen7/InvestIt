@@ -28,11 +28,12 @@ namespace InvestItAPI.Models
         }
         public Post() { }
 
-        static public List<Object> GetPosts()
+        public static List<object> GetPosts(int page, int pageSize)
         {
             DBservices dBservices = new DBservices();
-            return dBservices.GetPosts();
+            return dBservices.GetPosts(page, pageSize);
         }
+
 
         static public int AddPost(Post post)
         {

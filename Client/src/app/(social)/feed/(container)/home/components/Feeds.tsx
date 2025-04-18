@@ -1,12 +1,12 @@
 // ✅ Feeds.tsx (מעודכן לתמיכה במחיקת פוסטים)
 import { useState } from 'react'
 import { getAllFeeds } from '@/helpers/data'
-import { useFetchData } from '@/hooks/useFetchData'
 import PostCard from '@/components/cards/PostCard'
 import LoadMoreButton from './LoadMoreButton'
-
+import { SocialPostType } from '@/types/data'
+import { useEffect } from 'react'
 import { Button, Card, CardFooter, CardHeader, Dropdown, DropdownDivider, DropdownItem, DropdownMenu, DropdownToggle } from 'react-bootstrap'
-import { BsBookmark, BsFlag, BsInfoCircle, BsPersonX, BsSlashCircle, BsThreeDots, BsXCircle } from 'react-icons/bs'
+import { BsFlag, BsInfoCircle, BsPersonX, BsSlashCircle, BsThreeDots } from 'react-icons/bs'
 import { Link } from 'react-router-dom'
 import logo12 from '@/assets/images/logo/12.svg'
 import postImg2 from '@/assets/images/post/3by2/02.jpg'
@@ -20,17 +20,7 @@ const ActionMenu = ({ name }: { name?: string }) => {
       <DropdownMenu className="dropdown-menu-end" aria-labelledby="cardFeedAction">
         <li>
           <DropdownItem>
-            <BsBookmark size={22} className="fa-fw pe-2" /> Save post
-          </DropdownItem>
-        </li>
-        <li>
-          <DropdownItem>
             <BsPersonX size={22} className="fa-fw pe-2" /> Unfollow {name}
-          </DropdownItem>
-        </li>
-        <li>
-          <DropdownItem>
-            <BsXCircle size={22} className="fa-fw pe-2" /> Hide post
           </DropdownItem>
         </li>
         <li>
@@ -85,26 +75,50 @@ const SponsoredCard = () => (
 )
 
 const Feeds = () => {
-  const allPosts = useFetchData(getAllFeeds)
-  const [visibleCount, setVisibleCount] = useState(3)
+  const [posts, setPosts] = useState<SocialPostType[]>([])
+  const [page, setPage] = useState(1)
+  const [isLoading, setIsLoading] = useState(false)
+  const [hasMore, setHasMore] = useState(true)
   const [deletedPostIds, setDeletedPostIds] = useState<number[]>([])
 
-  const handleLoadMore = () => {
-    setVisibleCount((prev) => prev + 3)
+  const fetchPage = async () => {
+    setIsLoading(true)
+    try {
+      const newPosts = await getAllFeeds(page, 3)
+      if (newPosts.length === 0) {
+        setHasMore(false)
+      } else {
+        setPosts((prev) => {
+          const newUniquePosts = newPosts.filter((newPost) => !prev.some((existingPost) => existingPost.postId === newPost.postId))
+          return [...prev, ...newUniquePosts]
+        })
+        setPage((prev) => prev + 1)
+      }
+    } catch (err) {
+      console.error('Failed to load more posts:', err)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handlePostDelete = (postId: number) => {
     setDeletedPostIds((prev) => [...prev, postId])
   }
 
+  useEffect(() => {
+    fetchPage()
+  }, []) // fetch initial posts
+
   return (
     <>
-      {allPosts
-        ?.filter((post) => !deletedPostIds.includes(post.postId))
-        .slice(0, visibleCount)
-        .map((post) => <PostCard {...post} key={post.postId} onDelete={handlePostDelete} />)}
+      {posts
+        .filter((post) => !deletedPostIds.includes(post.postId))
+        .map((post) => (
+          <PostCard {...post} key={post.postId} onDelete={handlePostDelete} />
+        ))}
 
-      {allPosts && visibleCount < allPosts.length && <LoadMoreButton onClick={handleLoadMore} />}
+      {hasMore && !isLoading && <LoadMoreButton onClick={fetchPage} />}
+      {isLoading && <p className="text-center">Loading...</p>}
     </>
   )
 }

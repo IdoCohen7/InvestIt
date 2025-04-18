@@ -10,22 +10,19 @@ namespace InvestItAPI.Controllers
     {
         // GET: api/<CommentController>
         [HttpGet]
-        public IActionResult Get(int postId)
+        public IActionResult Get([FromQuery] int postId, [FromQuery] int page = 1, [FromQuery] int pageSize = 5)
         {
             if (postId == 0)
-            {
-                return BadRequest();
-            }
+                return BadRequest(new { message = "Post ID is required." });
 
-            var comments = Comment.GetAllComments(postId);
+            var comments = Comment.GetAllComments(postId, page, pageSize);
 
-            if (comments == null || comments.Count==0) {
+            if (comments == null || comments.Count == 0)
                 return NoContent();
-            }
 
             return Ok(comments);
-
         }
+
 
         // POST api/<CommentController>
         [HttpPost]

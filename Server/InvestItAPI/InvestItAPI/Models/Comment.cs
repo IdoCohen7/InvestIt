@@ -30,11 +30,12 @@ namespace InvestItAPI.Models
             return dBservices.AddComment(comment.PostId, comment.UserId, comment.Content);
         }
 
-        public static List<object> GetAllComments(int postId)
+        public static List<object> GetAllComments(int postId, int page, int pageSize)
         {
             DBservices dBservices = new DBservices();
-            return dBservices.GetAllComments(postId);
+            return dBservices.GetAllComments(postId, page, pageSize);
         }
+
         public static bool DeleteComment(int commentId)
         {
             DBservices dBservices = new DBservices();

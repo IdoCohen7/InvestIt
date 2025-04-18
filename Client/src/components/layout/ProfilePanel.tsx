@@ -40,23 +40,6 @@ const ProfilePanel = ({ links }: ProfilePanelProps) => {
             </h5>
             <small>{user ? user.experienceLevel : 'No Level of Experience'}</small>
             <p className="mt-3">{user ? user.bio : 'No bio available'}</p>
-
-            <div className="hstack gap-2 gap-xl-3 justify-content-center">
-              <div>
-                <h6 className="mb-0">256</h6>
-                <small>Post</small>
-              </div>
-              <div className="vr" />
-              <div>
-                <h6 className="mb-0">2.5K</h6>
-                <small>Followers</small>
-              </div>
-              <div className="vr" />
-              <div>
-                <h6 className="mb-0">365</h6>
-                <small>Following</small>
-              </div>
-            </div>
           </div>
 
           <hr />
