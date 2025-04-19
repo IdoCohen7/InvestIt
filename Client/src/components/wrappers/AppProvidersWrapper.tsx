@@ -9,7 +9,6 @@ import { LayoutProvider } from '@/context/useLayoutContext'
 import { HelmetProvider } from 'react-helmet-async'
 import { AuthProvider } from '@/context/useAuthContext'
 
-
 const AppProvidersWrapper = ({ children }: ChildrenType) => {
   const handleChangeTitle = () => {
     if (document.visibilityState === 'hidden') document.title = 'Please come back 🥺'

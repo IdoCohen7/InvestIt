@@ -1,7 +1,7 @@
-import Preloader from "@/components/Preloader"
-import type { ChildrenType } from "@/types/component"
-import { lazy, Suspense } from "react"
-const TopHeader = lazy(() => import("@/components/layout/TopHeader"))
+import Preloader from '@/components/Preloader'
+import type { ChildrenType } from '@/types/component'
+import { lazy, Suspense } from 'react'
+const TopHeader = lazy(() => import('@/components/layout/TopHeader'))
 
 const SocialLayout = ({ children }: ChildrenType) => {
   return (
@@ -10,9 +10,7 @@ const SocialLayout = ({ children }: ChildrenType) => {
         <TopHeader />
       </Suspense>
 
-      <Suspense fallback={<Preloader />}>
-        {children}
-      </Suspense>
+      <Suspense fallback={<Preloader />}>{children}</Suspense>
     </>
   )
 }

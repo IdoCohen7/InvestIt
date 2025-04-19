@@ -1,4 +1,3 @@
-
 import Choices, { type Options as ChoiceOption } from 'choices.js'
 import { type HTMLAttributes, type ReactElement, useEffect, useRef } from 'react'
 

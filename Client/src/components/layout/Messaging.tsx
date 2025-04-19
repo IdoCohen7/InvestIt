@@ -1,39 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { messages } from '@/assets/data/other'
-import { getAllUsers } from '@/helpers/data'
-import { useFetchData } from '@/hooks/useFetchData'
 import useToggle from '@/hooks/useToggle'
 import { type ChatMessageType, type UserType } from '@/types/data'
-import { addOrSubtractMinutesFromDate, timeSince } from '@/utils/date'
+import { addOrSubtractMinutesFromDate } from '@/utils/date'
 import clsx from 'clsx'
 import { Link } from 'react-router-dom'
-import {
-  Button,
-  Card,
-  Collapse,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Toast,
-  ToastContainer,
-  ToastHeader
-} from 'react-bootstrap'
+import { Button, Card, Collapse, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Toast, ToastContainer, ToastHeader } from 'react-bootstrap'
 
 import { useChatContext } from '@/context/useChatContext'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useForm } from 'react-hook-form'
-import {
-  BsArchive,
-  BsCameraVideo,
-  BsChatSquareText,
-  BsDashLg,
-  BsFlag,
-  BsTelephone,
-  BsThreeDotsVertical,
-  BsTrash,
-  BsVolumeUp
-} from 'react-icons/bs'
+import { BsArchive, BsCameraVideo, BsChatSquareText, BsDashLg, BsFlag, BsTelephone, BsThreeDotsVertical, BsTrash, BsVolumeUp } from 'react-icons/bs'
 import { FaCheck, FaCheckDouble, FaCircle, FaFaceSmile, FaPaperclip, FaXmark } from 'react-icons/fa6'
 import * as yup from 'yup'
 import TextAreaFormInput from '../form/TextAreaFormInput'
@@ -97,33 +74,8 @@ const UserMessage = ({ message, toUser }: { message: ChatMessageType; toUser: Us
   )
 }
 
-const UserCard = ({ user, openToast }: { user: UserType; openToast: () => void }) => {
-  const { changeActiveChat } = useChatContext()
-  return (
-    <>
-      <li
-        onClick={() => {
-          openToast()
-          changeActiveChat(user.id)
-        }}
-        className="mt-3 hstack gap-3 align-items-center position-relative toast-btn"
-        data-target="chatToast">
-        <div className={clsx(`avatar status-${user.status}`, { 'avatar-story': user.isStory })}>
-          {user.avatar && <img className="avatar-img rounded-circle" src={user.avatar} alt="avatar" />}
-        </div>
-        <div className="overflow-hidden">
-          <Link className="h6 mb-0 stretched-link" to="">
-            {user.name}
-          </Link>
-          <div className="small text-secondary text-truncate">{user.lastMessage}</div>
-        </div>
-        <div className="small ms-auto text-nowrap"> {timeSince(user.lastActivity)} </div>
-      </li>
-    </>
-  )
-}
-
 const Messaging = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { isTrue: isOpen, toggle, setTrue } = useToggle()
   const { activeChat } = useChatContext()
   const { isTrue: isOpenCollapseToast, toggle: toggleToastCollapse } = useToggle(true)
@@ -185,16 +137,12 @@ const Messaging = () => {
       reset()
     }
   }
-  const allUserMessages = useFetchData<UserType[]>(getAllUsers)
 
   return (
     <>
       <ul className="list-unstyled">
-        {allUserMessages?.map((user, idx) => <UserCard user={user} key={idx} openToast={setTrue} />)}
-
         <li className="mt-3 d-grid">
           <Link className="btn btn-primary-soft" to="/messaging">
-            
             See all in messaging
           </Link>
         </li>
@@ -317,11 +265,9 @@ const Messaging = () => {
                       <FaPaperclip className="fs-6" />
                     </Button>
                     <Button variant="success-soft" size="sm" className="me-2">
-                      
                       Gif
                     </Button>
                     <Button variant="primary" size="sm" className="ms-auto" type="submit">
-                      
                       Send
                     </Button>
                   </div>

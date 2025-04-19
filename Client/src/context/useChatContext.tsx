@@ -1,7 +1,4 @@
-
 import { createContext, useContext, useEffect, useState } from 'react'
-
-import { getUserById } from '@/helpers/data'
 import type { ChatContextType, ChatOffcanvasStatesType, OffcanvasControlType } from '@/types/context'
 import type { UserType } from '@/types/data'
 import type { ChildrenType } from '@/types/component'
@@ -17,15 +14,19 @@ export const useChatContext = () => {
 }
 
 export const ChatProvider = ({ children }: ChildrenType) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [activeChat, setActiveChat] = useState<UserType>()
   const [offcanvasStates, setOffcanvasStates] = useState<ChatOffcanvasStatesType>({
     showChatList: false,
     showMessageToast: false,
   })
-
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const changeActiveChat = async (userId: UserType['id']) => {
+    /*
     const user = await getUserById(userId)
+   
     if (user) setActiveChat(user)
+    */
   }
 
   const toggleChatList: OffcanvasControlType['toggle'] = () => {

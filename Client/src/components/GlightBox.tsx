@@ -1,4 +1,3 @@
-
 import glightbox from 'glightbox'
 import { useEffect, useRef, type AnchorHTMLAttributes } from 'react'
 

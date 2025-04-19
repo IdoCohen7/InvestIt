@@ -1,16 +1,22 @@
-
-import useToggle from '@/hooks/useToggle'
 import clsx from 'clsx'
 import { Button } from 'react-bootstrap'
+import { useState } from 'react'
 
-const LoadMoreButton = () => {
-  const { isTrue: isLoadButton, toggle } = useToggle()
+const LoadMoreButton = ({ onClick }: { onClick: () => void }) => {
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleClick = async () => {
+    setIsLoading(true)
+    await onClick()
+    setIsLoading(false)
+  }
+
   return (
     <Button
-      onClick={toggle}
+      onClick={handleClick}
       variant="primary-soft"
       role="button"
-      className={clsx('btn-loader', { active: isLoadButton })}
+      className={clsx('btn-loader', { active: isLoading })}
       data-bs-toggle="button"
       aria-pressed="true">
       <span className="load-text"> Load more </span>
@@ -22,4 +28,5 @@ const LoadMoreButton = () => {
     </Button>
   )
 }
+
 export default LoadMoreButton

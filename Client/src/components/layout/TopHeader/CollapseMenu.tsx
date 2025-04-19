@@ -1,7 +1,4 @@
-
 import { Collapse } from 'react-bootstrap'
-
-import AppMenu from './AppMenu'
 import { useLayoutContext } from '@/context/useLayoutContext'
 import { BsSearch } from 'react-icons/bs'
 
@@ -25,8 +22,6 @@ const CollapseMenu = ({ isSearch }: { isSearch?: boolean }) => {
             </div>
           </div>
         )}
-
-        <AppMenu />
       </div>
     </Collapse>
   )

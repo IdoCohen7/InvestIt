@@ -1,15 +1,13 @@
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useState } from 'react'
+import CameraModal from '@/components/cameraModal'
 
 const TopHeader = lazy(() => import('@/components/layout/TopHeader'))
 import GlightBox from '@/components/GlightBox'
-import { useFetchData } from '@/hooks/useFetchData'
 import type { ChildrenType } from '@/types/component'
-import clsx from 'clsx'
 import {
   Button,
   Card,
   CardBody,
-  CardFooter,
   CardHeader,
   CardTitle,
   Col,
@@ -25,7 +23,6 @@ import {
   BsBriefcase,
   BsCalendar2Plus,
   BsCalendarDate,
-  BsChatLeftText,
   BsEnvelope,
   BsFileEarmarkPdf,
   BsGear,
@@ -34,13 +31,8 @@ import {
   BsLock,
   BsPatchCheckFill,
   BsPencilFill,
-  BsPersonX,
   BsThreeDots,
 } from 'react-icons/bs'
-import { FaPlus } from 'react-icons/fa6'
-
-import { PROFILE_MENU_ITEMS } from '@/assets/data/menu-items'
-import { getAllUsers } from '@/helpers/data'
 
 import placeHolder from '@/assets/images/avatar/placeholder.jpg'
 import background5 from '@/assets/images/bg/05.jpg'
@@ -50,46 +42,10 @@ import album2 from '@/assets/images/albums/02.jpg'
 import album3 from '@/assets/images/albums/03.jpg'
 import album4 from '@/assets/images/albums/04.jpg'
 import album5 from '@/assets/images/albums/05.jpg'
-import { experienceData } from '@/assets/data/layout'
-import { Link, useLocation } from 'react-router-dom'
+
 import FallbackLoading from '@/components/FallbackLoading'
 import Preloader from '@/components/Preloader'
 import { useAuthContext } from '@/context/useAuthContext'
-
-const Experience = () => {
-  return (
-    <Card>
-      <CardHeader className="d-flex justify-content-between border-0">
-        <h5 className="card-title">Experience</h5>
-        <Button variant="primary-soft" size="sm">
-          <FaPlus />
-        </Button>
-      </CardHeader>
-      <CardBody className="position-relative pt-0">
-        {experienceData.map((experience, idx) => (
-          <div className="d-flex" key={idx}>
-            <div className="avatar me-3">
-              <span role="button">
-                <img className="avatar-img rounded-circle" src={experience.logo} alt="" />
-              </span>
-            </div>
-            <div>
-              <h6 className="card-title mb-0">
-                <Link to=""> {experience.title} </Link>
-              </h6>
-              <p className="small">
-                {experience.description}
-                <Link className="btn btn-primary-soft btn-xs ms-2" to="">
-                  Edit
-                </Link>
-              </p>
-            </div>
-          </div>
-        ))}
-      </CardBody>
-    </Card>
-  )
-}
 
 const Photos = () => {
   return (
@@ -102,75 +58,11 @@ const Photos = () => {
       </CardHeader>
       <CardBody className="position-relative pt-0">
         <Row className="g-2">
-          <Col xs={6}>
-            <GlightBox href={album1} data-gallery="image-popup">
-              <img className="rounded img-fluid" src={album1} alt="album-image" />
-            </GlightBox>
-          </Col>
-          <Col xs={6}>
-            <GlightBox href={album2} data-gallery="image-popup">
-              <img className="rounded img-fluid" src={album2} alt="album-image" />
-            </GlightBox>
-          </Col>
-          <Col xs={4}>
-            <GlightBox href={album3} data-gallery="image-popup">
-              <img className="rounded img-fluid" src={album3} alt="album-image" />
-            </GlightBox>
-          </Col>
-          <Col xs={4}>
-            <GlightBox href={album4} data-gallery="image-popup">
-              <img className="rounded img-fluid" src={album4} alt="album-image" />
-            </GlightBox>
-          </Col>
-          <Col xs={4}>
-            <GlightBox href={album5} data-gallery="image-popup">
-              <img className="rounded img-fluid" src={album5} alt="album-image" />
-            </GlightBox>
-          </Col>
-        </Row>
-      </CardBody>
-    </Card>
-  )
-}
-
-const Friends = () => {
-  const allFriends = useFetchData(getAllUsers)
-
-  return (
-    <Card>
-      <CardHeader className="d-sm-flex justify-content-between align-items-center border-0">
-        <CardTitle>
-          Friends <span className="badge bg-danger bg-opacity-10 text-danger">230</span>
-        </CardTitle>
-        <Button variant="primary-soft" size="sm">
-          See all friends
-        </Button>
-      </CardHeader>
-      <CardBody className="position-relative pt-0">
-        <Row className="g-3">
-          {allFriends?.slice(0, 4).map((friend, idx) => (
-            <Col xs={6} key={idx}>
-              <Card className="shadow-none text-center h-100">
-                <CardBody className="p-2 pb-0">
-                  <div className={clsx('avatar avatar-xl', { 'avatar-story': friend.isStory })}>
-                    <span role="button">
-                      <img className="avatar-img rounded-circle" src={friend.avatar} alt="" />
-                    </span>
-                  </div>
-                  <h6 className="card-title mb-1 mt-3">
-                    <Link to=""> {friend.name} </Link>
-                  </h6>
-                  <p className="mb-0 small lh-sm">{friend.mutualCount} mutual connections</p>
-                </CardBody>
-                <div className="card-footer p-2 border-0">
-                  <button className="btn btn-sm btn-primary me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Send message">
-                    <BsChatLeftText />
-                  </button>
-                  <button className="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Remove friend">
-                    <BsPersonX />
-                  </button>
-                </div>
-              </Card>
+          {[album1, album2, album3, album4, album5].map((album, index) => (
+            <Col key={index} xs={index < 2 ? 6 : 4}>
+              <GlightBox href={album} data-gallery="image-popup">
+                <img className="rounded img-fluid" src={album} alt="album-image" />
+              </GlightBox>
             </Col>
           ))}
         </Row>
@@ -180,8 +72,32 @@ const Friends = () => {
 }
 
 const ProfileLayout = ({ children }: ChildrenType) => {
-  const { pathname } = useLocation()
-  const { user } = useAuthContext()
+  const { user, saveSession } = useAuthContext()
+  const [showCamera, setShowCamera] = useState(false)
+
+  const handleImageUpload = async (relativePath: string) => {
+    if (!user) return
+
+    const fullPath = `https://localhost:7204/uploadedFiles/profilePics/${user.userId}.jpg`
+
+    try {
+      const res = await fetch(`https://localhost:7204/api/User/ProfilePic/${user.userId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(fullPath),
+      })
+
+      if (!res.ok) throw new Error('Failed to update profile picture')
+
+      // עדכון context
+      const updatedUser = { ...user, profilePic: fullPath }
+      saveSession(updatedUser, true)
+      setShowCamera(false)
+      window.location.reload()
+    } catch (err) {
+      console.error('Error updating profile picture:', err)
+    }
+  }
 
   return (
     <>
@@ -206,7 +122,7 @@ const ProfileLayout = ({ children }: ChildrenType) => {
                 <CardBody className="py-0">
                   <div className="d-sm-flex align-items-start text-center text-sm-start">
                     <div>
-                      <div className="avatar avatar-xxl mt-n5 mb-3">
+                      <div className="avatar avatar-xxl mt-n5 mb-3" onClick={() => setShowCamera(true)} role="button">
                         <img
                           className="avatar-img rounded-circle border border-white border-3"
                           src={user ? user.profilePic || placeHolder : placeHolder}
@@ -240,20 +156,17 @@ const ProfileLayout = ({ children }: ChildrenType) => {
                         <DropdownMenu className="dropdown-menu-end" aria-labelledby="profileAction2">
                           <li>
                             <DropdownItem>
-                              <BsBookmark size={22} className="fa-fw pe-2" />
-                              Share profile in a message
+                              <BsBookmark size={22} className="fa-fw pe-2" /> Share profile in a message
                             </DropdownItem>
                           </li>
                           <li>
                             <DropdownItem>
-                              <BsFileEarmarkPdf size={22} className="fa-fw pe-2" />
-                              Save your profile to PDF
+                              <BsFileEarmarkPdf size={22} className="fa-fw pe-2" /> Save your profile to PDF
                             </DropdownItem>
                           </li>
                           <li>
                             <DropdownItem>
-                              <BsLock size={22} className="fa-fw pe-2" />
-                              Lock profile
+                              <BsLock size={22} className="fa-fw pe-2" /> Lock profile
                             </DropdownItem>
                           </li>
                           <li>
@@ -261,8 +174,7 @@ const ProfileLayout = ({ children }: ChildrenType) => {
                           </li>
                           <li>
                             <DropdownItem>
-                              <BsGear size={22} className="fa-fw pe-2" />
-                              Profile settings
+                              <BsGear size={22} className="fa-fw pe-2" /> Profile settings
                             </DropdownItem>
                           </li>
                         </DropdownMenu>
@@ -281,19 +193,8 @@ const ProfileLayout = ({ children }: ChildrenType) => {
                     </li>
                   </ul>
                 </CardBody>
-                <CardFooter className="card-footer mt-3 pt-2 pb-0">
-                  <ul className="nav nav-bottom-line align-items-center justify-content-center justify-content-md-start mb-0 border-0">
-                    {PROFILE_MENU_ITEMS.map((item, idx) => (
-                      <li className="nav-item" key={idx}>
-                        <Link className={clsx('nav-link', { active: pathname === item.url })} to={item.url ?? ''}>
-                          {item.label} {item.badge && <span className="badge bg-success bg-opacity-10 text-success small"> {item.badge.text}</span>}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </CardFooter>
               </Card>
-              <Suspense fallback={<FallbackLoading />}> {children}</Suspense>
+              <Suspense fallback={<FallbackLoading />}>{children}</Suspense>
             </Col>
             <Col lg={4}>
               <Row className="g-4">
@@ -318,20 +219,17 @@ const ProfileLayout = ({ children }: ChildrenType) => {
                     </CardBody>
                   </Card>
                 </Col>
-                <Col md={6} lg={12}>
-                  <Experience />
-                </Col>
+
                 <Col md={6} lg={12}>
                   <Photos />
-                </Col>
-                <Col md={6} lg={12}>
-                  <Friends />
                 </Col>
               </Row>
             </Col>
           </Row>
         </Container>
       </main>
+
+      <CameraModal show={showCamera} onClose={() => setShowCamera(false)} onUploadSuccess={handleImageUpload} />
     </>
   )
 }

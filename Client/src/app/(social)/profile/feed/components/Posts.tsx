@@ -1,5 +1,3 @@
-
-
 import { Card, CardBody, CardFooter, CardHeader, Dropdown, DropdownDivider, DropdownItem, DropdownMenu, DropdownToggle } from 'react-bootstrap'
 import {
   BsBookmark,
@@ -37,28 +35,24 @@ const ActionMenu = ({ name }: { name?: string }) => {
       <DropdownMenu className="dropdown-menu-end" aria-labelledby="cardFeedAction">
         <li>
           <DropdownItem>
-            
             <BsBookmark size={22} className="fa-fw pe-2" />
             Save post
           </DropdownItem>
         </li>
         <li>
           <DropdownItem>
-            
             <BsPersonX size={22} className="fa-fw pe-2" />
             Unfollow {name}
           </DropdownItem>
         </li>
         <li>
           <DropdownItem>
-            
             <BsXCircle size={22} className="fa-fw pe-2" />
             Hide post
           </DropdownItem>
         </li>
         <li>
           <DropdownItem>
-            
             <BsSlashCircle size={22} className="fa-fw pe-2" />
             Block
           </DropdownItem>
@@ -68,7 +62,6 @@ const ActionMenu = ({ name }: { name?: string }) => {
         </li>
         <li>
           <DropdownItem>
-            
             <BsFlag size={22} className="fa-fw pe-2" />
             Report post
           </DropdownItem>
@@ -78,32 +71,22 @@ const ActionMenu = ({ name }: { name?: string }) => {
   )
 }
 
-const Posts =  () => {
+const Posts = () => {
   const allPosts = useFetchData(getAllFeeds)
   return (
     <>
-      {allPosts?.slice(0, 1).map((post, idx) => (
-        <PostCard {...post} key={idx} />
-      ))}
+      {allPosts?.slice(0, 1).map((post, idx) => <PostCard {...post} key={idx} />)}
       <Card>
-        <div className="border-bottom">
-          <p className="small mb-0 px-4 py-2">
-            <BsHeartFill className="text-danger pe-1" size={18} />
-            Sam Lanson likes this post
-          </p>
-        </div>
         <CardHeader className="border-0 pb-0">
           <div className="d-flex align-items-center justify-content-between">
             <div className="d-flex align-items-center">
               <div className="avatar me-2">
                 <span role="button">
-                  
                   <img className="avatar-img rounded-circle" src={logo13} alt="image" />
                 </span>
               </div>
               <div>
                 <h6 className="card-title mb-0">
-                  
                   <Link to=""> Apple Education </Link>
                 </h6>
                 <p className="mb-0 small">9 November at 23:29</p>
@@ -120,7 +103,6 @@ const Posts =  () => {
           <ul className="nav nav-stack pb-2 small">
             <li className="nav-item">
               <Link className="nav-link active text-secondary " to="">
-                
                 <span className="icon-xs bg-danger text-white rounded-circle me-1">
                   <BsHeartFill size={8} />
                 </span>
@@ -129,7 +111,6 @@ const Posts =  () => {
             </li>
             <li className="nav-item ms-sm-auto">
               <Link className="nav-link" to="">
-                
                 <BsChatFill className="pe-1" size={18} />
                 Comments (12)
               </Link>
@@ -140,14 +121,12 @@ const Posts =  () => {
           <ul className="nav nav-fill nav-stack small">
             <li className="nav-item">
               <Link className="nav-link mb-0 active" to="">
-                
                 <BsHeart size={18} className="pe-1" />
                 Liked (56)
               </Link>
             </li>
             <li className="nav-item">
               <Link className="nav-link mb-0" to="">
-                
                 <BsChatFill size={18} className="pe-1" />
                 Comments (12)
               </Link>
@@ -166,28 +145,24 @@ const Posts =  () => {
               <DropdownMenu className="dropdown-menu-end" aria-labelledby="cardShareAction">
                 <li>
                   <DropdownItem>
-                    
                     <BsEnvelope size={22} className="fa-fw pe-2" />
                     Send via Direct Message
                   </DropdownItem>
                 </li>
                 <li>
                   <DropdownItem>
-                    
                     <BsBookmarkCheck size={22} className="fa-fw pe-2" />
                     Bookmark
                   </DropdownItem>
                 </li>
                 <li>
                   <DropdownItem>
-                    
                     <BsLink size={22} className="fa-fw pe-2" />
                     Copy link to post
                   </DropdownItem>
                 </li>
                 <li>
                   <DropdownItem>
-                    
                     <BsShare size={22} className="fa-fw pe-2" />
                     Share post via …
                   </DropdownItem>
@@ -197,7 +172,6 @@ const Posts =  () => {
                 </li>
                 <li>
                   <DropdownItem>
-                    
                     <BsPencilSquare size={22} className="fa-fw pe-2" />
                     Share to News Feed
                   </DropdownItem>
@@ -206,7 +180,6 @@ const Posts =  () => {
             </Dropdown>
             <li className="nav-item">
               <Link className="nav-link mb-0" to="">
-                
                 <BsSendFill size={17} className="pe-1" />
                 Send
               </Link>

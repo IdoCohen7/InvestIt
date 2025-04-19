@@ -40,78 +40,84 @@ namespace InvestItAPI.Models
             return dBservices.GetUsers();
         }
 
-        static public int? RegisterUser(User user)
+        static public User? RegisterUser(User user)
         {
             DBservices dBservices = new DBservices();
             user.PasswordHash = PasswordHasher.HashPassword(user.PasswordHash);
-            string body = @"
-            <html dir='rtl'>
-            <head>
-             <meta charset='UTF-8'>
-            <style>
-            body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            padding: 20px;
-            direction: rtl;
-            }
-           .container {
-            max-width: 600px;
-            margin: auto;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            text-align: right;
-              }
-            h2 {
-            color: #4CAF50;
-             }
-               p {
-            font-size: 16px;
-            color: #333;
-            }
-        .btn {
-            display: inline-block;
-            background: #4CAF50;
-            color: white;
-            text-decoration: none;
-            padding: 12px 20px;
-            border-radius: 5px;
-            font-weight: bold;
-            margin-top: 10px;
-              }
-        .btn:hover {
-            background: #388E3C;
-               }
-        .footer {
-            font-size: 12px;
-            text-align: center;
-            margin-top: 20px;
-            color: #666;
-            }
-         </style>
-          </head>
-        <body>
-         <div class='container'>
-            <h2>!InvestIt ברוך הבא לפלטפורמת</h2>
-            <p>.תודה שנרשמת! אנחנו שמחים לראות אותך בפלטפורמה שלנו</p>
-              <p>:כדי להתחיל, לחץ על הכפתור הבא</p>
-            <a href='https://investit.com/dashboard' class='btn'>כניסה לאתר</a>
-          <p class='footer'> .2024 InvestIt, כל הזכויות שמורות ©</p>
-        </div>
-        </body>
-            </html>";
 
-            if (dBservices.Register(user)==1)
+            string body = @"
+    <html dir='rtl'>
+    <head>
+     <meta charset='UTF-8'>
+    <style>
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    padding: 20px;
+    direction: rtl;
+    }
+   .container {
+    max-width: 600px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: right;
+      }
+    h2 {
+    color: #4CAF50;
+     }
+       p {
+    font-size: 16px;
+    color: #333;
+    }
+.btn {
+    display: inline-block;
+    background: #4CAF50;
+    color: white;
+    text-decoration: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    margin-top: 10px;
+      }
+.btn:hover {
+    background: #388E3C;
+       }
+.footer {
+    font-size: 12px;
+    text-align: center;
+    margin-top: 20px;
+    color: #666;
+    }
+ </style>
+  </head>
+<body>
+ <div class='container'>
+    <h2>!InvestIt ברוך הבא לפלטפורמת</h2>
+    <p>.תודה שנרשמת! אנחנו שמחים לראות אותך בפלטפורמה שלנו</p>
+      <p>:כדי להתחיל, לחץ על הכפתור הבא</p>
+    <a href='https://investit.com/dashboard' class='btn'>כניסה לאתר</a>
+  <p class='footer'> .2024 InvestIt, כל הזכויות שמורות ©</p>
+</div>
+</body>
+    </html>";
+
+            User? registeredUser = dBservices.Register(user);
+
+            if (registeredUser != null)
             {
                 /*
                 EmailService emailService = new EmailService();
                 emailService.SendEmail(user.Email, "InvestIt Registration Complete!", body);
                 */
+                return registeredUser;
             }
-            return 1;
+
+            return null;
         }
+
 
         static public User Login(string email, string password)
         {
@@ -150,6 +156,10 @@ namespace InvestItAPI.Models
             return dbServices.IsFollowing(followerId, followingId);
         }
 
-
+        static public bool UploadProfilePic(string profilePic, int userId)
+        {
+            DBservices dbServices = new DBservices();
+            return dbServices.UpdateProfilePic(userId, profilePic);
+        }
     }
 }

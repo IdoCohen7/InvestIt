@@ -1,4 +1,5 @@
 using InvestItAPI.Controllers;
+using Microsoft.Extensions.FileProviders;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -9,6 +10,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+        Path.Combine(Directory.GetCurrentDirectory(), "uploadedFiles", "profilePics")),
+    RequestPath = "/uploadedFiles/profilePics"
+});
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

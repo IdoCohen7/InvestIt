@@ -1,15 +1,12 @@
 export type UserType = {
-  id: string
-  username: string
-  email: string
-  password: string
+  userId: number
   firstName: string
   lastName: string
-  role: string
-  token: string
-  profilePic?: string
-  experienceLevel?: string
-  bio?: string
-  createdAt?: string
-  isActive?: boolean
+  email: string
+  passwordHash: string
+  profilePic: string
+  experienceLevel: string
+  bio: string
+  createdAt: string
+  isActive: boolean
 }

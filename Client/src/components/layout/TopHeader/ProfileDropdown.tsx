@@ -1,12 +1,11 @@
 import { Dropdown, DropdownDivider, DropdownItem, DropdownMenu, DropdownToggle, OverlayTrigger, Tooltip } from 'react-bootstrap'
 
 import type { IconType } from 'react-icons'
-import { BsCardText, BsCircleHalf, BsGear, BsLifePreserver, BsMoonStars, BsPower, BsSun } from 'react-icons/bs'
+import { BsCircleHalf, BsGear, BsMoonStars, BsPower, BsSun } from 'react-icons/bs'
 
 import type { ThemeType } from '@/types/context'
 
 import placeHolder from '@/assets/images/avatar/placeholder.jpg'
-import { developedByLink } from '@/context/constants'
 import { useAuthContext } from '@/context/useAuthContext'
 import { useLayoutContext } from '@/context/useLayoutContext'
 import { toSentenceCase } from '@/utils/change-casing'
@@ -71,16 +70,6 @@ const ProfileDropdown = () => {
         <DropdownItem as={Link} to="/settings/account">
           <BsGear className="fa-fw me-2" />
           Settings &amp; Privacy
-        </DropdownItem>
-
-        <DropdownItem href={developedByLink} rel="noreferrer" target="_blank">
-          <BsLifePreserver className="fa-fw me-2" />
-          Support
-        </DropdownItem>
-
-        <DropdownItem href="" target="_blank" rel="noreferrer">
-          <BsCardText className="fa-fw me-2" />
-          Documentation
         </DropdownItem>
 
         <DropdownDivider />

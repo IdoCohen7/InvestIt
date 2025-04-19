@@ -28,7 +28,7 @@ namespace InvestItAPI.Models
         }
         public Post() { }
 
-        static public List<Post> GetPosts()
+        static public List<Object> GetPosts()
         {
             DBservices dBservices = new DBservices();
             return dBservices.GetPosts();

@@ -96,10 +96,25 @@ namespace InvestItAPI.Controllers
 
         // POST api/<UserController>
         [HttpPost]
-        public int? Post([FromBody] User user)
+        public IActionResult Post([FromBody] User user)
         {
-            return InvestItAPI.Models.User.RegisterUser(user);
+            try
+            {
+                User? registeredUser = InvestItAPI.Models.User.RegisterUser(user);
+
+                if (registeredUser != null)
+                {
+                    return Ok(registeredUser);
+                }
+
+                return BadRequest(new { message = "Email already exists or registration failed." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
         }
+
 
         // PUT api/<UserController>/5
         [HttpPut("update")]
@@ -117,6 +132,25 @@ namespace InvestItAPI.Controllers
             else
                 return StatusCode(500, new { error = "Something went wrong" });
         }
+        // PUT api/User/ProfilePic/12
+        [HttpPut("ProfilePic/{userId}")]
+        public IActionResult UpdateProfilePic(int userId, [FromBody] string profilePic)
+        {
+            try
+            {
+                bool result = InvestItAPI.Models.User.UploadProfilePic(profilePic, userId);
+
+                if (result)
+                    return Ok(new { message = "Profile picture updated successfully." });
+
+                return NotFound(new { error = "User not found or update failed." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
 
 
         // DELETE api/<UserController>/5

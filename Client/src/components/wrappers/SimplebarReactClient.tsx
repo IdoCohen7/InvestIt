@@ -1,4 +1,3 @@
-
 import type { ChildrenType } from '@/types/component'
 import type SimpleBarCore from 'simplebar-core'
 import SimpleBar, { type Props } from 'simplebar-react'
