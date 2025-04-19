@@ -2,7 +2,7 @@ export const currentYear = new Date().getFullYear()
 
 export const developedByLink = 'https://investit.com/'
 
-export const developedBy = 'The Invest-It Team: Ido, Aya, Ofri'
+export const developedBy = ' Invest It'
 
 export const basePath = ''
 

@@ -12,11 +12,8 @@ namespace InvestItAPI.Models
         public string Content { get; set; } 
         public string CreatedAt { get; set; }
         public double SimilarityScore { get; set; } // runtime variable, not saved in DB
-        public string Vector { get; set; } // ✅ עכשיו זה `nullable` ואין שגיאות!
-
+        public string Vector { get; set; } // nullable
         public string UpdatedAt { get; set; }
-
-
 
         public Post(int postId, int userId, string content, string createdAt, string updatedAt)
         {
@@ -26,6 +23,7 @@ namespace InvestItAPI.Models
             CreatedAt = createdAt;
             UpdatedAt = updatedAt;
         }
+
         public Post() { }
 
         public static List<object> GetPosts(int page, int pageSize)
@@ -45,13 +43,12 @@ namespace InvestItAPI.Models
             return dbServices.AddPost(post); // ✅ שמירת הפוסט עם הווקטור במסד הנתונים
         }
 
-
         static public float[] GetVector(string text)
         {
             return VectorHelper.ConvertTextToVector(text);
         }
 
-        static public bool UpdatePostContent(int postId, int userId, string  content)
+        static public bool UpdatePostContent(int postId, int userId, string content)
         {
             DBservices dBservices = new DBservices();
             return dBservices.UpdatePostContent(postId, userId, content);
@@ -65,9 +62,8 @@ namespace InvestItAPI.Models
 
         static public string TogglePostLike(int postId, int userId)
         {
-            DBservices dBservices= new DBservices();
+            DBservices dBservices = new DBservices();
             return dBservices.TogglePostLike(postId, userId);
         }
-
     }
 }

@@ -11,6 +11,7 @@ interface CameraModalProps {
 const CameraModal = ({ show, onClose, onUploadSuccess }: CameraModalProps) => {
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
   const [stream, setStream] = useState<MediaStream | null>(null)
   const [previewImage, setPreviewImage] = useState<string | null>(null)
   const [capturedBlob, setCapturedBlob] = useState<Blob | null>(null)
@@ -34,6 +35,22 @@ const CameraModal = ({ show, onClose, onUploadSuccess }: CameraModalProps) => {
     }
   }, [show, previewImage])
 
+  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    setCapturedBlob(file)
+    const reader = new FileReader()
+    reader.onloadend = () => {
+      setPreviewImage(reader.result as string)
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop())
+        setStream(null)
+      }
+    }
+    reader.readAsDataURL(file)
+  }
+
   const captureImage = () => {
     if (!canvasRef.current || !videoRef.current) return
 
@@ -55,7 +72,6 @@ const CameraModal = ({ show, onClose, onUploadSuccess }: CameraModalProps) => {
       const reader = new FileReader()
       reader.onloadend = () => {
         setPreviewImage(reader.result as string)
-        // עצור את הזרם של המצלמה
         if (stream) {
           stream.getTracks().forEach((track) => track.stop())
           setStream(null)
@@ -99,7 +115,6 @@ const CameraModal = ({ show, onClose, onUploadSuccess }: CameraModalProps) => {
   const retakeImage = () => {
     setPreviewImage(null)
     setCapturedBlob(null)
-    // הפעל מחדש את המצלמה
     navigator.mediaDevices.getUserMedia({ video: true }).then((mediaStream) => {
       if (videoRef.current) {
         videoRef.current.srcObject = mediaStream
@@ -118,7 +133,7 @@ const CameraModal = ({ show, onClose, onUploadSuccess }: CameraModalProps) => {
       centered
       size="lg">
       <Modal.Header closeButton>
-        <Modal.Title>Take a Profile Picture</Modal.Title>
+        <Modal.Title>Update Profile Picture</Modal.Title>
       </Modal.Header>
       <Modal.Body className="text-center">
         {previewImage ? (
@@ -128,14 +143,28 @@ const CameraModal = ({ show, onClose, onUploadSuccess }: CameraModalProps) => {
               Upload
             </Button>
             <Button variant="secondary" onClick={retakeImage}>
-              Retake
+              {stream ? 'Retake' : 'Take Photo'}
             </Button>
           </>
         ) : (
           <>
-            <video ref={videoRef} autoPlay playsInline className="rounded w-100 mb-3" />
+            <div className="mb-3">
+              <input
+                type="file"
+                ref={fileInputRef}
+                accept="image/*"
+                onChange={handleFileSelect}
+                style={{ display: 'none' }}
+              />
+              <Button variant="primary" className="me-2" onClick={() => fileInputRef.current?.click()}>
+                Choose from Computer
+              </Button>
+              <Button variant="secondary" onClick={captureImage}>
+                Take Photo
+              </Button>
+            </div>
+            <video ref={videoRef} autoPlay playsInline className="rounded w-100" />
             <canvas ref={canvasRef} style={{ display: 'none' }} />
-            <Button onClick={captureImage}>Capture</Button>
           </>
         )}
       </Modal.Body>

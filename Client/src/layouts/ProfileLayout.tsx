@@ -1,7 +1,6 @@
 import { lazy, Suspense, useState } from 'react'
 import CameraModal from '@/components/cameraModal'
-
-const TopHeader = lazy(() => import('@/components/layout/TopHeader'))
+import { useNavigate } from 'react-router-dom'
 import GlightBox from '@/components/GlightBox'
 import type { ChildrenType } from '@/types/component'
 import {
@@ -35,45 +34,17 @@ import {
 } from 'react-icons/bs'
 
 import placeHolder from '@/assets/images/avatar/placeholder.jpg'
-import background5 from '@/assets/images/bg/05.jpg'
-
-import album1 from '@/assets/images/albums/01.jpg'
-import album2 from '@/assets/images/albums/02.jpg'
-import album3 from '@/assets/images/albums/03.jpg'
-import album4 from '@/assets/images/albums/04.jpg'
-import album5 from '@/assets/images/albums/05.jpg'
 
 import FallbackLoading from '@/components/FallbackLoading'
 import Preloader from '@/components/Preloader'
 import { useAuthContext } from '@/context/useAuthContext'
 
-const Photos = () => {
-  return (
-    <Card>
-      <CardHeader className="d-sm-flex justify-content-between border-0">
-        <CardTitle>Photos</CardTitle>
-        <Button variant="primary-soft" size="sm">
-          See all photo
-        </Button>
-      </CardHeader>
-      <CardBody className="position-relative pt-0">
-        <Row className="g-2">
-          {[album1, album2, album3, album4, album5].map((album, index) => (
-            <Col key={index} xs={index < 2 ? 6 : 4}>
-              <GlightBox href={album} data-gallery="image-popup">
-                <img className="rounded img-fluid" src={album} alt="album-image" />
-              </GlightBox>
-            </Col>
-          ))}
-        </Row>
-      </CardBody>
-    </Card>
-  )
-}
+const TopHeader = lazy(() => import('@/components/layout/TopHeader'))
 
 const ProfileLayout = ({ children }: ChildrenType) => {
   const { user, saveSession } = useAuthContext()
   const [showCamera, setShowCamera] = useState(false)
+  const navigate = useNavigate()
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleImageUpload = async (relativePath: string) => {
@@ -114,10 +85,11 @@ const ProfileLayout = ({ children }: ChildrenType) => {
                 <div
                   className="h-200px rounded-top"
                   style={{
-                    backgroundImage: `url(${background5})`,
-                    backgroundPosition: 'center',
-                    backgroundSize: 'cover',
+                    backgroundImage: `url("/images/Banner2.png")`,
+                    backgroundPosition: 'top',
+                    backgroundSize: '100% auto',
                     backgroundRepeat: 'no-repeat',
+                    height: '150px'
                   }}
                 />
                 <CardBody className="py-0">
@@ -159,9 +131,21 @@ const ProfileLayout = ({ children }: ChildrenType) => {
                         </div>
                       </div>
                     </div>
-
-                    {/* כפתור תפריט */}
+                    <div className="ms-sm-4 mt-sm-3">
+                      <h1 className="mb-0 h5">
+                        {user ? user.firstName + ' ' + user.lastName : 'Guest'}
+                        <BsPatchCheckFill className="text-success small" />
+                      </h1>
+                      <p>{user ? `${user.connections || 0} connections` : '0 connections'}</p>
+                    </div>
                     <div className="d-flex mt-3 justify-content-center ms-sm-auto">
+                      <Button 
+                        variant="danger-soft" 
+                        className="me-2" 
+                        type="button"
+                        onClick={() => navigate('/settings/account')}>
+                        <BsPencilFill size={19} className="pe-1" /> Edit profile
+                      </Button>
                       <Dropdown>
                         <DropdownToggle
                           as="a"
@@ -202,19 +186,22 @@ const ProfileLayout = ({ children }: ChildrenType) => {
                       </Dropdown>
                     </div>
                   </div>
-
-                  {/* שורת מידע נוספת */}
-                  <ul className="list-inline mb-0 text-center text-sm-start mt-3 mt-sm-0">
-                    <li className="list-inline-item">
-                      <BsBriefcase className="me-1" /> {user ? user.experienceLevel || 'No Level' : 'No Level'}
-                    </li>
-                    <li className="list-inline-item">
-                      <BsGeoAlt className="me-1" /> New Hampshire
-                    </li>
-                    <li className="list-inline-item">
-                      <BsCalendar2Plus className="me-1" /> Joined on {user ? user.createdAt : 'No Date'}
-                    </li>
-                  </ul>
+                  <div className="hstack gap-2 gap-xl-3 justify-content-center">
+                    <div>
+                      <h6 className="mb-0 small">{user ? user.experienceLevel || 'No Level' : 'No Level'}</h6>
+                      <small className="text-muted fs-xs">Experience</small>
+                    </div>
+                    <div className="vr" />
+                    <div>
+                      <h6 className="mb-0 small">{user ? user.createdAt : 'No Date'}</h6>
+                      <small className="text-muted fs-xs">Joined</small>
+                    </div>
+                    <div className="vr" />
+                    <div>
+                      <h6 className="mb-0 small">{user ? user.isActive ? 'Active' : 'Inactive' : 'N/A'}</h6>
+                      <small className="text-muted fs-xs">Status</small>
+                    </div>
+                  </div>
                 </CardBody>
               </Card>
               <Suspense fallback={<FallbackLoading />}>{children}</Suspense>
@@ -227,24 +214,14 @@ const ProfileLayout = ({ children }: ChildrenType) => {
                       <CardTitle>About</CardTitle>
                     </CardHeader>
                     <CardBody className="position-relative pt-0">
-                      <p>He moonlights difficult engrossed it, sportsmen. Interested has all Devonshire difficulty gay assistance joy.</p>
+                      <p>{user ? user.bio || 'No bio available' : 'No bio available'}</p>
                       <ul className="list-unstyled mt-3 mb-0">
                         <li className="mb-2">
-                          <BsCalendarDate size={18} className="fa-fw pe-1" /> Born: <strong> October 20, 1990 </strong>
-                        </li>
-                        <li className="mb-2">
-                          <BsHeart size={18} className="fa-fw pe-1" /> Status: <strong> Single </strong>
-                        </li>
-                        <li>
-                          <BsEnvelope size={18} className="fa-fw pe-1" /> Email: <strong> webestica@gmail.com </strong>
+                          <BsEnvelope size={18} className="fa-fw pe-1" /> Email: <strong>{user ? user.email : 'No email'}</strong>
                         </li>
                       </ul>
                     </CardBody>
                   </Card>
-                </Col>
-
-                <Col md={6} lg={12}>
-                  <Photos />
                 </Col>
               </Row>
             </Col>

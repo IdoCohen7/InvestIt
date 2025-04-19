@@ -877,9 +877,70 @@ namespace InvestItAPI.DAL
                     con.Close();
             }
         }
+                private SqlCommand CreateCommandWithStoredProcedure_Paging(string spName, SqlConnection con, int page, int pageSize)
+        {
+            SqlCommand cmd = new SqlCommand
+            {
+                Connection = con,
+                CommandText = spName,
+                CommandTimeout = 10,
+                CommandType = CommandType.StoredProcedure
+            };
 
+            cmd.Parameters.AddWithValue("@Page", page);
+            cmd.Parameters.AddWithValue("@PageSize", pageSize);
 
+            return cmd;
+        }
 
+        public List<object> GetPosts(int page, int pageSize)
+        {
+            SqlConnection con = null;
+            SqlCommand cmd;
 
+            try
+            {
+                con = connect("myProjDB");
+                cmd = CreateCommandWithStoredProcedure_Paging("SP_GetAllPosts", con, page, pageSize);
+
+                List<object> posts = new List<object>();
+                SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                while (dataReader.Read())
+                {
+                    var post = new
+                    {
+                        PostId = Convert.ToInt32(dataReader["post_id"]),
+                        UserId = Convert.ToInt32(dataReader["user_id"]),
+                        Content = dataReader["content"].ToString(),
+                        CreatedAt = Convert.ToDateTime(dataReader["created_at"]).ToString("dd/MM/yyyy"),
+                        UpdatedAt = dataReader["updated_at"] != DBNull.Value
+                            ? Convert.ToDateTime(dataReader["updated_at"]).ToString("o")
+                            : null,
+                        Vector = dataReader["post_vector"] != DBNull.Value
+                            ? dataReader["post_vector"].ToString()
+                            : null,
+                        LikesCount = Convert.ToInt32(dataReader["likesCount"]),
+                        CommentsCount = Convert.ToInt32(dataReader["commentsCount"]),
+                        FullName = dataReader["fullName"].ToString(),
+                        UserProfilePic = dataReader["userProfilePic"].ToString(),
+                        UserExperienceLevel = dataReader["userExperienceLevel"].ToString()
+                    };
+
+                    posts.Add(post);
+                }
+
+                return posts;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error retrieving posts with pagination: " + ex.Message);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+        }
     }
 }
