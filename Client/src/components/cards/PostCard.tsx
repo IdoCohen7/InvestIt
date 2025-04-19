@@ -91,7 +91,6 @@ const PostCard = ({
   const [comments, setComments] = useState<CommentType[]>([])
   const [newComment, setNewComment] = useState('')
   const [localCommentsCount, setLocalCommentsCount] = useState(commentsCount)
-  const [visibleCommentsCount, setVisibleCommentsCount] = useState(3)
   const [localLikesCount, setLocalLikesCount] = useState(likesCount)
   const [hasLiked, setHasLiked] = useState(false)
   const [isEditing, setIsEditing] = useState(false)
@@ -149,20 +148,10 @@ const PostCard = ({
 
       if (!res.ok) throw new Error('Failed to post comment')
 
-      // הוספה מקומית לתחילת הרשימה
-      const addedComment: CommentType = {
-        commentId: Math.floor(Math.random() * 1000000), // מזהה זמני עד שתחזור תגובה אמיתית
-        postId,
-        userId: user?.userId ?? 0,
-        comment: newComment,
-        createdAt: new Date().toISOString(),
-        firstName: user?.firstName || '',
-        lastName: user?.lastName || '',
-        profilePic: user?.profilePic || '',
-      }
-
-      setComments((prev) => [addedComment, ...prev])
       setNewComment('')
+      setCommentPage(1)
+      setComments([]) // איפוס רשימת תגובות קיימת
+      await fetchComments(1) // ריענון עם תגובות עדכניות מהשרת
       setLocalCommentsCount((prev) => prev + 1)
     } catch (err) {
       console.error('Error posting comment:', err)

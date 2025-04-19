@@ -35,6 +35,7 @@ const CommentItem = ({
         method: 'DELETE',
       })
 
+      console.log(res)
       if (!res.ok) throw new Error('Failed to delete comment')
 
       if (onDelete) onDelete()
