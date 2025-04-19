@@ -1,7 +1,6 @@
 import { lazy, Suspense, useState } from 'react'
 import CameraModal from '@/components/cameraModal'
 import { useNavigate } from 'react-router-dom'
-import GlightBox from '@/components/GlightBox'
 import type { ChildrenType } from '@/types/component'
 import {
   Button,
@@ -17,21 +16,7 @@ import {
   DropdownToggle,
   Row,
 } from 'react-bootstrap'
-import {
-  BsBookmark,
-  BsBriefcase,
-  BsCalendar2Plus,
-  BsCalendarDate,
-  BsEnvelope,
-  BsFileEarmarkPdf,
-  BsGear,
-  BsGeoAlt,
-  BsHeart,
-  BsLock,
-  BsPatchCheckFill,
-  BsPencilFill,
-  BsThreeDots,
-} from 'react-icons/bs'
+import { BsBookmark, BsEnvelope, BsFileEarmarkPdf, BsGear, BsLock, BsPatchCheckFill, BsPencilFill, BsThreeDots } from 'react-icons/bs'
 
 import placeHolder from '@/assets/images/avatar/placeholder.jpg'
 
@@ -89,7 +74,7 @@ const ProfileLayout = ({ children }: ChildrenType) => {
                     backgroundPosition: 'top',
                     backgroundSize: '100% auto',
                     backgroundRepeat: 'no-repeat',
-                    height: '150px'
+                    height: '150px',
                   }}
                 />
                 <CardBody className="py-0">
@@ -131,19 +116,9 @@ const ProfileLayout = ({ children }: ChildrenType) => {
                         </div>
                       </div>
                     </div>
-                    <div className="ms-sm-4 mt-sm-3">
-                      <h1 className="mb-0 h5">
-                        {user ? user.firstName + ' ' + user.lastName : 'Guest'}
-                        <BsPatchCheckFill className="text-success small" />
-                      </h1>
-                      <p>{user ? `${user.connections || 0} connections` : '0 connections'}</p>
-                    </div>
+
                     <div className="d-flex mt-3 justify-content-center ms-sm-auto">
-                      <Button 
-                        variant="danger-soft" 
-                        className="me-2" 
-                        type="button"
-                        onClick={() => navigate('/settings/account')}>
+                      <Button variant="danger-soft" className="me-2" type="button" onClick={() => navigate('/settings/account')}>
                         <BsPencilFill size={19} className="pe-1" /> Edit profile
                       </Button>
                       <Dropdown>
@@ -184,22 +159,6 @@ const ProfileLayout = ({ children }: ChildrenType) => {
                           </li>
                         </DropdownMenu>
                       </Dropdown>
-                    </div>
-                  </div>
-                  <div className="hstack gap-2 gap-xl-3 justify-content-center">
-                    <div>
-                      <h6 className="mb-0 small">{user ? user.experienceLevel || 'No Level' : 'No Level'}</h6>
-                      <small className="text-muted fs-xs">Experience</small>
-                    </div>
-                    <div className="vr" />
-                    <div>
-                      <h6 className="mb-0 small">{user ? user.createdAt : 'No Date'}</h6>
-                      <small className="text-muted fs-xs">Joined</small>
-                    </div>
-                    <div className="vr" />
-                    <div>
-                      <h6 className="mb-0 small">{user ? user.isActive ? 'Active' : 'Inactive' : 'N/A'}</h6>
-                      <small className="text-muted fs-xs">Status</small>
                     </div>
                   </div>
                 </CardBody>

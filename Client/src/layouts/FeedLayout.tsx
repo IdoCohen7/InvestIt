@@ -1,5 +1,5 @@
-import { lazy, Suspense } from "react"
-const TopHeader = lazy(() => import("@/components/layout/TopHeader"))
+import { lazy, Suspense } from 'react'
+const TopHeader = lazy(() => import('@/components/layout/TopHeader'))
 
 import { profilePanelLinksData1 } from '@/assets/data/layout'
 import Messaging from '@/components/layout/Messaging'
@@ -20,7 +20,7 @@ import {
   OffcanvasBody,
   OffcanvasHeader,
   OffcanvasTitle,
-  Row
+  Row,
 } from 'react-bootstrap'
 import {
   BsBell,
@@ -36,15 +36,15 @@ import {
 } from 'react-icons/bs'
 import { FaSlidersH } from 'react-icons/fa'
 import { FaXmark } from 'react-icons/fa6'
-import FallbackLoading from "@/components/FallbackLoading"
-import Preloader from "@/components/Preloader"
+import FallbackLoading from '@/components/FallbackLoading'
+import Preloader from '@/components/Preloader'
 
 const FeedLayout = ({ children }: ChildrenType) => {
   const { messagingOffcanvas, startOffcanvas } = useLayoutContext()
   const { width } = useViewPort()
   return (
     <>
-      <Suspense fallback={<Preloader/>}>
+      <Suspense fallback={<Preloader />}>
         <TopHeader />
       </Suspense>
       <main>
@@ -84,7 +84,7 @@ const FeedLayout = ({ children }: ChildrenType) => {
                 )}
               </nav>
             </Col>
-         <Suspense fallback={<FallbackLoading/>}>{children}</Suspense>   
+            <Suspense fallback={<FallbackLoading />}>{children}</Suspense>
           </Row>
         </Container>
       </main>

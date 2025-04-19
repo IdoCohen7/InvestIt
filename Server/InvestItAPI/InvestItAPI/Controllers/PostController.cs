@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using InvestItAPI.Models;
 using InvestItAPI.DAL;
+using System.Runtime.CompilerServices;
+
+// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace InvestItAPI.Controllers
 {
@@ -32,18 +35,7 @@ namespace InvestItAPI.Controllers
             }
         }
 
-        // GET: api/Post
-        [HttpGet]
-        public IActionResult Get()
-        {
-            try
-            {
-                var posts = Post.GetPosts();
 
-                if (posts == null || posts.Count == 0)
-                {
-                    return NotFound(new { message = "No posts found." });
-                }
 
 
         // GET api/<PostController>/5
@@ -53,25 +45,25 @@ namespace InvestItAPI.Controllers
             return "value";
         }
 
-        // POST api/Post/Vector
+        // POST api/<PostController>
         [HttpPost("Vector")]
         public float[] GetVector(string text)
         {
-            return Post.GetVector(text);
+            return InvestItAPI.Models.Post.GetVector(text);
         }
 
-        // POST api/Post/add
         [HttpPost("add")]
         public IActionResult AddPost([FromBody] Post post)
         {
             if (post == null || string.IsNullOrEmpty(post.Content))
                 return BadRequest("Post content is required.");
 
-            int postId = Post.AddPost(post);
+            int postId = Post.AddPost(post); // ✅ חישוב וקטור מתבצע בשרת
             return Ok(new { postId });
         }
 
-        // PUT api/Post/edit
+
+        // PUT api/<PostController>/5
         [HttpPut("edit")]
         public IActionResult Put(int postId, int userId, [FromBody] string content)
         {
@@ -80,7 +72,7 @@ namespace InvestItAPI.Controllers
                 return BadRequest("Post content is required");
             }
 
-            bool result = Post.UpdatePostContent(postId, userId, content);
+            bool result = InvestItAPI.Models.Post.UpdatePostContent(postId, userId, content);
 
             if (result)
             {
@@ -90,7 +82,6 @@ namespace InvestItAPI.Controllers
             return StatusCode(500, "Failed to update the post");
         }
 
-        // POST api/Post/{postId}/like?userId=123
         [HttpPost("{postId}/like")]
         public IActionResult ToggleLike(int postId, [FromQuery] int userId)
         {
@@ -109,11 +100,10 @@ namespace InvestItAPI.Controllers
             }
         }
 
-        // DELETE api/Post/delete
         [HttpDelete("delete")]
         public IActionResult Delete(int postId, int userId)
         {
-            bool result = Post.DeletePost(postId, userId);
+            bool result = InvestItAPI.Models.Post.DeletePost(postId, userId);
 
             if (result)
             {
