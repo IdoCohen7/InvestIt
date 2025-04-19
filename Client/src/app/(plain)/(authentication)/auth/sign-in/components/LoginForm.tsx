@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom'
 import useSignIn from './useSignIn'
 import TextFormInput from '@/components/form/TextFormInput'
 import PasswordFormInput from '@/components/form/PasswordFormInput'
-import { Button, FormCheck } from 'react-bootstrap'
+import { Button } from 'react-bootstrap'
 
 const LoginForm = () => {
-  const { loading, login, control, register } = useSignIn()
+  const { loading, login, control } = useSignIn()
 
   return (
     <form className="mt-sm-4" onSubmit={login}>
@@ -14,23 +14,17 @@ const LoginForm = () => {
       <div className="mb-3 position-relative">
         <PasswordFormInput name="password" placeholder="Enter password" control={control} size="lg" containerClassName="w-100" />
       </div>
-      <div className="mb-3 d-sm-flex justify-content-between">
-        <div>
-          <FormCheck type="checkbox" label="Remember me?" id="rememberCheck" {...register('rememberMe')} />
-        </div>
-        <Link to="/auth/forgot-pass">Forgot password?</Link>
-      </div>
       <div className="d-grid">
         <Button variant="primary" size="lg" type="submit" disabled={loading}>
           Login
         </Button>
       </div>
-      <p className="mb-0 mt-3">
+      <p className="mb-0 mt-3 text-center">
         ©{currentYear}
         <Link target="_blank" to={developedByLink}>
-          {developedBy}.
+          {developedBy}
         </Link>
-        All rights reserved
+        . All rights reserved
       </p>
     </form>
   )

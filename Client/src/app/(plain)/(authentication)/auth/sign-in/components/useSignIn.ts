@@ -19,15 +19,13 @@ const useSignIn = () => {
   const loginFormSchema = yup.object({
     email: yup.string().email('Please enter a valid email').required('Please enter your email'),
     password: yup.string().required('Please enter your password'),
-    rememberMe: yup.boolean(),
   })
 
-  const { control, handleSubmit, register } = useForm({
+  const { control, handleSubmit } = useForm({
     resolver: yupResolver(loginFormSchema),
     defaultValues: {
       email: '',
       password: '',
-      rememberMe: false,
     },
   })
 
@@ -63,7 +61,7 @@ const useSignIn = () => {
       const data: UserType = await res.json()
 
       console.log('Login response:', data)
-      saveSession(data, values.rememberMe ?? false)
+      saveSession(data, false)
 
       redirectUser()
       showNotification({ message: 'Successfully logged in. Redirecting....', variant: 'success' })
@@ -75,7 +73,7 @@ const useSignIn = () => {
     }
   })
 
-  return { loading, login, control, register }
+  return { loading, login, control }
 }
 
 export default useSignIn

@@ -49,7 +49,7 @@ const FeedLayout = ({ children }: ChildrenType) => {
       </Suspense>
       <main>
         <Container>
-          <Row className="g-4">
+          <Row className="g-5">
             <Col lg={3}>
               <div className="d-flex align-items-center d-lg-none">
                 <button

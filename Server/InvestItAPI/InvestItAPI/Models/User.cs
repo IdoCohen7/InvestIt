@@ -15,8 +15,9 @@ namespace InvestItAPI.Models
         public string? ExperienceLevel { get; set; }
         public string? Bio { get; set; }
         public string CreatedAt { get; set; }
-
-        public Boolean IsActive {  get; set; }  
+        public Boolean IsActive { get; set; }
+        public int? Connections { get; set; }
+        public string? Location { get; set; }
 
         public User(int userId, string firstName, string lastName, string email, string passwordHash, string? profilePic, string? experienceLevel, string? bio, string createdAt)
         {
@@ -30,6 +31,8 @@ namespace InvestItAPI.Models
             Bio = bio;
             CreatedAt = createdAt;
             IsActive = true;
+            Connections = 0;
+            Location = null;
         }
 
         public User() { }
