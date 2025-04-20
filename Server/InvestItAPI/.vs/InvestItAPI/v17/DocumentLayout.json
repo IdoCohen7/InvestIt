@@ -23,10 +23,6 @@
       "RelativeMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|solutionrelative:investitapi\\dal\\dbservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|c:\\users\\idoco\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\investit\\server\\investitapi\\investitapi\\tools\\finnhubstreamservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|solutionrelative:investitapi\\tools\\finnhubstreamservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|c:\\users\\idoco\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\investit\\server\\investitapi\\investitapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|solutionrelative:investitapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -53,10 +49,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|c:\\users\\idoco\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\investit\\server\\investitapi\\investitapi\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|solutionrelative:investitapi\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|c:\\users\\idoco\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\investit\\server\\investitapi\\investitapi\\models\\changepasswordrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|solutionrelative:investitapi\\models\\changepasswordrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|c:\\users\\idoco\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\investit\\server\\investitapi\\investitapi\\tools\\passwordhasher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -110,23 +102,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Program.cs",
-              "RelativeDocumentMoniker": "InvestItAPI\\Program.cs",
-              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Program.cs",
-              "RelativeToolTip": "InvestItAPI\\Program.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAACgAAAABAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-12T14:02:58.05Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 8,
               "Title": "FinnhubController.cs",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\FinnhubController.cs",
               "RelativeDocumentMoniker": "InvestItAPI\\Controllers\\FinnhubController.cs",
@@ -138,7 +118,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 7,
               "Title": "EmailService.cs",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Tools\\EmailService.cs",
               "RelativeDocumentMoniker": "InvestItAPI\\Tools\\EmailService.cs",
@@ -163,7 +143,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 6,
               "Title": "FinnhubService.cs",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Tools\\FinnhubService.cs",
               "RelativeDocumentMoniker": "InvestItAPI\\Tools\\FinnhubService.cs",
@@ -220,14 +200,26 @@
               "RelativeDocumentMoniker": "InvestItAPI\\Models\\Post.cs",
               "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Models\\Post.cs",
               "RelativeToolTip": "InvestItAPI\\Models\\Post.cs",
-              "ViewState": "AQIAABIAAAAAAAAAAAApwB8AAAA/AAAA",
+              "ViewState": "AQIAADgAAAAAAAAAAAAWwCgAAAAPAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-14T14:11:59.765Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 5,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Program.cs",
+              "RelativeDocumentMoniker": "InvestItAPI\\Program.cs",
+              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Program.cs",
+              "RelativeToolTip": "InvestItAPI\\Program.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAACgAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-12T14:02:58.05Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\appsettings.json",
               "RelativeDocumentMoniker": "InvestItAPI\\appsettings.json",
@@ -239,7 +231,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 10,
               "Title": "appsettings.Development.json",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\appsettings.Development.json",
               "RelativeDocumentMoniker": "InvestItAPI\\appsettings.Development.json",
@@ -251,20 +243,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "FinnhubStreamService.cs",
-              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Tools\\FinnhubStreamService.cs",
-              "RelativeDocumentMoniker": "InvestItAPI\\Tools\\FinnhubStreamService.cs",
-              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Tools\\FinnhubStreamService.cs",
-              "RelativeToolTip": "InvestItAPI\\Tools\\FinnhubStreamService.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAAFAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-20T14:48:20.576Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 14,
               "Title": "VectorHelper.cs",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Tools\\VectorHelper.cs",
               "RelativeDocumentMoniker": "InvestItAPI\\Tools\\VectorHelper.cs",
@@ -276,7 +255,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 19,
               "Title": "Expert.cs",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Models\\Expert.cs",
               "RelativeDocumentMoniker": "InvestItAPI\\Models\\Expert.cs",
@@ -288,7 +267,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 15,
               "Title": "PostService.cs",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Tools\\PostService.cs",
               "RelativeDocumentMoniker": "InvestItAPI\\Tools\\PostService.cs",
@@ -300,7 +279,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 11,
               "Title": "UserController.cs",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\UserController.cs",
               "RelativeDocumentMoniker": "InvestItAPI\\Controllers\\UserController.cs",
@@ -312,7 +291,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 17,
               "Title": "CommentController.cs",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\CommentController.cs",
               "RelativeDocumentMoniker": "InvestItAPI\\Controllers\\CommentController.cs",
@@ -324,19 +303,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "ChangePasswordRequest.cs",
-              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Models\\ChangePasswordRequest.cs",
-              "RelativeDocumentMoniker": "InvestItAPI\\Models\\ChangePasswordRequest.cs",
-              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Models\\ChangePasswordRequest.cs",
-              "RelativeToolTip": "InvestItAPI\\Models\\ChangePasswordRequest.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAvAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-20T08:54:15.101Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 12,
               "Title": "PasswordHasher.cs",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Tools\\PasswordHasher.cs",
               "RelativeDocumentMoniker": "InvestItAPI\\Tools\\PasswordHasher.cs",
@@ -348,7 +315,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 13,
               "Title": "UserService.cs",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Tools\\UserService.cs",
               "RelativeDocumentMoniker": "InvestItAPI\\Tools\\UserService.cs",
@@ -360,7 +327,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 16,
               "Title": "110.jpg - Bitmap [640x480, 24 bit, JPG]",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\uploadedFiles\\profilePics\\110.jpg",
               "RelativeDocumentMoniker": "InvestItAPI\\uploadedFiles\\profilePics\\110.jpg",
@@ -372,7 +339,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 18,
               "Title": "ExpertController.cs",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\ExpertController.cs",
               "RelativeDocumentMoniker": "InvestItAPI\\Controllers\\ExpertController.cs",
@@ -384,7 +351,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 20,
               "Title": "Comment.cs",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Models\\Comment.cs",
               "RelativeDocumentMoniker": "InvestItAPI\\Models\\Comment.cs",
@@ -396,7 +363,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 21,
               "Title": "RecommendationService.cs",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Tools\\RecommendationService.cs",
               "RelativeDocumentMoniker": "InvestItAPI\\Tools\\RecommendationService.cs",
@@ -408,7 +375,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 22,
               "Title": "InvestItAPI.csproj",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\InvestItAPI.csproj",
               "RelativeDocumentMoniker": "InvestItAPI\\InvestItAPI.csproj",

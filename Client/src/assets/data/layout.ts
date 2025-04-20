@@ -10,7 +10,7 @@ import shieldImg from '@/assets/images/icon/shield-outline-filled.svg'
 import handshakeImg from '@/assets/images/icon/handshake-outline-filled.svg'
 import chatAltImg from '@/assets/images/icon/chat-alt-outline-filled.svg'
 import trashImg from '@/assets/images/icon/trash-var-outline-filled.svg'
-import coinImg from '@/assets/images/icon/coins-outline-filled.svg'
+import coinImg from '@/assets/images/icon/bank-outline-filled.svg'
 
 export const profilePanelLinksData1: ProfilePanelLink[] = [
   {
