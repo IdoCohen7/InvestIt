@@ -46,6 +46,7 @@ export type SocialPostType = {
   userProfilePic: string
   userExperienceLevel: string
   showComments?: boolean
+  hasLiked: boolean
 }
 
 export type NewsItem = {

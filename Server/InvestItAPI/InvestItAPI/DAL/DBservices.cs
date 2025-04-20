@@ -263,22 +263,21 @@ namespace InvestItAPI.DAL
             }
         }
 
-        public List<object> GetPosts(int page, int pageSize)
+        public List<object> GetPosts(int userId, int page, int pageSize)
         {
             SqlConnection con = null;
             SqlCommand cmd;
 
             try
             {
-                con = connect("myProjDB"); // יצירת חיבור
+                con = connect("myProjDB");
 
-                // יצירת SqlCommand ידני עם שם ה־SP והגדרת סוגו כ־StoredProcedure
                 cmd = new SqlCommand("SP_GetAllPosts", con);
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                // הוספת פרמטרים לפגינציה
                 cmd.Parameters.AddWithValue("@Page", page);
                 cmd.Parameters.AddWithValue("@PageSize", pageSize);
+                cmd.Parameters.AddWithValue("@UserId", userId); // 🆕 מוסיפים את מזהה המשתמש
 
                 List<object> posts = new List<object>();
                 SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
@@ -299,7 +298,8 @@ namespace InvestItAPI.DAL
                         CommentsCount = Convert.ToInt32(dataReader["commentsCount"]),
                         FullName = dataReader["fullName"].ToString(),
                         UserProfilePic = dataReader["userProfilePic"].ToString(),
-                        UserExperienceLevel = dataReader["userExperienceLevel"].ToString()
+                        UserExperienceLevel = dataReader["userExperienceLevel"].ToString(),
+                        HasLiked = Convert.ToBoolean(dataReader["hasLiked"]) 
                     };
 
                     posts.Add(post);
@@ -319,10 +319,6 @@ namespace InvestItAPI.DAL
                 }
             }
         }
-
-
-
-
 
 
         public User? Register(User user)

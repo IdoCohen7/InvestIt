@@ -1,45 +1,43 @@
-// ✅ Feeds.tsx (מעודכן לתמיכה במחיקת פוסטים)
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { getAllFeeds } from '@/helpers/data'
 import PostCard from '@/components/cards/PostCard'
 import LoadMoreButton from './LoadMoreButton'
 import { SocialPostType } from '@/types/data'
-import { useEffect } from 'react'
+import { useAuthContext } from '@/context/useAuthContext'
 import { Button, Card, CardFooter, CardHeader, Dropdown, DropdownDivider, DropdownItem, DropdownMenu, DropdownToggle } from 'react-bootstrap'
 import { BsFlag, BsInfoCircle, BsPersonX, BsSlashCircle, BsThreeDots } from 'react-icons/bs'
 import { Link } from 'react-router-dom'
 import logo12 from '@/assets/images/logo/12.svg'
 import postImg2 from '@/assets/images/post/3by2/02.jpg'
 
-const ActionMenu = ({ name }: { name?: string }) => {
-  return (
-    <Dropdown drop="start">
-      <DropdownToggle as="a" className="text-secondary btn btn-secondary-soft-hover py-1 px-2 content-none" id="cardFeedAction">
-        <BsThreeDots />
-      </DropdownToggle>
-      <DropdownMenu className="dropdown-menu-end" aria-labelledby="cardFeedAction">
-        <li>
-          <DropdownItem>
-            <BsPersonX size={22} className="fa-fw pe-2" /> Unfollow {name}
-          </DropdownItem>
-        </li>
-        <li>
-          <DropdownItem>
-            <BsSlashCircle size={22} className="fa-fw pe-2" /> Block
-          </DropdownItem>
-        </li>
-        <li>
-          <DropdownDivider />
-        </li>
-        <li>
-          <DropdownItem>
-            <BsFlag size={22} className="fa-fw pe-2" /> Report post
-          </DropdownItem>
-        </li>
-      </DropdownMenu>
-    </Dropdown>
-  )
-}
+const ActionMenu = ({ name }: { name?: string }) => (
+  <Dropdown drop="start">
+    <DropdownToggle as="a" className="text-secondary btn btn-secondary-soft-hover py-1 px-2 content-none" id="cardFeedAction">
+      <BsThreeDots />
+    </DropdownToggle>
+    <DropdownMenu className="dropdown-menu-end" aria-labelledby="cardFeedAction">
+      <li>
+        <DropdownItem>
+          <BsPersonX size={22} className="fa-fw pe-2" /> Unfollow {name}
+        </DropdownItem>
+      </li>
+      <li>
+        <DropdownItem>
+          <BsSlashCircle size={22} className="fa-fw pe-2" /> Block
+        </DropdownItem>
+      </li>
+      <li>
+        <DropdownDivider />
+      </li>
+      <li>
+        <DropdownItem>
+          <BsFlag size={22} className="fa-fw pe-2" /> Report post
+        </DropdownItem>
+      </li>
+    </DropdownMenu>
+  </Dropdown>
+)
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const SponsoredCard = () => (
   <Card>
@@ -80,11 +78,13 @@ const Feeds = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [hasMore, setHasMore] = useState(true)
   const [deletedPostIds, setDeletedPostIds] = useState<number[]>([])
+  const { user } = useAuthContext()
 
   const fetchPage = async () => {
     setIsLoading(true)
     try {
-      const newPosts = await getAllFeeds(page, 3)
+      const newPosts = await getAllFeeds(page, 3, user?.userId)
+      console.log('Fetched posts:', newPosts)
       if (newPosts.length === 0) {
         setHasMore(false)
       } else {
@@ -114,7 +114,7 @@ const Feeds = () => {
       {posts
         .filter((post) => !deletedPostIds.includes(post.postId))
         .map((post) => (
-          <PostCard {...post} key={post.postId} onDelete={handlePostDelete} />
+          <PostCard {...post} key={post.postId} onDelete={handlePostDelete} hasLiked={post.hasLiked} />
         ))}
 
       {hasMore && !isLoading && <LoadMoreButton onClick={fetchPage} />}

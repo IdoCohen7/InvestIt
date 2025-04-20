@@ -26,21 +26,22 @@ namespace InvestItAPI.Models
 
         public Post() { }
 
-        public static List<object> GetPosts(int page, int pageSize)
+        public static List<object> GetPosts(int userId, int page, int pageSize)
         {
             DBservices dBservices = new DBservices();
-            return dBservices.GetPosts(page, pageSize);
+            return dBservices.GetPosts(userId, page, pageSize);
         }
+
 
 
         static public int AddPost(Post post)
         {
             DBservices dbServices = new DBservices();
 
-            // ✅ מחשבים את הווקטור מהתוכן לפני השמירה
+            //  מחשבים את הווקטור מהתוכן לפני השמירה
             post.Vector = PostService.updatePostVector(post.Content);
 
-            return dbServices.AddPost(post); // ✅ שמירת הפוסט עם הווקטור במסד הנתונים
+            return dbServices.AddPost(post); //  שמירת הפוסט עם הווקטור במסד הנתונים
         }
 
         static public float[] GetVector(string text)

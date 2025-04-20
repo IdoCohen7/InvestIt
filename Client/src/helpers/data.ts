@@ -7,9 +7,9 @@ export const getAllNotifications = async (): Promise<NotificationType[]> => {
   return notificationData
 }
 
-export const getAllFeeds = async (page = 1, pageSize = 3): Promise<SocialPostType[]> => {
+export const getAllFeeds = async (page = 1, pageSize = 10, userId?: number): Promise<SocialPostType[]> => {
   try {
-    const res = await fetch(`https://localhost:7204/api/Post?page=${page}&pageSize=${pageSize}`, {
+    const res = await fetch(`https://localhost:7204/api/Post?userId=${userId ?? ''}&page=${page}&pageSize=${pageSize}`, {
       method: 'GET',
       mode: 'cors',
       headers: {

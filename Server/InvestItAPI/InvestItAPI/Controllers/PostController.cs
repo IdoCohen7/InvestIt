@@ -12,11 +12,11 @@ namespace InvestItAPI.Controllers
     public class PostController : ControllerBase
     {
         [HttpGet]
-        public IActionResult Get([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public IActionResult Get([FromQuery] int userId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
             try
             {
-                var posts = InvestItAPI.Models.Post.GetPosts(page, pageSize);
+                var posts = InvestItAPI.Models.Post.GetPosts(userId, page, pageSize);
 
                 if (posts == null || posts.Count == 0)
                 {
@@ -34,6 +34,7 @@ namespace InvestItAPI.Controllers
                 });
             }
         }
+
 
 
 

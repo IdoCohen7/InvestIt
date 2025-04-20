@@ -29,6 +29,7 @@ interface PostCardProps {
   vector?: string | null
   likesCount: number
   commentsCount: number
+  hasLiked: boolean // ← ✅ חדש
   fullName: string
   userProfilePic: string
   userExperienceLevel: string
@@ -84,6 +85,7 @@ const PostCard = ({
   userExperienceLevel,
   userProfilePic,
   fullName,
+  hasLiked: hasLikedProp, // ← ✅ שינוי כאן
   onDelete,
 }: PostCardProps) => {
   const { user } = useAuthContext()
@@ -92,7 +94,7 @@ const PostCard = ({
   const [newComment, setNewComment] = useState('')
   const [localCommentsCount, setLocalCommentsCount] = useState(commentsCount)
   const [localLikesCount, setLocalLikesCount] = useState(likesCount)
-  const [hasLiked, setHasLiked] = useState(false)
+  const [hasLiked, setHasLiked] = useState(hasLikedProp)
   const [isEditing, setIsEditing] = useState(false)
   const [editContent, setEditContent] = useState(content)
   const [editedAt, setEditedAt] = useState<string | null>(updatedAt ?? null)
