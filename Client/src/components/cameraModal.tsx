@@ -1,6 +1,7 @@
-import { useRef, useState, useEffect } from 'react'
+import { useRef, useState } from 'react'
 import { Modal, Button } from 'react-bootstrap'
 import { useAuthContext } from '@/context/useAuthContext'
+import Webcam from 'react-webcam'
 
 interface CameraModalProps {
   show: boolean
@@ -9,31 +10,11 @@ interface CameraModalProps {
 }
 
 const CameraModal = ({ show, onClose, onUploadSuccess }: CameraModalProps) => {
-  const videoRef = useRef<HTMLVideoElement>(null)
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+  const webcamRef = useRef<Webcam>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const [stream, setStream] = useState<MediaStream | null>(null)
   const [previewImage, setPreviewImage] = useState<string | null>(null)
   const [capturedBlob, setCapturedBlob] = useState<Blob | null>(null)
   const { user } = useAuthContext()
-
-  useEffect(() => {
-    if (show && !previewImage) {
-      navigator.mediaDevices.getUserMedia({ video: true }).then((mediaStream) => {
-        if (videoRef.current) {
-          videoRef.current.srcObject = mediaStream
-          setStream(mediaStream)
-        }
-      })
-    }
-
-    return () => {
-      if (stream) {
-        stream.getTracks().forEach((track) => track.stop())
-        setStream(null)
-      }
-    }
-  }, [show, previewImage])
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -41,44 +22,21 @@ const CameraModal = ({ show, onClose, onUploadSuccess }: CameraModalProps) => {
 
     setCapturedBlob(file)
     const reader = new FileReader()
-    reader.onloadend = () => {
-      setPreviewImage(reader.result as string)
-      if (stream) {
-        stream.getTracks().forEach((track) => track.stop())
-        setStream(null)
-      }
-    }
+    reader.onloadend = () => setPreviewImage(reader.result as string)
     reader.readAsDataURL(file)
   }
 
   const captureImage = () => {
-    if (!canvasRef.current || !videoRef.current) return
+    if (!webcamRef.current) return
+    const screenshot = webcamRef.current.getScreenshot()
+    if (!screenshot) return
 
-    const canvas = canvasRef.current
-    const video = videoRef.current
-    canvas.width = video.videoWidth
-    canvas.height = video.videoHeight
-
-    const ctx = canvas.getContext('2d')
-    if (!ctx) return
-
-    ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
-
-    canvas.toBlob((blob) => {
-      if (!blob) return
-
-      setCapturedBlob(blob)
-
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setPreviewImage(reader.result as string)
-        if (stream) {
-          stream.getTracks().forEach((track) => track.stop())
-          setStream(null)
-        }
-      }
-      reader.readAsDataURL(blob)
-    }, 'image/jpeg')
+    fetch(screenshot)
+      .then((res) => res.blob())
+      .then((blob) => {
+        setCapturedBlob(blob)
+        setPreviewImage(screenshot)
+      })
   }
 
   const uploadImage = async () => {
@@ -115,12 +73,6 @@ const CameraModal = ({ show, onClose, onUploadSuccess }: CameraModalProps) => {
   const retakeImage = () => {
     setPreviewImage(null)
     setCapturedBlob(null)
-    navigator.mediaDevices.getUserMedia({ video: true }).then((mediaStream) => {
-      if (videoRef.current) {
-        videoRef.current.srcObject = mediaStream
-        setStream(mediaStream)
-      }
-    })
   }
 
   return (
@@ -143,19 +95,13 @@ const CameraModal = ({ show, onClose, onUploadSuccess }: CameraModalProps) => {
               Upload
             </Button>
             <Button variant="secondary" onClick={retakeImage}>
-              {stream ? 'Retake' : 'Take Photo'}
+              Retake
             </Button>
           </>
         ) : (
           <>
             <div className="mb-3">
-              <input
-                type="file"
-                ref={fileInputRef}
-                accept="image/*"
-                onChange={handleFileSelect}
-                style={{ display: 'none' }}
-              />
+              <input type="file" ref={fileInputRef} accept="image/*" onChange={handleFileSelect} style={{ display: 'none' }} />
               <Button variant="primary" className="me-2" onClick={() => fileInputRef.current?.click()}>
                 Choose from Computer
               </Button>
@@ -163,8 +109,7 @@ const CameraModal = ({ show, onClose, onUploadSuccess }: CameraModalProps) => {
                 Take Photo
               </Button>
             </div>
-            <video ref={videoRef} autoPlay playsInline className="rounded w-100" />
-            <canvas ref={canvasRef} style={{ display: 'none' }} />
+            <Webcam ref={webcamRef} screenshotFormat="image/jpeg" className="rounded w-100" videoConstraints={{ facingMode: 'user' }} />
           </>
         )}
       </Modal.Body>

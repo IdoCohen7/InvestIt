@@ -17,7 +17,12 @@ const ProfilePanel = ({ links }: ProfilePanelProps) => {
       <Card className="overflow-hidden h-100">
         <div
           className="h-50px"
-          style={{ backgroundImage: `url("/images/Banner2.png")`, backgroundPosition: 'center', backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}
+          style={{
+            backgroundImage: `url("/images/Banner2.png")`,
+            backgroundPosition: 'center',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+          }}
         />
 
         <CardBody className="pt-0">
@@ -38,7 +43,9 @@ const ProfilePanel = ({ links }: ProfilePanelProps) => {
               <Link to="">{user ? user.firstName + ' ' + user.lastName : 'Guest'}</Link>
             </h5>
             <small>{user ? user.experienceLevel : 'No Level of Experience'}</small>
-            <p className="mt-3">{user ? user.bio : 'No bio available'}</p>
+            <p className="mt-3" style={{ overflowWrap: 'anywhere' }}>
+              {user ? user.bio : 'No bio available'}
+            </p>
 
             <div className="hstack gap-2 gap-xl-3 justify-content-center">
               <div>
@@ -52,7 +59,7 @@ const ProfilePanel = ({ links }: ProfilePanelProps) => {
               </div>
               <div className="vr" />
               <div>
-                <h6 className="mb-0 small">{user ? user.isActive ? 'Active' : 'Inactive' : 'N/A'}</h6>
+                <h6 className="mb-0 small">{user ? (user.isActive ? 'Active' : 'Inactive') : 'N/A'}</h6>
                 <small className="text-muted fs-xs">Status</small>
               </div>
             </div>

@@ -111,7 +111,6 @@ namespace InvestItAPI.DAL
             cmd.Parameters.AddWithValue("@user_id", user.UserId);
             cmd.Parameters.AddWithValue("@firstName", user.FirstName);
             cmd.Parameters.AddWithValue("@lastName", user.LastName);
-            cmd.Parameters.AddWithValue("@profile_pic", (object?)user.ProfilePic ?? DBNull.Value);
             cmd.Parameters.AddWithValue("@bio", (object?)user.Bio ?? DBNull.Value);
 
             return cmd;
@@ -873,6 +872,66 @@ namespace InvestItAPI.DAL
                     con.Close();
             }
         }
-                
+
+        public bool ChangePassword(int userId, string newPasswordHash)
+        {
+            SqlConnection con = null;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("myProjDB"); 
+                cmd = new SqlCommand("SP_ChangePassword", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@user_id", userId);
+                cmd.Parameters.AddWithValue("@new_password_hash", newPasswordHash);
+
+                int affectedRows = cmd.ExecuteNonQuery();
+                return affectedRows > 0;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error updating password", ex);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+        }
+
+        public string? GetPasswordHashByUserId(int userId)
+        {
+            SqlConnection con = null;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("myProjDB");
+                cmd = new SqlCommand("SELECT password_hash FROM Users WHERE user_id = @user_id", con);
+                cmd.Parameters.AddWithValue("@user_id", userId);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+                if (reader.Read())
+                {
+                    return reader["password_hash"].ToString();
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error retrieving password hash", ex);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+        }
+
+
+
     }
 }

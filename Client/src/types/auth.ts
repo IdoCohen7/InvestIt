@@ -9,6 +9,4 @@ export type UserType = {
   bio: string
   createdAt: string
   isActive: boolean
-  connections?: number
-  location?: string
 }

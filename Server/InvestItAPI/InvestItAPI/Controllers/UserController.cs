@@ -151,6 +151,30 @@ namespace InvestItAPI.Controllers
             }
         }
 
+        [HttpPut("ChangePassword")]
+        public IActionResult ChangePassword([FromBody] ChangePasswordRequest request)
+        {
+            try
+            {
+                bool result = InvestItAPI.Models.User.ChangePassword(
+                    request.UserId,
+                    request.CurrentPassword,
+                    request.NewPassword
+                );
+
+                if (result)
+                    return Ok(new { message = "Password updated successfully." });
+
+                return Unauthorized(new { error = "Current password is incorrect." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "An error occurred while changing the password.", details = ex.Message });
+            }
+        }
+
+
+
 
 
         // DELETE api/<UserController>/5

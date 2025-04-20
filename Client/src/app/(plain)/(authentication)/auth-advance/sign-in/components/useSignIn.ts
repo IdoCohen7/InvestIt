@@ -7,7 +7,6 @@ import * as yup from 'yup'
 
 import { useAuthContext } from '@/context/useAuthContext'
 import { useNotificationContext } from '@/context/useNotificationContext'
-import httpClient from '@/helpers/httpClient'
 import type { UserType } from '@/types/auth'
 
 const useSignIn = () => {

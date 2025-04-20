@@ -164,5 +164,17 @@ namespace InvestItAPI.Models
             DBservices dbServices = new DBservices();
             return dbServices.UpdateProfilePic(userId, profilePic);
         }
+
+        static public bool ChangePassword(int userId, string currentPassword, string newPassword)
+        {
+            DBservices dbServices = new DBservices();
+            string currentHashedPassword = dbServices.GetPasswordHashByUserId(userId);
+            if (currentHashedPassword != null && PasswordHasher.VerifyPassword(currentPassword, currentHashedPassword))
+            {
+                string newHashedPassword = PasswordHasher.HashPassword(newPassword);
+                return dbServices.ChangePassword(userId, newHashedPassword);
+            }
+            return false;
+        }
     }
 }
