@@ -7,7 +7,7 @@
 
 // [data-bs-theme="dark"] {
 //   --bs-primary: #19f032 !important;
-//   --bs-primary-rgb: 25, 240, 50 !important; 
+//   --bs-primary-rgb: 25, 240, 50 !important;
 //   --bs-link-color:#19f032 !important;
 //   --bs-link-hover-color:#0c911c !important;
 //   --bs-link-color-rgb:25, 240, 50 !important;
@@ -18,7 +18,7 @@
 //     --bs-navbar-hover-color: var(--#{$prefix}primary) !important;
 //     --bs-navbar-active-color: var(--#{$prefix}primary) !important;
 //     }
-    
+
 //     .navbar-dark {
 //       --bs-navbar-hover-color: var(--#{$prefix}primary) !important;
 //       --bs-navbar-active-color: var(--#{$prefix}primary) !important;
@@ -30,7 +30,7 @@
 //       --bs-dropdown-link-hover-color: var(--#{$prefix}primary) !important;
 //       --bs-dropdown-link-active-color: var(--#{$prefix}primary) !important;
 //     }
-  
+
 //   .btn-primary {
 //     --bs-btn-bg: var(--#{$prefix}primary);
 //     --bs-btn-border-color: var(--#{$prefix}primary);
@@ -96,3 +96,67 @@
 //     --bs-pagination-active-border-color: var(--#{$prefix}primary);
 //   }
 // }
+
+.live-prices-container {
+  margin-top: 100px;
+  padding: 10px;
+}
+
+.live-prices-title {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 1.8rem;
+  color: #fff;
+}
+
+.live-prices-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.live-price-card {
+  padding: 16px;
+  border-radius: 12px;
+  background-color: rgba(255, 255, 255, 0.07);
+  color: #fff;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.live-price-card:hover {
+  transform: translateY(-4px);
+}
+
+.live-price-symbol {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.live-price-value {
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.live-price-volume {
+  font-size: 0.9rem;
+  color: #ccc;
+  margin-top: 4px;
+}
+
+.price-up {
+  color: #4caf50;
+}
+
+.price-down {
+  color: #f44336;
+}
+
+.text-muted {
+  color: #999;
+  font-style: italic;
+}

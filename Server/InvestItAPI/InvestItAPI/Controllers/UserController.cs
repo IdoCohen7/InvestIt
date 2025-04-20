@@ -173,6 +173,25 @@ namespace InvestItAPI.Controllers
             }
         }
 
+        // GET api/User/Search
+        [HttpGet("Search")]
+        public IActionResult SearchUsers([FromQuery] string query, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        {
+            try
+            {
+                var (users, totalCount) = InvestItAPI.Models.User.Search(query, page, pageSize);
+
+                return Ok(new
+                {
+                    users,
+                    totalCount
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "An error occurred while searching for users.", details = ex.Message });
+            }
+        }
 
 
 

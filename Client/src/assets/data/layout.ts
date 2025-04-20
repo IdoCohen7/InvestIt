@@ -10,6 +10,7 @@ import shieldImg from '@/assets/images/icon/shield-outline-filled.svg'
 import handshakeImg from '@/assets/images/icon/handshake-outline-filled.svg'
 import chatAltImg from '@/assets/images/icon/chat-alt-outline-filled.svg'
 import trashImg from '@/assets/images/icon/trash-var-outline-filled.svg'
+import coinImg from '@/assets/images/icon/coins-outline-filled.svg'
 
 export const profilePanelLinksData1: ProfilePanelLink[] = [
   {
@@ -26,6 +27,11 @@ export const profilePanelLinksData1: ProfilePanelLink[] = [
     image: chatImg,
     name: 'Groups',
     link: '/groups',
+  },
+  {
+    image: coinImg,
+    name: 'Live Stock Prices',
+    link: '/stocks',
   },
   {
     image: notificationImg,

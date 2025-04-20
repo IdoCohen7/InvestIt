@@ -2,6 +2,7 @@ import { Collapse } from 'react-bootstrap'
 import { useLayoutContext } from '@/context/useLayoutContext'
 import { BsSearch, BsMicFill } from 'react-icons/bs'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const CollapseMenu = ({ isSearch }: { isSearch?: boolean }) => {
   const {
@@ -9,6 +10,7 @@ const CollapseMenu = ({ isSearch }: { isSearch?: boolean }) => {
   } = useLayoutContext()
   const [isListening, setIsListening] = useState(false)
   const [searchText, setSearchText] = useState('')
+  const navigate = useNavigate()
 
   const handleVoiceSearch = () => {
     if (!('webkitSpeechRecognition' in window)) {
@@ -42,13 +44,20 @@ const CollapseMenu = ({ isSearch }: { isSearch?: boolean }) => {
     recognition.start()
   }
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (searchText.trim()) {
+      navigate(`/search?q=${encodeURIComponent(searchText.trim())}`)
+    }
+  }
+
   return (
     <Collapse in={open} className="navbar-collapse">
       <div>
         {isSearch && (
           <div className="nav mt-3 mt-lg-0 flex-nowrap align-items-center px-4 px-lg-0">
             <div className="nav-item w-100">
-              <form className="rounded position-relative">
+              <form className="rounded position-relative" onSubmit={handleSubmit}>
                 <input
                   className="form-control ps-5 bg-light"
                   type="search"
@@ -57,7 +66,7 @@ const CollapseMenu = ({ isSearch }: { isSearch?: boolean }) => {
                   value={searchText}
                   onChange={(e) => setSearchText(e.target.value)}
                 />
-                <button className="btn bg-transparent px-2 py-0 position-absolute top-50 start-0 translate-middle-y" type="button">
+                <button className="btn bg-transparent px-2 py-0 position-absolute top-50 start-0 translate-middle-y" type="submit">
                   <BsSearch className="fs-5" />
                 </button>
                 <button

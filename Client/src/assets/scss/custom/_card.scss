@@ -1,4 +1,4 @@
-// 
+//
 // card.scss
 // Extended from Bootstrap
 //
@@ -8,15 +8,15 @@
   will-change: transform;
 }
 
-// 
+//
 // Additional styles for theme
-// 
+//
 
 // Hovering on card to show element
-.card{
-  .card-image{
+.card {
+  .card-image {
     position: relative;
-    .card-element-hover{
+    .card-element-hover {
       visibility: hidden;
       margin-top: 20px;
       opacity: 0;
@@ -24,9 +24,9 @@
       z-index: 9;
     }
   }
-  &:hover{
-    .card-image{
-      .card-element-hover{
+  &:hover {
+    .card-image {
+      .card-element-hover {
         visibility: visible;
         margin-top: 0px;
         opacity: 1;
@@ -36,11 +36,11 @@
 }
 
 // Card overlay on bottom
-.card{
-  &.card-overlay-bottom{
+.card {
+  &.card-overlay-bottom {
     overflow: hidden;
     &:before {
-      content: "";
+      content: '';
       position: absolute;
       height: 50%;
       width: 100%;
@@ -52,7 +52,7 @@
       z-index: 1;
     }
   }
-  .card-img-overlay{
+  .card-img-overlay {
     z-index: 2;
   }
 }

@@ -18,6 +18,20 @@ namespace InvestItAPI.Controllers
             return Content(newsJson, "application/json");
         }
 
+        // GET api/Finnhub/quote?symbol=AAPL
+        [HttpGet("quote")]
+        public async Task<IActionResult> GetQuote([FromQuery] string symbol)
+        {
+            if (string.IsNullOrEmpty(symbol))
+                return BadRequest("Missing stock symbol.");
+
+            var service = new FinnhubService();
+            var quoteJson = await service.GetStockQuoteAsync(symbol);
+
+            return Content(quoteJson, "application/json");
+        }
+
+
 
         // GET api/<FinnhubController>/5
         [HttpGet("{id}")]

@@ -931,6 +931,47 @@ namespace InvestItAPI.DAL
             }
         }
 
+        public (List<User> users, int totalCount) SearchUsers(string query, int page, int pageSize)
+        {
+            List<User> users = new List<User>();
+            int totalCount = 0;
+
+            using SqlConnection con = connect("myProjDB");
+            using SqlCommand cmd = new SqlCommand("SP_SearchUsersByName", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@query", query);
+            cmd.Parameters.AddWithValue("@page", page);
+            cmd.Parameters.AddWithValue("@pageSize", pageSize);
+
+            using SqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                users.Add(new User
+                {
+                    UserId = Convert.ToInt32(reader["user_id"]),
+                    FirstName = reader["firstName"].ToString(),
+                    LastName = reader["lastName"].ToString(),
+                    Email = reader["email"].ToString(),
+                    PasswordHash = reader["password_hash"].ToString(),
+                    ProfilePic = reader["profile_pic"]?.ToString(),
+                    ExperienceLevel = reader["experience_level"]?.ToString(),
+                    Bio = reader["bio"]?.ToString(),
+                    CreatedAt = Convert.ToDateTime(reader["created_at"]).ToString("dd/MM/yyyy"),
+                    IsActive = Convert.ToBoolean(reader["isActive"])
+                });
+            }
+
+            if (reader.NextResult() && reader.Read())
+            {
+                totalCount = Convert.ToInt32(reader["totalCount"]);
+            }
+
+            return (users, totalCount);
+        }
+
+
 
 
     }

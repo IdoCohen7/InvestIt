@@ -5,10 +5,12 @@ import { Navigate, type RouteProps } from 'react-router-dom'
 const HomeDemo = lazy(() => import('@/app/(social)/feed/(container)/home/page'))
 const NewsPage = lazy(() => import('@/app/(social)/(with-topbar)/news/page'))
 const GroupsPage = lazy(() => import('@/app/(social)/(with-topbar)/groups/page'))
+const SearchPage = lazy(() => import('@/app/(social)/(with-topbar)/search/page'))
 
 //pages
 const Messaging = lazy(() => import('@/app/(social)/(with-topbar)/messaging/page'))
 const PostDetails = lazy(() => import('@/app/(social)/(with-topbar)/feed/post-details/page'))
+import StocksPage from '@/app/(social)/(with-topbar)/stocks/page'
 
 //profile pages
 const ProfileFeed = lazy(() => import('@/app/(social)/profile/feed/page'))
@@ -65,9 +67,19 @@ export const socialWithTopbarRoutes: RoutesProps[] = [
     element: <GroupsPage />,
   },
   {
+    path: '/search',
+    name: 'Search',
+    element: <SearchPage />,
+  },
+  {
     path: '/messaging',
     name: 'Messaging',
     element: <Messaging />,
+  },
+  {
+    path: '/stocks',
+    name: 'Stocks',
+    element: <StocksPage />,
   },
   {
     path: '/notifications',

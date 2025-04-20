@@ -1,0 +1,60 @@
+.live-prices-container {
+  margin-top: 100px;
+  padding: 20px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+.live-prices-title {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+
+.live-prices-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.live-prices-table th,
+.live-prices-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e5e5;
+  text-align: left;
+}
+
+.live-prices-table th {
+  background-color: #f7f9fc;
+  font-weight: 600;
+  color: #555;
+}
+
+.text-muted {
+  color: #888;
+  font-style: italic;
+}
+
+.text-normal {
+  color: #000;
+  font-weight: 500;
+}
+
+@media (max-width: 600px) {
+  .live-prices-title {
+    font-size: 1.2rem;
+  }
+
+  .live-prices-table th,
+  .live-prices-table td {
+    padding: 8px 10px;
+    font-size: 0.9rem;
+  }
+}

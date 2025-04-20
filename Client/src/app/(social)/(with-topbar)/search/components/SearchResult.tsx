@@ -1,0 +1,98 @@
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import LoadMoreButton from '@/app/(social)/feed/(container)/home/components/LoadMoreButton'
+import { UserType } from '@/types/auth'
+import { useNotificationContext } from '@/context/useNotificationContext'
+
+interface Props {
+  query: string
+}
+
+const PAGE_SIZE = 10
+
+const SearchResultsComponent = ({ query }: Props) => {
+  const [results, setResults] = useState<UserType[]>([])
+  const [loading, setLoading] = useState(false)
+  const [page, setPage] = useState(1)
+  const [totalCount, setTotalCount] = useState(0)
+  const { showNotification } = useNotificationContext()
+
+  const fetchResults = async (pageToLoad: number) => {
+    if (!query) return
+    if (pageToLoad === 1) setLoading(true)
+
+    try {
+      const response = await axios.get('https://localhost:7204/api/User/Search', {
+        params: { query, page: pageToLoad, pageSize: PAGE_SIZE },
+      })
+
+      const newUsers = response.data.users || []
+      const total = response.data.totalCount || 0
+
+      setTotalCount(total)
+      setResults((prev) => (pageToLoad === 1 ? newUsers : [...prev, ...newUsers]))
+    } catch (err) {
+      showNotification({ message: 'Error loading users', variant: 'danger' })
+    } finally {
+      if (pageToLoad === 1) setLoading(false)
+    }
+  }
+
+  useEffect(() => {
+    setPage(1)
+    fetchResults(1)
+  }, [query])
+
+  const handleLoadMore = async () => {
+    const nextPage = page + 1
+    setPage(nextPage)
+    await fetchResults(nextPage)
+  }
+
+  const hasMore = results.length < totalCount
+
+  return (
+    <div className="container" style={{ marginTop: '100px' }}>
+      <h3 className="mb-4">Search results for: "{query}"</h3>
+      {loading && page === 1 ? (
+        <p>Loading results...</p>
+      ) : results.length === 0 ? (
+        <p>No users found.</p>
+      ) : (
+        <>
+          <div className="row">
+            {results.map((user) => (
+              <div key={user.userId} className="col-sm-6 col-md-4 mb-3">
+                <div className="card h-100 shadow-sm" style={{ fontSize: '0.9rem' }}>
+                  <img
+                    src={user.profilePic}
+                    className="card-img-top"
+                    alt={user.firstName}
+                    style={{ objectFit: 'cover', height: '140px', aspectRatio: '4 / 3' }}
+                  />
+                  <div className="card-body p-2">
+                    <h6 className="card-title mb-1">
+                      {user.firstName} {user.lastName}
+                    </h6>
+                    <p className="card-text text-truncate" title={user.bio}>
+                      {user.bio}
+                    </p>
+                    <small className="text-muted">Experience: {user.experienceLevel}</small>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {hasMore && (
+            <div className="text-center mt-3">
+              <LoadMoreButton onClick={handleLoadMore} />
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  )
+}
+
+export default SearchResultsComponent

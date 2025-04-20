@@ -34,5 +34,22 @@ public class FinnhubService
         {
             throw new Exception($"❌ Error fetching news: {response.StatusCode}");
         }
+
+    }
+
+    public async Task<string> GetStockQuoteAsync(string symbol)
+    {
+        string url = $"https://finnhub.io/api/v1/quote?symbol={symbol}&token={_apiKey}";
+
+        HttpResponseMessage response = await _httpClient.GetAsync(url);
+        if (response.IsSuccessStatusCode)
+        {
+            string json = await response.Content.ReadAsStringAsync();
+            return json;
+        }
+        else
+        {
+            throw new Exception($"❌ Error fetching quote for {symbol}: {response.StatusCode}");
+        }
     }
 }

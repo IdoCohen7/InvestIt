@@ -176,5 +176,12 @@ namespace InvestItAPI.Models
             }
             return false;
         }
+
+        public static (List<User> users, int totalCount) Search(string query, int page, int pageSize)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.SearchUsers(query, page, pageSize);
+        }
+
     }
 }
