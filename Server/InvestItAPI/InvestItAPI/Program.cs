@@ -3,20 +3,21 @@ using InvestItAPI.Tools;
 using Microsoft.Extensions.FileProviders;
 using System.Net.WebSockets;
 using System.Text;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
+// Services
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHostedService<FinnhubStreamService>();
+
 var app = builder.Build();
 
+// WebSocket support
 app.UseWebSockets();
 
-
+// Static file hosting for profile pictures
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
@@ -24,7 +25,6 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = "/uploadedFiles/profilePics"
 });
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -32,11 +32,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
-
 app.UseAuthorization();
 
+// WebSocket endpoint for live prices
 app.Map("/ws/prices", async context =>
 {
     if (context.WebSockets.IsWebSocketRequest)
@@ -45,26 +44,46 @@ app.Map("/ws/prices", async context =>
 
         using var webSocket = await context.WebSockets.AcceptWebSocketAsync();
 
-        void SendToClient(string data)
+        // Broadcast handler
+        async void SendToClient(string data)
         {
-            var buffer = Encoding.UTF8.GetBytes(data);
-            if (webSocket.State == WebSocketState.Open)
+            try
             {
-                webSocket.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None);
+                if (webSocket.State == WebSocketState.Open)
+                {
+                    var buffer = Encoding.UTF8.GetBytes(data);
+                    await webSocket.SendAsync(buffer, WebSocketMessageType.Text, true, CancellationToken.None);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error sending WebSocket message: " + ex.Message);
             }
         }
 
+        // Register listener
         FinnhubStreamService.OnPriceUpdate += SendToClient;
 
         var keepAlive = Encoding.UTF8.GetBytes("{\"type\":\"ping\"}");
 
-        while (webSocket.State == WebSocketState.Open)
+        try
         {
-            await webSocket.SendAsync(keepAlive, WebSocketMessageType.Text, true, CancellationToken.None);
-            await Task.Delay(5000);
+            while (webSocket.State == WebSocketState.Open)
+            {
+                await webSocket.SendAsync(keepAlive, WebSocketMessageType.Text, true, CancellationToken.None);
+                await Task.Delay(5000);
+            }
         }
-
-        FinnhubStreamService.OnPriceUpdate -= SendToClient;
+        catch (Exception ex)
+        {
+            Console.WriteLine("WebSocket loop error: " + ex.Message);
+        }
+        finally
+        {
+            // Cleanup
+            FinnhubStreamService.OnPriceUpdate -= SendToClient;
+            Console.WriteLine("Client disconnected");
+        }
     }
     else
     {
@@ -72,8 +91,5 @@ app.Map("/ws/prices", async context =>
     }
 });
 
-
-
 app.MapControllers();
-
 app.Run();

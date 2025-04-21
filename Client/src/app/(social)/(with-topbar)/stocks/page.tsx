@@ -12,12 +12,18 @@ const symbolsToTrack = ['BINANCE:BTCUSDT', 'AAPL', 'MSFT', 'AMZN', 'GOOG', 'META
 
 const LivePrices = () => {
   const [prices, setPrices] = useState<Record<string, SymbolData>>({})
+  const [connected, setConnected] = useState(false)
   const socketRef = useRef<WebSocket | null>(null)
 
-  useEffect(() => {
+  const connectWebSocket = () => {
+    if (socketRef.current?.readyState === WebSocket.OPEN) return
+
     socketRef.current = new WebSocket('wss://localhost:7204/ws/prices')
 
-    socketRef.current.onopen = () => console.log('📡 WebSocket connected')
+    socketRef.current.onopen = () => {
+      console.log('📡 WebSocket connected')
+      setConnected(true)
+    }
 
     socketRef.current.onmessage = (event) => {
       try {
@@ -46,14 +52,21 @@ const LivePrices = () => {
       console.error('❌ WebSocket error:', err)
     }
 
-    return () => {
-      socketRef.current?.close()
+    socketRef.current.onclose = () => {
+      console.warn('🔌 WebSocket disconnected. Reconnecting in 5s...')
+      setConnected(false)
+      setTimeout(connectWebSocket, 5000)
     }
+  }
+
+  useEffect(() => {
+    connectWebSocket()
+    return () => socketRef.current?.close()
   }, [])
 
   return (
     <div className="container py-4" style={{ marginTop: '80px' }}>
-      <h2 className="mb-4 text-center">📊 Live Market Prices</h2>
+      <h2 className="mb-4 text-center">📊 Live Market Prices {connected ? '🟢' : '🔴'}</h2>
       <Row xs={1} sm={2} md={3} lg={5} className="g-3">
         {symbolsToTrack.map((symbol) => {
           const data = prices[symbol]
