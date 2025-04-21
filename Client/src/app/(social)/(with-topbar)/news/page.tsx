@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Card, Button, Spinner } from 'react-bootstrap'
 import { NewsItem } from '@/types/data'
+import { API_URL } from '@/utils/env'
 
 const NewsPage = () => {
   const [allNews, setAllNews] = useState<NewsItem[]>([])
@@ -10,7 +11,7 @@ const NewsPage = () => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const res = await fetch('https://localhost:7204/api/Finnhub/market-news') // שים את ה-API שלך כאן
+        const res = await fetch(`${API_URL}/Finnhub/market-news`) // שים את ה-API שלך כאן
         const data: NewsItem[] = await res.json()
         setAllNews(data)
       } catch (error) {

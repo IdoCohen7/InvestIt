@@ -84,7 +84,6 @@ const Feeds = () => {
     setIsLoading(true)
     try {
       const newPosts = await getAllFeeds(page, 3, user?.userId)
-      console.log('Fetched posts:', newPosts)
       if (newPosts.length === 0) {
         setHasMore(false)
       } else {

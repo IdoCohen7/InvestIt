@@ -48,3 +48,7 @@ Server/InvestItAPI/InvestItAPI/obj/project.nuget.cache
 Server/InvestItAPI/InvestItAPI/appsettings.json
 /Server/InvestItAPI/InvestItAPI/uploadedFiles/profilePics
 /Server/InvestItAPI/.vs
+Server/InvestItAPI/InvestItAPI/web.config
+*.pubxml
+Server/InvestItAPI/InvestItAPI/Properties/PublishProfiles/FolderProfile.pubxml.user
+*.bin

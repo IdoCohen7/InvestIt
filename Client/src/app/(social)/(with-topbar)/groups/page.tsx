@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { supabase } from '@/supabase/supabase'
-import { Card, Col, Container, Row, Button, Form } from 'react-bootstrap'
+import { Card, Button, Form, Row, Col, Container } from 'react-bootstrap'
 import PageMetaData from '@/components/PageMetaData'
 import { useAuthContext } from '@/context/useAuthContext'
 
@@ -74,29 +74,31 @@ const GroupsPage = () => {
   return (
     <>
       <PageMetaData title="Groups Chat" />
-      <main>
-        <Container>
-          <Row className="gx-0">
-            <Col lg={4} xxl={3}>
-              <Card className="card-body border-end-0 border-bottom-0 rounded-bottom-0">
-                <h1 className="h5 mb-3">Groups</h1>
-                <ul className="list-group">
-                  <li className="list-group-item active">📈 Stocks</li>
-                </ul>
+      <main style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <Container fluid className="flex-grow-1 p-0">
+          <Row className="gx-0 h-100">
+            <Col lg={4} xxl={3} className="border-end">
+              <Card className="h-100 rounded-0 border-end-0 border-bottom-0">
+                <Card.Body>
+                  <h1 className="h5 mb-3">Groups</h1>
+                  <ul className="list-group">
+                    <li className="list-group-item active">📈 Stocks</li>
+                  </ul>
+                </Card.Body>
               </Card>
             </Col>
-            <Col lg={8} xxl={9}>
-              <Card className="p-3" style={{ direction: 'rtl' }}>
+            <Col lg={8} xxl={9} className="d-flex flex-column">
+              <Card className="p-3 flex-grow-1 rounded-0 border-0" style={{ direction: 'rtl', display: 'flex', flexDirection: 'column' }}>
                 <div className="mb-3">
                   <h5>💬 Chat in Stocks</h5>
-                  <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
+                  <div className="flex-grow-1 overflow-auto" style={{ maxHeight: 'calc(100vh - 230px)' }}>
                     {messages.map((msg) => {
                       const isMyMessage = msg.userId === user?.userId
                       return (
                         <div
                           key={msg.id}
                           className={`mb-2 p-2 rounded ${isMyMessage ? 'bg-primary text-white text-end ms-auto' : 'bg-light text-start me-auto'}`}
-                          style={{ maxWidth: '75%' }}>
+                          style={{ maxWidth: '60%' }}>
                           <div className="fw-bold">{msg.name}</div>
                           <div>{msg.content}</div>
                           <div className="text-muted small">{new Date(msg.created_at).toLocaleTimeString()}</div>
@@ -106,16 +108,18 @@ const GroupsPage = () => {
                     <div ref={messagesEndRef} />
                   </div>
                 </div>
-                <Form className="d-flex flex-column gap-2">
-                  <Form.Control
-                    placeholder="Type a message..."
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                    onKeyDown={handleKeyPress}
-                  />
-                  <Button variant="primary" onClick={createMessage}>
-                    Send
-                  </Button>
+                <Form>
+                  <div className="d-flex gap-2 align-items-end justify-content-center" style={{ maxWidth: '600px', margin: '0 auto', width: '100%' }}>
+                    <Form.Control
+                      placeholder="...Type a message"
+                      value={content}
+                      onChange={(e) => setContent(e.target.value)}
+                      onKeyDown={handleKeyPress}
+                    />
+                    <Button variant="primary" onClick={createMessage}>
+                      Send
+                    </Button>
+                  </div>
                 </Form>
               </Card>
             </Col>

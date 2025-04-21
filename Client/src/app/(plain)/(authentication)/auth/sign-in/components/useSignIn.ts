@@ -6,6 +6,7 @@ import * as yup from 'yup'
 import { useAuthContext } from '@/context/useAuthContext'
 import { useNotificationContext } from '@/context/useNotificationContext'
 import type { UserType } from '@/types/auth'
+import { API_URL } from '@/utils/env'
 
 const useSignIn = () => {
   const [loading, setLoading] = useState(false)
@@ -46,7 +47,7 @@ const useSignIn = () => {
         password: values.password,
       })
 
-      const res = await fetch(`https://localhost:7204/api/User/Login?${queryParams.toString()}`, {
+      const res = await fetch(`${API_URL}/User/Login?${queryParams.toString()}`, {
         method: 'GET',
         mode: 'cors',
         headers: {
@@ -60,7 +61,6 @@ const useSignIn = () => {
 
       const data: UserType = await res.json()
 
-      console.log('Login response:', data)
       saveSession(data, false)
 
       redirectUser()

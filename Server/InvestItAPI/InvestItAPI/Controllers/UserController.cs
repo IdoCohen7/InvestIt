@@ -47,12 +47,12 @@ namespace InvestItAPI.Controllers
             return Ok(user);
         }
 
-        [HttpPost("{expertId}/follow")]
-        public IActionResult ToggleFollow(int expertId, [FromQuery] int userId)
+        [HttpPost("Follow")]
+        public IActionResult ToggleFollow(int followedId, [FromQuery] int followerId)
         {
             try
             {
-                string result = InvestItAPI.Models.User.ToggleFollow(userId, expertId);
+                string result = InvestItAPI.Models.User.ToggleFollow(followerId, followedId);
 
                 if (result == "Followed" || result == "Unfollowed")
                     return Ok(new { status = result });
@@ -61,7 +61,7 @@ namespace InvestItAPI.Controllers
             }
             catch (SqlException ex) when (ex.Number == 50000)
             {
-                // נתפסה שגיאה מה-RAISERROR ב-SP (למשל ניסיון לעקוב אחרי לא-מומחה)
+    
                 return BadRequest(new { error = ex.Message });
             }
             catch (Exception ex)
@@ -71,28 +71,28 @@ namespace InvestItAPI.Controllers
         }
 
 
-        [HttpGet("{expertId}/is-following")]
-        public IActionResult IsFollowing(int expertId, [FromQuery] int userId)
+
+        [HttpGet("{userId}")]
+        public IActionResult GetUserById(int userId, [FromQuery] int viewerId)
         {
             try
             {
-                bool isFollowing = InvestItAPI.Models.User.IsFollowing(userId, expertId);
-                return Ok(new { isFollowing });
+                var user = InvestItAPI.Models.User.GetUserById(userId, viewerId);
+                if (user == null)
+                    return NotFound(new { message = "User not found." });
+
+                return Ok(user);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Error: {ex.Message}");
+                return StatusCode(500, new
+                {
+                    error = "An error occurred while retrieving the user.",
+                    details = ex.Message
+                });
             }
         }
 
-
-
-        // GET api/<UserController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
 
         // POST api/<UserController>
         [HttpPost]
@@ -194,8 +194,7 @@ namespace InvestItAPI.Controllers
         }
 
 
-
-
+        
         // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)

@@ -111,7 +111,7 @@ export const socialWithTopbarRoutes: RoutesProps[] = [
 
 export const profilePagesRoutes: RoutesProps[] = [
   {
-    path: '/profile/feed',
+    path: '/profile/feed/:userId', // תיקון: הוספת '/' לפני :userId
     name: 'Feed',
     element: <ProfileFeed />,
   },

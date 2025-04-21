@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import { Modal, Button } from 'react-bootstrap'
 import { useAuthContext } from '@/context/useAuthContext'
 import Webcam from 'react-webcam'
+import { API_URL } from '@/utils/env'
 
 interface CameraModalProps {
   show: boolean
@@ -46,7 +47,7 @@ const CameraModal = ({ show, onClose, onUploadSuccess }: CameraModalProps) => {
     formData.append('files', capturedBlob, `${user.userId}.jpg`)
 
     try {
-      const uploadRes = await fetch(`https://localhost:7204/api/Upload?type=profile&id=${user.userId}`, {
+      const uploadRes = await fetch(`${API_URL}/Upload?type=profile&id=${user.userId}`, {
         method: 'POST',
         body: formData,
       })
@@ -54,7 +55,7 @@ const CameraModal = ({ show, onClose, onUploadSuccess }: CameraModalProps) => {
       const [uploadedPath] = await uploadRes.json()
       if (!uploadedPath) throw new Error('Upload failed')
 
-      const updateRes = await fetch(`https://localhost:7204/api/User/ProfilePic/${user.userId}`, {
+      const updateRes = await fetch(`${API_URL}/User/ProfilePic/${user.userId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(uploadedPath),

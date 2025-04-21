@@ -85,3 +85,23 @@ export type NotificationType = {
   isFriendRequest?: boolean
   isRead?: boolean
 }
+
+export type UserPage = {
+  userId: number
+  firstName: string
+  lastName: string
+  email: string
+  profilePic: string
+  bio: string
+  experienceLevel: string
+  createdAt: string
+  isActive: boolean
+  expertiseArea: string
+  price: number | null
+  availableForChat: boolean | null
+  rating: number | null
+  followersCount: number
+  followingCount: number
+  postsCount: number
+  isFollowed: boolean
+}

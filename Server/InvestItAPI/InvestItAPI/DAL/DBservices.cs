@@ -813,34 +813,7 @@ namespace InvestItAPI.DAL
             }
         }
 
-        public bool IsFollowing(int followerId, int followingId)
-        {
-            SqlConnection con = null;
-
-            try
-            {
-                con = connect("myProjDB");
-                SqlCommand cmd = new SqlCommand("SP_IsFollowing", con);
-                cmd.CommandType = CommandType.StoredProcedure;
-
-                cmd.Parameters.AddWithValue("@follower_id", followerId);
-                cmd.Parameters.AddWithValue("@following_id", followingId);
-
-                object result = cmd.ExecuteScalar();
-
-                return result != null && Convert.ToBoolean(result);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Error checking follow status: " + ex.Message);
-            }
-            finally
-            {
-                if (con != null)
-                    con.Close();
-            }
-        }
-
+        
         public bool UpdateProfilePic(int userId, string profilePicFileName)
         {
             SqlConnection con = null;
@@ -965,6 +938,114 @@ namespace InvestItAPI.DAL
             }
 
             return (users, totalCount);
+        }
+
+        public object GetUserById(int userId, int viewerId)
+        {
+            SqlConnection con = null;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("myProjDB");
+                cmd = new SqlCommand("SP_GetUserById", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@userId", userId);
+                cmd.Parameters.AddWithValue("@viewerId", viewerId);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    return new
+                    {
+                        userId = Convert.ToInt32(reader["user_id"]),
+                        firstName = reader["firstName"].ToString(),
+                        lastName = reader["lastName"].ToString(),
+                        email = reader["email"].ToString(),
+                        profilePic = reader["profile_pic"].ToString(),
+                        bio = reader["bio"].ToString(),
+                        experienceLevel = reader["experience_level"].ToString(),
+                        createdAt = Convert.ToDateTime(reader["created_at"]).ToString("yyyy-MM-dd"),
+                        isActive = Convert.ToBoolean(reader["isActive"]),
+                        expertiseArea = reader["expertise_area"]?.ToString(),
+                        price = reader["price"] != DBNull.Value ? Convert.ToDecimal(reader["price"]) : (decimal?)null,
+                        availableForChat = reader["available_for_chat"] != DBNull.Value ? Convert.ToBoolean(reader["available_for_chat"]) : (bool?)null,
+                        rating = reader["rating"] != DBNull.Value ? Convert.ToDecimal(reader["rating"]) : (decimal?)null,
+                        followersCount = Convert.ToInt32(reader["followersCount"]),
+                        followingCount = Convert.ToInt32(reader["followingCount"]),
+                        postsCount = Convert.ToInt32(reader["postsCount"]),
+                        isFollowed = Convert.ToBoolean(reader["isFollowed"])
+                    };
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error retrieving user details", ex);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+        }
+
+        public List<object> GetPostsOfUser(int page, int pageSize, int userId, int profileUserId)
+        {
+            SqlConnection con = null;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("myProjDB");
+                cmd = new SqlCommand("SP_GetAllPostsOfUser", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@Page", page);
+                cmd.Parameters.AddWithValue("@PageSize", pageSize);
+                cmd.Parameters.AddWithValue("@UserId", userId);
+                cmd.Parameters.AddWithValue("@ProfileUserId", profileUserId);
+
+                List<object> posts = new List<object>();
+                SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                while (reader.Read())
+                {
+                    var post = new
+                    {
+                        PostId = Convert.ToInt32(reader["post_id"]),
+                        UserId = Convert.ToInt32(reader["user_id"]),
+                        Content = reader["content"].ToString(),
+                        CreatedAt = Convert.ToDateTime(reader["created_at"]).ToString("dd/MM/yyyy"),
+                        UpdatedAt = reader["updated_at"] != DBNull.Value ? Convert.ToDateTime(reader["updated_at"]).ToString("o") : null,
+                        Vector = reader["post_vector"] != DBNull.Value ? reader["post_vector"].ToString() : null,
+                        LikesCount = Convert.ToInt32(reader["likesCount"]),
+                        CommentsCount = Convert.ToInt32(reader["commentsCount"]),
+                        FullName = reader["fullName"].ToString(),
+                        UserProfilePic = reader["userProfilePic"].ToString(),
+                        UserExperienceLevel = reader["userExperienceLevel"].ToString(),
+                        HasLiked = Convert.ToBoolean(reader["hasLiked"])
+                    };
+
+                    posts.Add(post);
+                }
+
+                return posts;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error retrieving posts", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
         }
 
 

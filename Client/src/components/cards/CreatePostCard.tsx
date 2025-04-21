@@ -6,6 +6,7 @@ import { useAuthContext } from '@/context/useAuthContext'
 import placeHolder from '@/assets/images/avatar/placeholder.jpg'
 import { useNotificationContext } from '@/context/useNotificationContext'
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
+import { API_URL } from '@/utils/env'
 
 const CreatePostCard = () => {
   const [newPost, setNewPost] = useState('')
@@ -20,7 +21,7 @@ const CreatePostCard = () => {
     if (!newPost.trim()) return
 
     try {
-      const res = await fetch('https://localhost:7204/api/Post/add', {
+      const res = await fetch(`${API_URL}/Post/add`, {
         method: 'POST',
         mode: 'cors',
         headers: {

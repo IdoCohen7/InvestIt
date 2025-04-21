@@ -7,6 +7,7 @@ import { Card } from 'react-bootstrap'
 import placeHolder from '@/assets/images/avatar/placeholder.jpg'
 import { BsTrashFill } from 'react-icons/bs'
 import { useAuthContext } from '@/context/useAuthContext'
+import { API_URL } from '@/utils/env'
 
 const CommentItem = ({
   commentId,
@@ -31,11 +32,10 @@ const CommentItem = ({
     if (!confirm('Are you sure you want to delete this comment?')) return
 
     try {
-      const res = await fetch(`https://localhost:7204/api/Comment/${commentId}`, {
+      const res = await fetch(`${API_URL}/Comment/${commentId}`, {
         method: 'DELETE',
       })
 
-      console.log(res)
       if (!res.ok) throw new Error('Failed to delete comment')
 
       if (onDelete) onDelete()

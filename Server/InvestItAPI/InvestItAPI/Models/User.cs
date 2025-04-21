@@ -100,8 +100,7 @@ namespace InvestItAPI.Models
  <div class='container'>
     <h2>!InvestIt ברוך הבא לפלטפורמת</h2>
     <p>.תודה שנרשמת! אנחנו שמחים לראות אותך בפלטפורמה שלנו</p>
-      <p>:כדי להתחיל, לחץ על הכפתור הבא</p>
-    <a href='https://investit.com/dashboard' class='btn'>כניסה לאתר</a>
+     
   <p class='footer'> .2024 InvestIt, כל הזכויות שמורות ©</p>
 </div>
 </body>
@@ -111,10 +110,10 @@ namespace InvestItAPI.Models
 
             if (registeredUser != null)
             {
-                /*
+                
                 EmailService emailService = new EmailService();
                 emailService.SendEmail(user.Email, "InvestIt Registration Complete!", body);
-                */
+                
                 return registeredUser;
             }
 
@@ -154,10 +153,6 @@ namespace InvestItAPI.Models
             return dBservices.ToggleFollow(followerId, followingId);
         }
 
-        static public bool IsFollowing(int followerId, int followingId) {
-            DBservices dbServices = new DBservices();
-            return dbServices.IsFollowing(followerId, followingId);
-        }
 
         static public bool UploadProfilePic(string profilePic, int userId)
         {
@@ -183,5 +178,10 @@ namespace InvestItAPI.Models
             return dBservices.SearchUsers(query, page, pageSize);
         }
 
+        static public Object GetUserById(int userId, int viewerId)
+        {
+            DBservices dBservices = new DBservices ();
+            return dBservices.GetUserById(userId, viewerId);
+        }
     }
 }

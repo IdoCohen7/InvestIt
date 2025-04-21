@@ -66,5 +66,12 @@ namespace InvestItAPI.Models
             DBservices dBservices = new DBservices();
             return dBservices.TogglePostLike(postId, userId);
         }
+
+        public static List<object> GetPostsOfUser(int page, int pageSize, int userId, int profileUserId)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.GetPostsOfUser(page, pageSize, userId, profileUserId);
+        }
+
     }
 }

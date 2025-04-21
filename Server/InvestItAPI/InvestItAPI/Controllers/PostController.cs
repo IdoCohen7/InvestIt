@@ -35,6 +35,30 @@ namespace InvestItAPI.Controllers
             }
         }
 
+        [HttpGet("UserPage")]
+        public IActionResult GetPostOfUser([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] int userId = 0, [FromQuery] int profileUserId = 0)
+        {
+            try
+            {
+                var posts = InvestItAPI.Models.Post.GetPostsOfUser(page, pageSize, userId, profileUserId);
+
+                if (posts == null || posts.Count == 0)
+                {
+                    return NoContent();
+                }
+
+                return Ok(posts);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    error = "An error occurred while retrieving posts.",
+                    details = ex.Message
+                });
+            }
+        }
+
 
 
 

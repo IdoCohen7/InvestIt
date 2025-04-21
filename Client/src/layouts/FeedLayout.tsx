@@ -1,7 +1,7 @@
 import { lazy, Suspense } from 'react'
 const TopHeader = lazy(() => import('@/components/layout/TopHeader'))
 
-import { profilePanelLinksData1 } from '@/assets/data/layout'
+import { ProfilePanelLinksData1 } from '@/assets/data/layout'
 import Messaging from '@/components/layout/Messaging'
 import ProfilePanel from '@/components/layout/ProfilePanel'
 import { useLayoutContext } from '@/context/useLayoutContext'
@@ -38,10 +38,12 @@ import { FaSlidersH } from 'react-icons/fa'
 import { FaXmark } from 'react-icons/fa6'
 import FallbackLoading from '@/components/FallbackLoading'
 import Preloader from '@/components/Preloader'
+import { useAuthContext } from '@/context/useAuthContext'
 
 const FeedLayout = ({ children }: ChildrenType) => {
   const { messagingOffcanvas, startOffcanvas } = useLayoutContext()
   const { width } = useViewPort()
+  const { user } = useAuthContext()
   return (
     <>
       <Suspense fallback={<Preloader />}>
@@ -69,7 +71,7 @@ const FeedLayout = ({ children }: ChildrenType) => {
               <nav className="navbar navbar-expand-lg mx-0">
                 {width >= 992 ? (
                   <div className="d-block px-2 px-lg-0">
-                    <ProfilePanel links={profilePanelLinksData1} />
+                    <ProfilePanel links={ProfilePanelLinksData1(Number(user?.userId))} />
                   </div>
                 ) : (
                   <Offcanvas show={startOffcanvas.open} placement="start" onHide={startOffcanvas.toggle} tabIndex={-1} id="offcanvasSideNavbar">
@@ -77,7 +79,7 @@ const FeedLayout = ({ children }: ChildrenType) => {
 
                     <OffcanvasBody className="d-block px-2 px-lg-0">
                       <div>
-                        <ProfilePanel links={profilePanelLinksData1} />
+                        <ProfilePanel links={ProfilePanelLinksData1(Number(user?.userId))} />
                       </div>
                     </OffcanvasBody>
                   </Offcanvas>

@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { useAuthContext } from '@/context/useAuthContext'
 import { useNotificationContext } from '@/context/useNotificationContext'
+import { API_URL } from '@/utils/env'
 
 const ChangePassword = () => {
   const [firstPassword, setFirstPassword] = useState<string>('')
@@ -36,7 +37,7 @@ const ChangePassword = () => {
     if (!user) return
 
     try {
-      const res = await fetch('https://localhost:7204/api/User/ChangePassword', {
+      const res = await fetch(`${API_URL}/User/ChangePassword`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -150,7 +151,7 @@ const AccountSettings = () => {
     }
 
     try {
-      const res = await fetch('https://localhost:7204/api/User/update', {
+      const res = await fetch(`${API_URL}/User/update`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

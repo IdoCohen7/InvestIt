@@ -40,8 +40,9 @@ const ProfilePanel = ({ links }: ProfilePanelProps) => {
             </div>
 
             <h5 className="mb-0">
-              <Link to="">{user ? user.firstName + ' ' + user.lastName : 'Guest'}</Link>
+              <Link to={`/profile/feed/${user?.userId}`}>{user ? user.firstName + ' ' + user.lastName : 'Guest'}</Link>
             </h5>
+
             <small>{user ? user.experienceLevel : 'No Level of Experience'}</small>
             <p className="mt-3" style={{ overflowWrap: 'anywhere' }}>
               {user ? user.bio : 'No bio available'}

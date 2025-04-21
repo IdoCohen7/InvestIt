@@ -160,3 +160,18 @@
   color: #999;
   font-style: italic;
 }
+
+/* index.css או global.css */
+.resizable {
+  resize: horizontal;
+  overflow: auto;
+  min-width: 200px;
+  max-width: 500px;
+}
+
+.gutter {
+  background-color: #666;
+  background-clip: padding-box;
+  cursor: col-resize;
+  height: 100%;
+}

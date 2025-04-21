@@ -3,6 +3,7 @@ import axios from 'axios'
 import LoadMoreButton from '@/app/(social)/feed/(container)/home/components/LoadMoreButton'
 import { UserType } from '@/types/auth'
 import { useNotificationContext } from '@/context/useNotificationContext'
+import { API_URL } from '@/utils/env'
 
 interface Props {
   query: string
@@ -22,13 +23,12 @@ const SearchResultsComponent = ({ query }: Props) => {
     if (pageToLoad === 1) setLoading(true)
 
     try {
-      const response = await axios.get('https://localhost:7204/api/User/Search', {
+      const response = await axios.get(`${API_URL}/User/Search`, {
         params: { query, page: pageToLoad, pageSize: PAGE_SIZE },
       })
 
       const newUsers = response.data.users || []
       const total = response.data.totalCount || 0
-
       setTotalCount(total)
       setResults((prev) => (pageToLoad === 1 ? newUsers : [...prev, ...newUsers]))
     } catch (err) {

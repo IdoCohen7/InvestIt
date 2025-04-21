@@ -6,6 +6,7 @@ import * as yup from 'yup'
 import { useAuthContext } from '@/context/useAuthContext'
 import { useNotificationContext } from '@/context/useNotificationContext'
 import type { UserType } from '@/types/auth'
+import { API_URL } from '@/utils/env'
 
 const useSignUp = () => {
   const [loading, setLoading] = useState(false)
@@ -42,7 +43,7 @@ const useSignUp = () => {
     try {
       setLoading(true)
 
-      const res = await fetch('https://localhost:7204/api/User', {
+      const res = await fetch(`${API_URL}/User`, {
         method: 'POST',
         mode: 'cors',
         headers: {

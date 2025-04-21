@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Card, Row, Col } from 'react-bootstrap'
+import { SOCKET_URL } from '@/utils/env'
 
 type SymbolData = {
   price: number
@@ -18,10 +19,9 @@ const LivePrices = () => {
   const connectWebSocket = () => {
     if (socketRef.current?.readyState === WebSocket.OPEN) return
 
-    socketRef.current = new WebSocket('wss://localhost:7204/ws/prices')
+    socketRef.current = new WebSocket(`${SOCKET_URL}/prices`)
 
     socketRef.current.onopen = () => {
-      console.log('📡 WebSocket connected')
       setConnected(true)
     }
 

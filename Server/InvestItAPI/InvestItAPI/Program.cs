@@ -10,12 +10,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddHostedService<FinnhubStreamService>();
+
 
 var app = builder.Build();
 
+
 // WebSocket support
 app.UseWebSockets();
+
 
 // Static file hosting for profile pictures
 app.UseStaticFiles(new StaticFileOptions
@@ -25,7 +29,7 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = "/uploadedFiles/profilePics"
 });
 
-if (app.Environment.IsDevelopment())
+if (true)
 {
     app.UseSwagger();
     app.UseSwaggerUI();
@@ -34,6 +38,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
 app.UseAuthorization();
+
 
 // WebSocket endpoint for live prices
 app.Map("/ws/prices", async context =>
@@ -90,6 +95,7 @@ app.Map("/ws/prices", async context =>
         context.Response.StatusCode = 400;
     }
 });
+
 
 app.MapControllers();
 app.Run();

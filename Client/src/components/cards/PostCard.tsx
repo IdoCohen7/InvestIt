@@ -19,6 +19,8 @@ import CommentItem from './components/CommentItem'
 import type { CommentType } from '@/types/data'
 import { useAuthContext } from '@/context/useAuthContext'
 import placeHolder from '@/assets/images/avatar/placeholder.jpg'
+import { Link } from 'react-router-dom'
+import { API_URL } from '@/utils/env'
 
 interface PostCardProps {
   postId: number
@@ -104,7 +106,7 @@ const PostCard = ({
 
   const fetchComments = async (page = 1) => {
     try {
-      const res = await fetch(`https://localhost:7204/api/Comment?postId=${postId}&page=${page}&pageSize=${PAGE_SIZE}`)
+      const res = await fetch(`${API_URL}/Comment?postId=${postId}&page=${page}&pageSize=${PAGE_SIZE}`)
 
       if (res.status === 204 || res.status === 404) {
         if (page === 1) setComments([])
@@ -142,7 +144,7 @@ const PostCard = ({
         createdAt: new Date().toISOString(),
       }
 
-      const res = await fetch('https://localhost:7204/api/Comment', {
+      const res = await fetch(`${API_URL}/Comment`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(commentToSend),
@@ -183,7 +185,7 @@ const PostCard = ({
   const handleDeletePost = async () => {
     if (confirm('Are you sure you want to delete this post?')) {
       try {
-        const res = await fetch(`https://localhost:7204/api/Post/delete?postId=${postId}&userId=${user?.userId}`, {
+        const res = await fetch(`${API_URL}/Post/delete?postId=${postId}&userId=${user?.userId}`, {
           method: 'DELETE',
         })
         if (!res.ok) throw new Error('Failed to delete post')
@@ -196,7 +198,7 @@ const PostCard = ({
 
   const handleLike = async () => {
     try {
-      const res = await fetch(`https://localhost:7204/api/Post/${postId}/like?userId=${user?.userId}`, {
+      const res = await fetch(`${API_URL}/Post/${postId}/like?userId=${user?.userId}`, {
         method: 'POST',
       })
       const data = await res.json()
@@ -215,7 +217,7 @@ const PostCard = ({
   const handleEditPost = async () => {
     if (!editContent.trim()) return
     try {
-      const res = await fetch(`https://localhost:7204/api/Post/edit?postId=${postId}&userId=${user?.userId}`, {
+      const res = await fetch(`${API_URL}/Post/edit?postId=${postId}&userId=${user?.userId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(editContent),
@@ -234,32 +236,42 @@ const PostCard = ({
   return (
     <Card>
       <CardHeader className="border-0 pb-0">
-        <div className="d-flex align-items-center justify-content-between">
-          <div className="d-flex align-items-center">
+        <div className="d-flex justify-content-between align-items-center">
+          {/* פרטי המשתמש */}
+          <Link to={`/profile/feed/${userId}`} className="d-flex align-items-center text-decoration-none text-reset">
             <div className="avatar avatar-story me-2">
-              <img className="avatar-img rounded-circle" src={userProfilePic || placeHolder} alt={fullName} />
+              <img
+                className="avatar-img rounded-circle"
+                src={userProfilePic || placeHolder}
+                alt={fullName}
+                style={{
+                  transition: '0.2s',
+                  border: '2px solid transparent',
+                }}
+                onMouseOver={(e) => (e.currentTarget.style.borderColor = '#0d6efd')}
+                onMouseOut={(e) => (e.currentTarget.style.borderColor = 'transparent')}
+              />
             </div>
             <div>
               <div className="nav nav-divider">
-                <h6 className="nav-item card-title mb-0">{fullName}</h6>
+                <h6 className="nav-item card-title mb-0 text-body">{fullName}</h6>
                 <span className="nav-item small">{createdAt}</span>
               </div>
-              <p className="mb-0 small">{userExperienceLevel}</p>
+              <p className="mb-0 small text-muted">{userExperienceLevel}</p>
             </div>
-          </div>
-          <div className="d-flex align-items-center gap-2">
-            {user?.userId === userId && (
-              <>
-                <button onClick={() => setIsEditing((prev) => !prev)} className="btn btn-sm btn-primary-soft" title="Edit post">
-                  <BsPencilSquare />
-                </button>
-                <button onClick={handleDeletePost} className="btn btn-sm btn-danger-soft" title="Delete post">
-                  <BsTrashFill />
-                </button>
-              </>
-            )}
-            <ActionMenu name={fullName} />
-          </div>
+          </Link>
+
+          {/* כפתורי עריכה ומחיקה */}
+          {user?.userId === userId && (
+            <div className="d-flex align-items-center gap-2">
+              <button onClick={() => setIsEditing((prev) => !prev)} className="btn btn-sm btn-primary-soft" title="Edit post">
+                <BsPencilSquare />
+              </button>
+              <button onClick={handleDeletePost} className="btn btn-sm btn-danger-soft" title="Delete post">
+                <BsTrashFill />
+              </button>
+            </div>
+          )}
         </div>
       </CardHeader>
 
