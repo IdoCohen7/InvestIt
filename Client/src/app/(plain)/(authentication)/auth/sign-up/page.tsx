@@ -10,7 +10,7 @@ const SignUp = () => {
     <>
       <PageMetaData title='Sign Up' />
       <AuthLayout>
-        <Card className="card-body rounded-3 p-4 p-sm-5">
+        <Card className="signup-card card-body rounded-3 p-3 p-sm-4 p-md-5 bg-light bg-opacity-75 animate-float">
           <div className="text-center">
             <h1 className="mb-2">Sign up</h1>
             <span className="d-block">

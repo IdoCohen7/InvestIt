@@ -4,9 +4,12 @@ import useSignIn from './useSignIn'
 import TextFormInput from '@/components/form/TextFormInput'
 import PasswordFormInput from '@/components/form/PasswordFormInput'
 import { Button } from 'react-bootstrap'
+import FallbackLoading from '@/components/FallbackLoading'
 
 const LoginForm = () => {
   const { loading, login, control } = useSignIn()
+
+  if (loading) return <FallbackLoading />
 
   return (
     <form className="mt-sm-4" onSubmit={login}>

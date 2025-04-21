@@ -39,3 +39,65 @@
     box-shadow: none !important;
   }
 }
+
+.signup-card {
+  max-width: 420px;
+  margin: 0 auto;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+  }
+}
+
+@include media-breakpoint-down(md) {
+  .signup-card {
+    margin: 1rem;
+  }
+  .signup-card .form-control {
+    margin-bottom: 0.75rem;
+  }
+}
+
+// Floating animation for auth forms
+@keyframes floatIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-float {
+  animation: floatIn 0.6s ease-out both;
+}
+
+.auth-background {
+  background-image: url("/Images/backk.png");
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: cover;
+  background-color: #f8f9fa;
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+}
+
+.auth-header-text {
+  position: absolute;
+  top: 1.0rem;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.5rem 1rem;
+  background-color: rgba(255,255,255,0.2);
+  border-radius: 0.5rem;
+  text-shadow: 0 0 8px rgba(255,255,255,0.8);
+  backdrop-filter: blur(5px);
+  z-index: 10;
+}

@@ -9,7 +9,7 @@ const SignIn = () => {
     <>
       <PageMetaData title="Sign In" />
       <AuthLayout>
-        <Card className="card-body text-center p-4 p-sm-5">
+        <Card className="card-body text-center p-4 p-sm-5 bg-light bg-opacity-75 animate-float">
           <h1 className="mb-2">Sign in</h1>
           <p className="mb-0">
             Don&apos;t have an account?<Link to="/auth/sign-up"> Click here to sign up</Link>
