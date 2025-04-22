@@ -4,6 +4,7 @@ import LoadMoreButton from '@/app/(social)/feed/(container)/home/components/Load
 import { UserType } from '@/types/auth'
 import { useNotificationContext } from '@/context/useNotificationContext'
 import { API_URL } from '@/utils/env'
+import { Link } from 'react-router-dom'
 
 interface Props {
   query: string
@@ -63,23 +64,31 @@ const SearchResultsComponent = ({ query }: Props) => {
           <div className="row">
             {results.map((user) => (
               <div key={user.userId} className="col-sm-6 col-md-4 mb-3">
-                <div className="card h-100 shadow-sm" style={{ fontSize: '0.9rem' }}>
-                  <img
-                    src={user.profilePic}
-                    className="card-img-top"
-                    alt={user.firstName}
-                    style={{ objectFit: 'cover', height: '140px', aspectRatio: '4 / 3' }}
-                  />
-                  <div className="card-body p-2">
-                    <h6 className="card-title mb-1">
-                      {user.firstName} {user.lastName}
-                    </h6>
-                    <p className="card-text text-truncate" title={user.bio}>
-                      {user.bio}
-                    </p>
-                    <small className="text-muted">Experience: {user.experienceLevel}</small>
+                <Link to={`/profile/feed/${user.userId}`} className="text-decoration-none" style={{ color: 'inherit' }}>
+                  <div
+                    className="card h-100 shadow-sm transition-card"
+                    style={{
+                      fontSize: '0.9rem',
+                      cursor: 'pointer',
+                      transition: 'transform 0.2s, box-shadow 0.2s',
+                    }}>
+                    <img
+                      src={user.profilePic}
+                      className="card-img-top"
+                      alt={user.firstName}
+                      style={{ objectFit: 'cover', height: '140px', aspectRatio: '4 / 3' }}
+                    />
+                    <div className="card-body p-2">
+                      <h6 className="card-title mb-1">
+                        {user.firstName} {user.lastName}
+                      </h6>
+                      <p className="card-text text-truncate" title={user.bio}>
+                        {user.bio}
+                      </p>
+                      <small className="text-muted">Experience: {user.experienceLevel}</small>
+                    </div>
                   </div>
-                </div>
+                </Link>
               </div>
             ))}
           </div>

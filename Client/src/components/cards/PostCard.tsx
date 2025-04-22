@@ -38,6 +38,7 @@ interface PostCardProps {
   onDelete?: (postId: number) => void
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const ActionMenu = ({ name }: { name?: string }) => (
   <Dropdown>
     <DropdownToggle as="a" className="text-secondary btn btn-secondary-soft-hover py-1 px-2 content-none" id="cardFeedAction">
@@ -255,7 +256,7 @@ const PostCard = ({
             <div>
               <div className="nav nav-divider">
                 <h6 className="nav-item card-title mb-0 text-body">{fullName}</h6>
-                <span className="nav-item small">{createdAt}</span>
+                <span className="nav-item small">{createdAt} </span>
               </div>
               <p className="mb-0 small text-muted">{userExperienceLevel}</p>
             </div>
@@ -286,7 +287,7 @@ const PostCard = ({
         ) : (
           <>
             <p>{editContent}</p>
-            {editedAt && !isEditing && !isNaN(Date.parse(editedAt)) && (
+            {editedAt && !isEditing && !isNaN(Date.parse(editedAt)) && editedAt !== createdAt && (
               <p className="text-muted small mb-1">
                 Edited on{' '}
                 {new Date(editedAt).toLocaleString(undefined, {

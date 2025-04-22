@@ -23,6 +23,7 @@ import CameraModal from '@/components/cameraModal'
 import { useAuthContext } from '@/context/useAuthContext'
 import type { ChildrenType } from '@/types/component'
 import type { UserPage } from '@/types/data'
+import Banner from '@/assets/images/bg/banner2.png'
 
 const TopHeader = lazy(() => import('@/components/layout/TopHeader'))
 
@@ -53,6 +54,7 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleImageUpload = async (relativePath: string) => {
     if (!profileUser) return
 
@@ -130,7 +132,7 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
                 <div
                   className="h-200px rounded-top"
                   style={{
-                    backgroundImage: `url("/images/Banner2.png")`,
+                    backgroundImage: `url(${Banner})`,
                     backgroundPosition: 'top',
                     backgroundSize: '100% auto',
                     backgroundRepeat: 'no-repeat',
@@ -140,7 +142,7 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
                 <CardBody className="py-0">
                   <div className="d-sm-flex align-items-center text-center text-sm-start justify-content-between flex-wrap gap-3">
                     <div
-                      className="avatar avatar-xxl mt-n5 mb-3"
+                      className="avatar avatar-xxl mt-n5 mb-3 position-relative"
                       onClick={() => isOwner && setShowCamera(true)}
                       role={isOwner ? 'button' : undefined}
                       style={{ cursor: isOwner ? 'pointer' : 'default' }}>
@@ -149,6 +151,8 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
                         src={profileUser.profilePic || placeHolder}
                         alt="avatar"
                       />
+
+                      {isOwner && <div className="avatar-overlay"></div>}
                     </div>
 
                     <div className="flex-grow-1 d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">

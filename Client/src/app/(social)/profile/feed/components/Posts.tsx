@@ -4,8 +4,11 @@ import { SocialPostType } from '@/types/data'
 import LoadMoreButton from '@/app/(social)/feed/(container)/home/components/LoadMoreButton'
 import { useAuthContext } from '@/context/useAuthContext'
 import { API_URL } from '@/utils/env'
+import { motion, AnimatePresence } from 'framer-motion'
+
 const Posts = ({ userId }: { userId?: string }) => {
   const [posts, setPosts] = useState<SocialPostType[]>([])
+  const [deletedPostIds, setDeletedPostIds] = useState<number[]>([])
   const [page, setPage] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
   const [hasMore, setHasMore] = useState(true)
@@ -19,9 +22,7 @@ const Posts = ({ userId }: { userId?: string }) => {
       const res = await fetch(`${API_URL}/Post/UserPage?page=${pageToFetch}&pageSize=${PAGE_SIZE}&userId=${user.userId}&profileUserId=${userId}`)
 
       if (res.status === 204) {
-        if (pageToFetch === 1) {
-          setPosts([])
-        }
+        if (pageToFetch === 1) setPosts([])
         setHasMore(false)
         return
       }
@@ -46,21 +47,35 @@ const Posts = ({ userId }: { userId?: string }) => {
 
   useEffect(() => {
     if (!userId || !user?.userId) return
-
     setPage(1)
     setHasMore(true)
+    setDeletedPostIds([])
     fetchPosts(1)
   }, [userId, user?.userId])
 
+  const handlePostDelete = (postId: number) => {
+    setDeletedPostIds((prev) => [...prev, postId])
+  }
+
+  const visiblePosts = posts.filter((post) => !deletedPostIds.includes(post.postId))
+
   return (
     <div className="mt-4">
-      {posts.length === 0 && !isLoading && <p className="text-center text-muted fs-5">No posts found for this user.</p>}
+      {visiblePosts.length === 0 && !isLoading && <p className="text-center text-muted fs-5">No posts found for this user.</p>}
 
-      {posts.map((post) => (
-        <div key={post.postId} className="mb-4">
-          <PostCard {...post} />
-        </div>
-      ))}
+      <AnimatePresence>
+        {visiblePosts.map((post) => (
+          <motion.div
+            key={post.postId}
+            className="mb-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.3 }}>
+            <PostCard {...post} onDelete={handlePostDelete} hasLiked={post.hasLiked} />
+          </motion.div>
+        ))}
+      </AnimatePresence>
 
       {hasMore && !isLoading && <LoadMoreButton onClick={() => fetchPosts(page)} />}
       {isLoading && <p className="text-center">Loading...</p>}

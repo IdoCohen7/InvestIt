@@ -1,6 +1,5 @@
 import { Navigate, Route, Routes, type RouteProps } from 'react-router-dom'
 import { Suspense } from 'react'
-
 import OtherLayout from '@/layouts/OtherLayout'
 import { useAuthContext } from '@/context/useAuthContext'
 import { authRoutes, feedRoutes, profilePagesRoutes, settingPagesRoutes, socialWithTopbarRoutes } from '@/routes/index'

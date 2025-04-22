@@ -62,7 +62,7 @@ const ProfileDropdown = () => {
             </div>
           </div>
 
-          <DropdownItem as={Link} className="btn btn-primary-soft btn-sm my-2 text-center" to="/profile/feed">
+          <DropdownItem as={Link} className="btn btn-primary-soft btn-sm my-2 text-center" to={`/profile/feed/${user?.userId}`}>
             View profile
           </DropdownItem>
         </div>

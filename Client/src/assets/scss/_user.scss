@@ -175,3 +175,28 @@
   cursor: col-resize;
   height: 100%;
 }
+
+.avatar-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0); /* לא מוצג בהתחלה */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+  pointer-events: none;
+  font-weight: bold;
+}
+
+.avatar:hover .avatar-overlay {
+  background: rgba(0, 0, 0, 0.4); /* הצללה */
+}
+
+.transition-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}

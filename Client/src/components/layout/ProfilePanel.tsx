@@ -4,6 +4,8 @@ import { Card, CardBody, CardFooter } from 'react-bootstrap'
 import { useAuthContext } from '@/context/useAuthContext'
 import placeHolder from '@/assets/images/avatar/placeholder.jpg'
 import { Link } from 'react-router-dom'
+import Banner from '@/assets/images/bg/banner2.png'
+import { formatDateToDDMMYYYY } from '@/utils/date'
 
 type ProfilePanelProps = {
   links: ProfilePanelLink[]
@@ -18,7 +20,7 @@ const ProfilePanel = ({ links }: ProfilePanelProps) => {
         <div
           className="h-50px"
           style={{
-            backgroundImage: `url("/images/Banner2.png")`,
+            backgroundImage: `url(${Banner})`,
             backgroundPosition: 'center',
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',
@@ -55,7 +57,7 @@ const ProfilePanel = ({ links }: ProfilePanelProps) => {
               </div>
               <div className="vr" />
               <div>
-                <h6 className="mb-0 small">{user ? user.createdAt : 'No Date'}</h6>
+                <h6 className="mb-0 small">{user ? user?.createdAt : 'No Date'}</h6>
                 <small className="text-muted fs-xs">Joined</small>
               </div>
               <div className="vr" />
@@ -79,9 +81,8 @@ const ProfilePanel = ({ links }: ProfilePanelProps) => {
             ))}
           </ul>
         </CardBody>
-
         <CardFooter className="text-center py-2">
-          <Link className="btn btn-sm btn-link" to="/profile/feed">
+          <Link className="btn btn-sm btn-link" to={`/profile/feed/${user?.userId}`}>
             View Profile
           </Link>
         </CardFooter>

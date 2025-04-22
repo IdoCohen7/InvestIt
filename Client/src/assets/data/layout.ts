@@ -11,7 +11,7 @@ import coinImg from '@/assets/images/icon/bank-outline-filled.svg'
 export const ProfilePanelLinksData1 = (userId: number): ProfilePanelLink[] => [
   {
     image: homeImg,
-    name: 'Feed',
+    name: 'My Feed',
     link: `/profile/feed/${userId}`, // כאן דינמי
   },
   {

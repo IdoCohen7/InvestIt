@@ -9,6 +9,7 @@ import { BsFlag, BsInfoCircle, BsPersonX, BsSlashCircle, BsThreeDots } from 'rea
 import { Link } from 'react-router-dom'
 import logo12 from '@/assets/images/logo/12.svg'
 import postImg2 from '@/assets/images/post/3by2/02.jpg'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const ActionMenu = ({ name }: { name?: string }) => (
   <Dropdown drop="start">
@@ -72,9 +73,8 @@ const SponsoredCard = () => (
   </Card>
 )
 
-const Feeds = () => {
+const Feeds = ({ newPost }: { newPost: SocialPostType | null }) => {
   const [posts, setPosts] = useState<SocialPostType[]>([])
-  const [page, setPage] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
   const [hasMore, setHasMore] = useState(true)
   const [deletedPostIds, setDeletedPostIds] = useState<number[]>([])
@@ -83,15 +83,15 @@ const Feeds = () => {
   const fetchPage = async () => {
     setIsLoading(true)
     try {
-      const newPosts = await getAllFeeds(page, 3, user?.userId)
+      const offset = posts.filter((p) => !deletedPostIds.includes(p.postId)).length
+      const nextPage = Math.floor(offset / 3) + 1
+
+      const newPosts = await getAllFeeds(nextPage, 3, user?.userId)
       if (newPosts.length === 0) {
         setHasMore(false)
       } else {
-        setPosts((prev) => {
-          const newUniquePosts = newPosts.filter((newPost) => !prev.some((existingPost) => existingPost.postId === newPost.postId))
-          return [...prev, ...newUniquePosts]
-        })
-        setPage((prev) => prev + 1)
+        const unique = newPosts.filter((p) => !posts.some((ex) => ex.postId === p.postId))
+        setPosts((prev) => [...prev, ...unique])
       }
     } catch (err) {
       console.error('Failed to load more posts:', err)
@@ -106,15 +106,30 @@ const Feeds = () => {
 
   useEffect(() => {
     fetchPage()
-  }, []) // fetch initial posts
+  }, [])
+
+  useEffect(() => {
+    if (newPost && !posts.some((p) => p.postId === newPost.postId)) {
+      setPosts((prev) => [newPost, ...prev])
+    }
+  }, [newPost])
 
   return (
     <>
-      {posts
-        .filter((post) => !deletedPostIds.includes(post.postId))
-        .map((post) => (
-          <PostCard {...post} key={post.postId} onDelete={handlePostDelete} hasLiked={post.hasLiked} />
-        ))}
+      <AnimatePresence>
+        {posts
+          .filter((post) => !deletedPostIds.includes(post.postId))
+          .map((post) => (
+            <motion.div
+              key={post.postId}
+              initial={{ opacity: 0, y: -15 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 15 }}
+              transition={{ duration: 0.3 }}>
+              <PostCard {...post} onDelete={handlePostDelete} hasLiked={post.hasLiked} />
+            </motion.div>
+          ))}
+      </AnimatePresence>
 
       {hasMore && !isLoading && <LoadMoreButton onClick={fetchPage} />}
       {isLoading && <p className="text-center">Loading...</p>}

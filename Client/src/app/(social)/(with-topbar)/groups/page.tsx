@@ -3,6 +3,7 @@ import { supabase } from '@/supabase/supabase'
 import { Card, Button, Form, Row, Col, Container } from 'react-bootstrap'
 import PageMetaData from '@/components/PageMetaData'
 import { useAuthContext } from '@/context/useAuthContext'
+import { useNavigate } from 'react-router-dom'
 
 interface Message {
   id: number
@@ -16,6 +17,7 @@ const GroupsPage = () => {
   const [messages, setMessages] = useState<Message[]>([])
   const [content, setContent] = useState('')
   const messagesEndRef = useRef<HTMLDivElement | null>(null)
+  const navigate = useNavigate()
 
   const { user } = useAuthContext()
   const fullName = `${user?.firstName ?? ''} ${user?.lastName ?? ''}`.trim()
@@ -99,7 +101,14 @@ const GroupsPage = () => {
                           key={msg.id}
                           className={`mb-2 p-2 rounded ${isMyMessage ? 'bg-primary text-white text-end ms-auto' : 'bg-light text-start me-auto'}`}
                           style={{ maxWidth: '60%' }}>
-                          <div className="fw-bold">{msg.name}</div>
+                          <div
+                            className="fw-bold"
+                            style={{ cursor: 'pointer', transition: '0.2s' }}
+                            onClick={() => navigate(`/profile/feed/${msg.userId}`)}
+                            onMouseOver={(e) => (e.currentTarget.style.textDecoration = 'underline')}
+                            onMouseOut={(e) => (e.currentTarget.style.textDecoration = 'none')}>
+                            {msg.name}
+                          </div>
                           <div>{msg.content}</div>
                           <div className="text-muted small">{new Date(msg.created_at).toLocaleTimeString()}</div>
                         </div>

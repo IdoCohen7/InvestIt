@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Card, Button, Spinner } from 'react-bootstrap'
 import { NewsItem } from '@/types/data'
 import { API_URL } from '@/utils/env'
+import { motion, AnimatePresence } from 'framer-motion'
 
 const NewsPage = () => {
   const [allNews, setAllNews] = useState<NewsItem[]>([])
@@ -11,7 +12,7 @@ const NewsPage = () => {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const res = await fetch(`${API_URL}/Finnhub/market-news`) // שים את ה-API שלך כאן
+        const res = await fetch(`${API_URL}/Finnhub/market-news`)
         const data: NewsItem[] = await res.json()
         setAllNews(data)
       } catch (error) {
@@ -34,27 +35,36 @@ const NewsPage = () => {
         <Spinner animation="border" />
       ) : (
         <>
-          {visibleNews.map((news) => (
-            <Card key={news.id} className="mb-3 shadow-sm">
-              <Card.Body>
-                <div className="d-flex gap-3">
-                  <img src={news.image} alt="news" width={100} height={100} />
-                  <div>
-                    <Card.Title>{news.headline}</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">{news.source}</Card.Subtitle>
-                    <Card.Text>{news.summary}</Card.Text>
-                    <a href={news.url} target="_blank" rel="noreferrer" className="btn btn-outline-primary btn-sm">
-                      Read more
-                    </a>
-                  </div>
-                </div>
-              </Card.Body>
-            </Card>
-          ))}
+          <AnimatePresence>
+            {visibleNews.map((news) => (
+              <motion.div
+                key={news.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.4 }}>
+                <Card className="mb-3 shadow-sm">
+                  <Card.Body>
+                    <div className="d-flex gap-3">
+                      <img src={news.image} alt="news" width={100} height={100} />
+                      <div>
+                        <Card.Title>{news.headline}</Card.Title>
+                        <Card.Subtitle className="mb-2 text-muted">{news.source}</Card.Subtitle>
+                        <Card.Text>{news.summary}</Card.Text>
+                        <a href={news.url} target="_blank" rel="noreferrer" className="btn btn-outline-primary btn-sm">
+                          Read more
+                        </a>
+                      </div>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </motion.div>
+            ))}
+          </AnimatePresence>
 
           {visibleCount < allNews.length && (
             <div className="text-center mt-4">
-              <Button onClick={() => setVisibleCount(visibleCount + 3)}>More News</Button>
+              <Button onClick={() => setVisibleCount((prev) => prev + 3)}>More News</Button>
             </div>
           )}
         </>

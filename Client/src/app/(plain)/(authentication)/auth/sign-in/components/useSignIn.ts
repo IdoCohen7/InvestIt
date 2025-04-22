@@ -61,7 +61,7 @@ const useSignIn = () => {
 
       const data: UserType = await res.json()
 
-      saveSession(data, false)
+      saveSession(data, true)
 
       redirectUser()
       showNotification({ message: 'Successfully logged in. Redirecting....', variant: 'success' })

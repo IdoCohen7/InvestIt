@@ -7,10 +7,17 @@ import placeHolder from '@/assets/images/avatar/placeholder.jpg'
 import { useNotificationContext } from '@/context/useNotificationContext'
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition'
 import { API_URL } from '@/utils/env'
+import type { SocialPostType } from '@/types/data'
+import { formatDateToDDMMYYYY } from '@/utils/date'
 
-const CreatePostCard = () => {
+type Props = {
+  onPostCreated?: (post: SocialPostType) => void
+}
+
+const CreatePostCard = ({ onPostCreated }: Props) => {
   const [newPost, setNewPost] = useState('')
   const { user } = useAuthContext()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { isTrue: isOpenPhoto, toggle: togglePhotoModel } = useToggle()
   const { showNotification } = useNotificationContext()
 
@@ -21,29 +28,42 @@ const CreatePostCard = () => {
     if (!newPost.trim()) return
 
     try {
+      const payload = {
+        postId: 0,
+        userId: user?.userId,
+        content: newPost,
+        createdAt: formatDateToDDMMYYYY(new Date()),
+        similarityScore: 0,
+        vector: '',
+        updatedAt: formatDateToDDMMYYYY(new Date()),
+      }
+
       const res = await fetch(`${API_URL}/Post/add`, {
         method: 'POST',
-        mode: 'cors',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          postId: 0,
-          userId: user?.userId,
-          content: newPost,
-          createdAt: new Date().toISOString(),
-          similarityScore: 0,
-          vector: '',
-          updatedAt: new Date().toISOString(),
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
       })
 
       if (!res.ok) throw new Error('Failed to create post')
 
+      const created = await res.json()
+
+      const fullPostObj: SocialPostType = {
+        ...payload,
+        postId: created.postId,
+        fullName: `${user?.firstName} ${user?.lastName}`,
+        userProfilePic: user?.profilePic || '',
+        userExperienceLevel: user?.experienceLevel || '',
+        commentsCount: 0,
+        likesCount: 0,
+        hasLiked: false,
+      }
+
       setNewPost('')
       resetTranscript()
       setActiveLanguage(null)
-      window.location.reload()
+
+      if (onPostCreated) onPostCreated(fullPostObj)
     } catch (err) {
       showNotification({ message: err instanceof Error ? err.message : String(err), variant: 'danger' })
     }
@@ -63,17 +83,13 @@ const CreatePostCard = () => {
     }
   }
 
-  if (!browserSupportsSpeechRecognition) {
-    return <div>Your browser does not support speech recognition.</div>
-  }
+  if (!browserSupportsSpeechRecognition) return <div>Your browser does not support speech recognition.</div>
 
   return (
     <Card className="card-body">
       <div className="d-flex mb-3">
         <div className="avatar avatar-xs me-2">
-          <span role="button">
-            <img className="avatar-img rounded-circle" src={user?.profilePic || placeHolder} alt="avatar" />
-          </span>
+          <img className="avatar-img rounded-circle" src={user?.profilePic || placeHolder} alt="avatar" />
         </div>
 
         <form
@@ -98,7 +114,6 @@ const CreatePostCard = () => {
             <BsImageFill size={20} className="text-success pe-2" /> Photo
           </a>
         </li>
-
         <li className="nav-item">
           <a className="nav-link bg-light py-1 px-2 mb-0" onClick={() => handleMicToggle('en-US')}>
             {listening && activeLanguage === 'en-US' ? (
@@ -112,7 +127,6 @@ const CreatePostCard = () => {
             )}
           </a>
         </li>
-
         <li className="nav-item">
           <a className="nav-link bg-light py-1 px-2 mb-0" onClick={() => handleMicToggle('he-IL')}>
             {listening && activeLanguage === 'he-IL' ? (
@@ -126,7 +140,6 @@ const CreatePostCard = () => {
             )}
           </a>
         </li>
-
         <div className="nav-item ms-lg-auto">
           <button type="button" className="btn btn-success-soft" onClick={handlePostSubmit}>
             Post

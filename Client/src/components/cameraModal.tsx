@@ -3,6 +3,7 @@ import { Modal, Button } from 'react-bootstrap'
 import { useAuthContext } from '@/context/useAuthContext'
 import Webcam from 'react-webcam'
 import { API_URL } from '@/utils/env'
+import { useNotificationContext } from '@/context/useNotificationContext'
 
 interface CameraModalProps {
   show: boolean
@@ -16,6 +17,7 @@ const CameraModal = ({ show, onClose, onUploadSuccess }: CameraModalProps) => {
   const [previewImage, setPreviewImage] = useState<string | null>(null)
   const [capturedBlob, setCapturedBlob] = useState<Blob | null>(null)
   const { user } = useAuthContext()
+  const { showNotification } = useNotificationContext()
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -68,6 +70,7 @@ const CameraModal = ({ show, onClose, onUploadSuccess }: CameraModalProps) => {
       onClose()
     } catch (err) {
       console.error('Error uploading image:', err)
+      showNotification({ message: 'Failed to upload image. Please try again.', variant: 'danger' })
     }
   }
 
