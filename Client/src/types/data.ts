@@ -105,3 +105,15 @@ export type UserPage = {
   postsCount: number
   isFollowed: boolean
 }
+
+export type Notification = {
+  notificationId: number
+  userId: number
+  actorId: number
+  actorName: string
+  actorProfilePic: string | null
+  objectId: number
+  type: 'comment' | 'like' | 'follow'
+  isRead: boolean
+  createdAt: string
+}

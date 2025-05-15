@@ -1048,6 +1048,117 @@ namespace InvestItAPI.DAL
             }
         }
 
+        public List<Notification> GetUserNotifications(int userId, int page, int pageSize)
+        {
+            SqlConnection con = null;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("myProjDB");
+                cmd = new SqlCommand("SP_GetUserNotifications", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@user_id", userId);
+                cmd.Parameters.AddWithValue("@Page", page);
+                cmd.Parameters.AddWithValue("@PageSize", pageSize);
+
+                List<Notification> notifications = new List<Notification>();
+                SqlDataReader reader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                while (reader.Read())
+                {
+                    Notification notification = new Notification
+                    {
+                        NotificationId = Convert.ToInt32(reader["notification_id"]),
+                        UserId = Convert.ToInt32(reader["user_id"]),
+                        ActorId = Convert.ToInt32(reader["actor_id"]),
+                        ActorName = reader["actor_name"].ToString(),
+                        ObjectId = Convert.ToInt32(reader["object_id"]),
+                        Type = reader["type"].ToString(),
+                        IsRead = Convert.ToBoolean(reader["is_read"]),
+                        CreatedAt = Convert.ToDateTime(reader["created_at"]).ToString("yyyy-MM-dd HH:mm:ss"),
+                        ActorProfilePic = reader["actor_profile_pic"]?.ToString()
+                    };
+
+                    notifications.Add(notification);
+                }
+
+                return notifications;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error retrieving notifications", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+        }
+        public int GetNumberOfUnreadNotifications(int userId)
+        {
+            SqlConnection con = null;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("myProjDB"); 
+                cmd = new SqlCommand("SP_GetNumberOfUnreadNotifications", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@user_id", userId);
+
+                int count = (int)cmd.ExecuteScalar();
+                return count;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error retrieving unread notifications count", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+        }
+
+        public void MarkNotificationsAsRead(int userId)
+        {
+            SqlConnection con = null;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("myProjDB");
+                cmd = new SqlCommand("SP_ReadNotifications", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@user_id", userId);
+
+                cmd.ExecuteNonQuery(); 
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error marking notifications as read", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+        }
+
+
+
+
+
 
 
 

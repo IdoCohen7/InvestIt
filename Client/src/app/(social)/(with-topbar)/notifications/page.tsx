@@ -1,7 +1,6 @@
-import { getAllNotifications } from '@/helpers/data'
+import { useEffect, useState } from 'react'
 import { timeSince } from '@/utils/date'
 import clsx from 'clsx'
-
 import {
   Button,
   Card,
@@ -16,137 +15,172 @@ import {
   DropdownToggle,
   Row,
 } from 'react-bootstrap'
-import { BsBell, BsBellSlash, BsCheckLg, BsThreeDots, BsTrash, BsVolumeMute } from 'react-icons/bs'
-import LoadMoreButton from './components/LoadMoreButton'
-import { useFetchData } from '@/hooks/useFetchData'
+import { BsCheckLg, BsThreeDots } from 'react-icons/bs'
 import PageMetaData from '@/components/PageMetaData'
+import { useAuthContext } from '@/context/useAuthContext'
+import { Link } from 'react-router-dom'
+import { Notification } from '@/types/data'
 
-const Notifications =  () => {
-  const allNotifications = useFetchData(getAllNotifications)
+const Notifications = () => {
+  const [notifications, setNotifications] = useState<Notification[]>([])
+  const [justReadIds, setJustReadIds] = useState<number[]>([])
+  const [page, setPage] = useState(1)
+  const [hasMore, setHasMore] = useState(true)
+  const pageSize = 10
+  const { user } = useAuthContext()
+
+  const fetchNotifications = (pageToLoad: number) => {
+    fetch(`https://localhost:7204/api/Notification?userId=${user?.userId}&page=${pageToLoad}&pageSize=${pageSize}`)
+      .then((res) => {
+        if (!res.ok) throw new Error('Failed to fetch')
+        return res.json()
+      })
+      .then((newData: Notification[]) => {
+        setNotifications((prev) => [...prev, ...newData])
+        setHasMore(newData.length === pageSize)
+      })
+      .catch(console.error)
+  }
+
+  useEffect(() => {
+    if (user?.userId) {
+      fetchNotifications(1)
+
+      // הפעלת סימון כהתראות נקראו
+      fetch(`https://localhost:7204/api/Notification?userId=${user.userId}`, {
+        method: 'PUT',
+      })
+        .then(() => {
+          const unread = notifications.filter((n) => !n.isRead)
+          if (unread.length === 0) return // טיפ: אין צורך באנימציה אם כולן כבר נקראו
+
+          const idsToAnimate = unread.map((n) => n.notificationId)
+          setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })))
+          setJustReadIds(idsToAnimate)
+
+          setTimeout(() => setJustReadIds([]), 1500)
+        })
+        .catch(console.error)
+    }
+  }, [user])
+
+  const handleLoadMore = () => {
+    const nextPage = page + 1
+    fetchNotifications(nextPage)
+    setPage(nextPage)
+  }
+
+  const renderNotificationText = (type: Notification['type']) => {
+    switch (type) {
+      case 'comment':
+        return 'commented on your post.'
+      case 'like':
+        return 'liked your post.'
+      case 'follow':
+        return 'started following you.'
+      default:
+        return 'sent you a notification.'
+    }
+  }
+
+  const getInitials = (name: string) =>
+    name
+      .split(' ')
+      .map((w) => w[0])
+      .join('')
+      .toUpperCase()
+
   return (
     <>
-    <PageMetaData title='Notifications'/>
-    <main>
-      <Container>
-        <Row className="g-4">
-          <Col lg={8} className="mx-auto">
-            <Card>
-              <CardHeader className="py-3 border-0 d-flex align-items-center justify-content-between">
-                <h1 className="h5 mb-0">Notifications</h1>
-                <Dropdown>
-                  <DropdownToggle
-                    as="a"
-                    className="text-secondary content-none btn btn-secondary-soft-hover py-1 px-2"
-                    id="cardNotiAction"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    <BsThreeDots />
-                  </DropdownToggle>
-                  <DropdownMenu className="dropdown-menu-end" aria-labelledby="cardNotiAction">
-                    <li>
-                      <DropdownItem>
-                        
-                        <BsCheckLg size={22} className="fa-fw pe-2" />
-                        Mark all read
-                      </DropdownItem>
-                    </li>
-                    <li>
-                      <DropdownItem>
-                        
-                        <BsBellSlash size={22} className="fa-fw pe-2" />
-                        Push notifications
-                      </DropdownItem>
-                    </li>
-                    <li>
-                      <DropdownItem>
-                        
-                        <BsBell size={22} className="fa-fw pe-2" />
-                        Email notifications
-                      </DropdownItem>
-                    </li>
-                  </DropdownMenu>
-                </Dropdown>
-              </CardHeader>
-              <CardBody className="p-2">
-                <ul className="list-unstyled">
-                  {allNotifications?.map((notification, idx) => (
-                    <li key={idx}>
-                      <div className={clsx('rounded d-sm-flex border-0 mb-1 p-3 position-relative', { 'badge-unread': !notification.isRead })}>
-                        <div className="avatar text-center">
-                          {notification.avatar ? (
-                            <img className="avatar-img rounded-circle" src={notification.avatar} alt="" />
-                          ) : (
-                            <div className={`avatar-img rounded-circle bg-${notification.textAvatar?.variant}`}>
-                              <span className="text-white position-absolute top-50 start-50 translate-middle fw-bold">
-                                {notification.textAvatar?.text}
-                              </span>
+      <PageMetaData title="Notifications" />
+      <main>
+        <Container>
+          <Row className="g-4">
+            <Col lg={8} className="mx-auto">
+              <Card>
+                <CardHeader className="py-3 border-0 d-flex align-items-center justify-content-between">
+                  <h1 className="h5 mb-0">Notifications</h1>
+                  <Dropdown>
+                    <DropdownToggle
+                      as="a"
+                      className="text-secondary content-none btn btn-secondary-soft-hover py-1 px-2"
+                      id="cardNotiAction"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false">
+                      <BsThreeDots />
+                    </DropdownToggle>
+                    <DropdownMenu className="dropdown-menu-end" aria-labelledby="cardNotiAction">
+                      <li>
+                        <DropdownItem>
+                          <BsCheckLg size={22} className="fa-fw pe-2" />
+                          Mark all read
+                        </DropdownItem>
+                      </li>
+                    </DropdownMenu>
+                  </Dropdown>
+                </CardHeader>
+                <CardBody className="p-2">
+                  {notifications.length === 0 ? (
+                    <div className="text-center py-5">
+                      <p className="text-muted mb-1">You're all caught up!</p>
+                      <p className="small text-muted">No new notifications at the moment.</p>
+                    </div>
+                  ) : (
+                    <ul className="list-unstyled">
+                      {notifications.map((notification) => (
+                        <li key={notification.notificationId}>
+                          <div
+                            className={clsx('rounded d-sm-flex border-0 mb-1 p-3 position-relative transition-notification', {
+                              'badge-unread': !notification.isRead,
+                              'just-read': justReadIds.includes(notification.notificationId),
+                            })}>
+                            <div className="avatar text-center">
+                              {notification.actorProfilePic ? (
+                                <img
+                                  src={notification.actorProfilePic}
+                                  alt={notification.actorName}
+                                  className="avatar-img rounded-circle"
+                                  style={{ width: '48px', height: '48px', objectFit: 'cover' }}
+                                />
+                              ) : (
+                                <div className="avatar-img rounded-circle bg-primary">
+                                  <span className="text-white position-absolute top-50 start-50 translate-middle fw-bold">
+                                    {getInitials(notification.actorName)}
+                                  </span>
+                                </div>
+                              )}
                             </div>
-                          )}
-                        </div>
-                        <div className="mx-sm-3 my-2 my-sm-0">
-                          <p className={clsx('small', notification.description ? 'mb-0' : 'mb-2')}>{notification.title}</p>
-                          {notification.description && notification.description}
-                          {notification.isFriendRequest && (
-                            <div className="d-flex">
-                              <Button variant="primary" size="sm" className="py-1 me-2">
-                                Accept
-                              </Button>
-                              <Button variant="danger-soft" size="sm" className="py-1">
-                                Delete
-                              </Button>
+                            <div className="mx-sm-3 my-2 my-sm-0">
+                              <p className="small mb-1">
+                                <Link
+                                  to={`/profile/feed/${notification.actorId}`}
+                                  className="d-flex align-items-center text-decoration-none text-semibold">
+                                  <b>{notification.actorName}</b>
+                                </Link>{' '}
+                                {renderNotificationText(notification.type)}
+                              </p>
                             </div>
-                          )}
-                        </div>
-                        <div className="d-flex ms-auto">
-                          <p className="small me-5 text-nowrap">{timeSince(notification.time)}</p>
-                          <Dropdown className="position-absolute end-0 top-0 mt-3 me-3">
-                            <DropdownToggle
-                              as="a"
-                              className="z-index-1 text-secondary btn position-relative content-none py-0 px-2"
-                              id="cardNotiAction1"
-                              data-bs-toggle="dropdown"
-                              aria-expanded="false">
-                              <BsThreeDots />
-                            </DropdownToggle>
-                            <DropdownMenu className="dropdown-menu-end" aria-labelledby="cardNotiAction1">
-                              <li>
-                                <DropdownItem>
-                                  
-                                  <BsTrash size={22} className="fa-fw pe-2" />
-                                  Delete
-                                </DropdownItem>
-                              </li>
-                              <li>
-                                <DropdownItem>
-                                  
-                                  <BsBellSlash size={22} className="fa-fw pe-2" />
-                                  Turn off
-                                </DropdownItem>
-                              </li>
-                              <li>
-                                <DropdownItem>
-                                  
-                                  <BsVolumeMute size={22} className="fa-fw fs-5 pe-2" />
-                                  Mute Judy Nguyen
-                                </DropdownItem>
-                              </li>
-                            </DropdownMenu>
-                          </Dropdown>
-                        </div>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </CardBody>
-              <CardFooter className="border-0 py-3 text-center position-relative d-grid pt-0">
-                <LoadMoreButton />
-              </CardFooter>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
-    </main>
+                            <div className="d-flex ms-auto">
+                              <p className="small me-5 text-nowrap">{timeSince(new Date(notification.createdAt))}</p>
+                            </div>
+                          </div>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </CardBody>
+                {hasMore && (
+                  <CardFooter className="border-0 py-3 text-center position-relative d-grid pt-0">
+                    <Button onClick={handleLoadMore}>Load more</Button>
+                  </CardFooter>
+                )}
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+      </main>
     </>
   )
 }
+
 export default Notifications
