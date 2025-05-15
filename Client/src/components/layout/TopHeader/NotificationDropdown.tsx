@@ -6,6 +6,7 @@ import { Button, Card, CardBody, CardFooter, CardHeader, Dropdown, DropdownMenu,
 import { BsBellFill } from 'react-icons/bs'
 import { useAuthContext } from '@/context/useAuthContext'
 import { Notification } from '@/types/data'
+import { API_URL } from '@/utils/env'
 
 const NotificationDropdown = () => {
   const [notifications, setNotifications] = useState<Notification[]>([])
@@ -16,7 +17,7 @@ const NotificationDropdown = () => {
   const loadNotifications = () => {
     if (!user?.userId) return
 
-    fetch(`https://localhost:7204/api/Notification?userId=${user.userId}&page=1&pageSize=4`)
+    fetch(`${API_URL}/Notification?userId=${user.userId}&page=1&pageSize=4`)
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch notifications')
         return res.json()
@@ -24,7 +25,7 @@ const NotificationDropdown = () => {
       .then(setNotifications)
       .catch(console.error)
 
-    fetch(`https://localhost:7204/api/Notification/notificationsTotal?userId=${user.userId}`)
+    fetch(`${API_URL}/Notification/notificationsTotal?userId=${user.userId}`)
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch unread count')
         return res.json()
@@ -39,7 +40,7 @@ const NotificationDropdown = () => {
 
   const handleDropdownToggle = (isOpen: boolean) => {
     if (isOpen && user?.userId && unreadCount > 0) {
-      fetch(`https://localhost:7204/api/Notification?userId=${user.userId}`, {
+      fetch(`${API_URL}/Notification?userId=${user.userId}`, {
         method: 'PUT',
       })
         .then(() => {

@@ -20,6 +20,7 @@ import PageMetaData from '@/components/PageMetaData'
 import { useAuthContext } from '@/context/useAuthContext'
 import { Link } from 'react-router-dom'
 import { Notification } from '@/types/data'
+import { API_URL } from '@/utils/env'
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState<Notification[]>([])
@@ -30,7 +31,7 @@ const Notifications = () => {
   const { user } = useAuthContext()
 
   const fetchNotifications = (pageToLoad: number) => {
-    fetch(`https://localhost:7204/api/Notification?userId=${user?.userId}&page=${pageToLoad}&pageSize=${pageSize}`)
+    fetch(`${API_URL}/Notification?userId=${user?.userId}&page=${pageToLoad}&pageSize=${pageSize}`)
       .then((res) => {
         if (!res.ok) throw new Error('Failed to fetch')
         return res.json()
@@ -47,7 +48,7 @@ const Notifications = () => {
       fetchNotifications(1)
 
       // הפעלת סימון כהתראות נקראו
-      fetch(`https://localhost:7204/api/Notification?userId=${user.userId}`, {
+      fetch(`${API_URL}/Notification?userId=${user.userId}`, {
         method: 'PUT',
       })
         .then(() => {
