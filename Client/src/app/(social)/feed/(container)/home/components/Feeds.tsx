@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { getAllFeeds } from '@/helpers/data'
 import PostCard from '@/components/cards/PostCard'
 import LoadMoreButton from './LoadMoreButton'
 import { SocialPostType } from '@/types/data'
@@ -10,6 +9,8 @@ import { Link } from 'react-router-dom'
 import logo12 from '@/assets/images/logo/12.svg'
 import postImg2 from '@/assets/images/post/3by2/02.jpg'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useAuthFetch } from '@/hooks/useAuthFetch' // שימוש ב-useAuthFetch
+import { API_URL } from '@/utils/env'
 
 const ActionMenu = ({ name }: { name?: string }) => (
   <Dropdown drop="start">
@@ -39,7 +40,6 @@ const ActionMenu = ({ name }: { name?: string }) => (
   </Dropdown>
 )
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const SponsoredCard = () => (
   <Card>
     <CardHeader>
@@ -79,6 +79,7 @@ const Feeds = ({ newPost }: { newPost: SocialPostType | null }) => {
   const [hasMore, setHasMore] = useState(true)
   const [deletedPostIds, setDeletedPostIds] = useState<number[]>([])
   const { user } = useAuthContext()
+  const authFetch = useAuthFetch()
 
   const fetchPage = async () => {
     setIsLoading(true)
@@ -86,11 +87,13 @@ const Feeds = ({ newPost }: { newPost: SocialPostType | null }) => {
       const offset = posts.filter((p) => !deletedPostIds.includes(p.postId)).length
       const nextPage = Math.floor(offset / 3) + 1
 
-      const newPosts = await getAllFeeds(nextPage, 3, user?.userId)
-      if (newPosts.length === 0) {
+      // קריאת הפוסטים ישירות עם authFetch כולל טוקן
+      const res = await authFetch(`${API_URL}/Post?userId=${user?.userId ?? ''}&page=${nextPage}&pageSize=3`, { method: 'GET', mode: 'cors' })
+
+      if (res.length === 0) {
         setHasMore(false)
       } else {
-        const unique = newPosts.filter((p) => !posts.some((ex) => ex.postId === p.postId))
+        const unique = res.filter((p: SocialPostType) => !posts.some((ex) => ex.postId === p.postId))
         setPosts((prev) => [...prev, ...unique])
       }
     } catch (err) {
@@ -106,6 +109,7 @@ const Feeds = ({ newPost }: { newPost: SocialPostType | null }) => {
 
   useEffect(() => {
     fetchPage()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   useEffect(() => {

@@ -1,27 +1,79 @@
 using InvestItAPI.Controllers;
 using InvestItAPI.Tools;
 using Microsoft.Extensions.FileProviders;
-using System.Net.WebSockets;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Net.WebSockets;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//  JWT Configuration
+var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+var secretKey = jwtSettings["SecretKey"];
 
 // Services
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo { Title = "InvestItAPI", Version = "v1" });
 
+    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    {
+        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+        Description = "Please enter 'Bearer {token}'",
+        Name = "Authorization",
+        Type = Microsoft.OpenApi.Models.SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
+
+    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
+    {
+        {
+            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            {
+                Reference = new Microsoft.OpenApi.Models.OpenApiReference
+                {
+                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] { }
+        }
+    });
+});
 builder.Services.AddHostedService<FinnhubStreamService>();
 
+// TokenService Injection
+builder.Services.AddScoped<TokenService>();
+
+//  JWT Authentication
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtSettings["Issuer"],
+        ValidAudience = jwtSettings["Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+    };
+});
 
 var app = builder.Build();
 
-
-// WebSocket support
+//  WebSocket support
 app.UseWebSockets();
 
-
-// Static file hosting for profile pictures
+//  Static file hosting for profile pictures
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
@@ -29,18 +81,18 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = "/uploadedFiles/profilePics"
 });
 
-if (true)
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+//  Swagger (dev only, but enabled here)
+app.UseSwagger();
+app.UseSwaggerUI();
 
+//  Middleware pipeline
 app.UseHttpsRedirection();
 app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+
+app.UseAuthentication(); // ?? חובה לפני Authorization
 app.UseAuthorization();
 
-
-// WebSocket endpoint for live prices
+//  WebSocket endpoint for live prices
 app.Map("/ws/prices", async context =>
 {
     if (context.WebSockets.IsWebSocketRequest)
@@ -49,7 +101,6 @@ app.Map("/ws/prices", async context =>
 
         using var webSocket = await context.WebSockets.AcceptWebSocketAsync();
 
-        // Broadcast handler
         async void SendToClient(string data)
         {
             try
@@ -66,7 +117,6 @@ app.Map("/ws/prices", async context =>
             }
         }
 
-        // Register listener
         FinnhubStreamService.OnPriceUpdate += SendToClient;
 
         var keepAlive = Encoding.UTF8.GetBytes("{\"type\":\"ping\"}");
@@ -85,7 +135,6 @@ app.Map("/ws/prices", async context =>
         }
         finally
         {
-            // Cleanup
             FinnhubStreamService.OnPriceUpdate -= SendToClient;
             Console.WriteLine("Client disconnected");
         }
@@ -95,7 +144,6 @@ app.Map("/ws/prices", async context =>
         context.Response.StatusCode = 400;
     }
 });
-
 
 app.MapControllers();
 app.Run();

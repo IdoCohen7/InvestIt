@@ -1,20 +1,22 @@
+import { useEffect, useState } from 'react'
 import PasswordFormInput from '@/components/form/PasswordFormInput'
 import TextAreaFormInput from '@/components/form/TextAreaFormInput'
 import TextFormInput from '@/components/form/TextFormInput'
 import PasswordStrengthMeter from '@/components/PasswordStrengthMeter'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useEffect, useState } from 'react'
 import { Button, Card, CardBody, CardHeader, CardTitle, Col } from 'react-bootstrap'
 import { useForm } from 'react-hook-form'
 import * as yup from 'yup'
 import { useAuthContext } from '@/context/useAuthContext'
 import { useNotificationContext } from '@/context/useNotificationContext'
 import { API_URL } from '@/utils/env'
+import { useAuthFetch } from '@/hooks/useAuthFetch'
 
 const ChangePassword = () => {
   const [firstPassword, setFirstPassword] = useState<string>('')
   const { user, removeSession } = useAuthContext()
   const { showNotification } = useNotificationContext()
+  const authFetch = useAuthFetch()
 
   const resetPasswordSchema = yup.object().shape({
     currentPass: yup.string().required('Please enter current Password'),
@@ -37,22 +39,15 @@ const ChangePassword = () => {
     if (!user) return
 
     try {
-      const res = await fetch(`${API_URL}/User/ChangePassword`, {
+      await authFetch(`${API_URL}/User/ChangePassword`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           userId: user.userId,
           currentPassword: formData.currentPass,
           newPassword: formData.newPassword,
         }),
       })
-
-      if (!res.ok) {
-        const error = await res.json()
-        throw new Error(error?.error || 'Failed to change password')
-      }
 
       showNotification({
         message: 'Password updated successfully, please log in again.',
@@ -98,6 +93,7 @@ const AccountSettings = () => {
   const { user, saveSession } = useAuthContext()
   const { showNotification } = useNotificationContext()
   const [bioLength, setBioLength] = useState<number>(0)
+  const authFetch = useAuthFetch()
 
   const createFormSchema = yup.object({
     fName: yup.string().required('Please enter your first name'),
@@ -114,7 +110,6 @@ const AccountSettings = () => {
     },
   })
 
-  // Watch bio and update character count
   useEffect(() => {
     const subscription = watch((value) => {
       if (value.bio !== undefined) {
@@ -151,17 +146,13 @@ const AccountSettings = () => {
     }
 
     try {
-      const res = await fetch(`${API_URL}/User/update`, {
+      await authFetch(`${API_URL}/User/update`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedUser),
       })
 
-      if (!res.ok) throw new Error('Failed to update user')
-
-      saveSession(updatedUser, true)
+      saveSession({ ...updatedUser, token: user.token }, true)
       showNotification({ message: 'User updated successfully!', variant: 'success' })
     } catch (err) {
       console.error('Error updating profile:', err)

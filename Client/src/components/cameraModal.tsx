@@ -4,6 +4,7 @@ import { useAuthContext } from '@/context/useAuthContext'
 import Webcam from 'react-webcam'
 import { API_URL } from '@/utils/env'
 import { useNotificationContext } from '@/context/useNotificationContext'
+import { useAuthFetch } from '@/hooks/useAuthFetch' // ייבוא useAuthFetch
 
 interface CameraModalProps {
   show: boolean
@@ -18,6 +19,7 @@ const CameraModal = ({ show, onClose, onUploadSuccess }: CameraModalProps) => {
   const [capturedBlob, setCapturedBlob] = useState<Blob | null>(null)
   const { user } = useAuthContext()
   const { showNotification } = useNotificationContext()
+  const authFetch = useAuthFetch() // שימוש ב-hook החדש
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -49,21 +51,26 @@ const CameraModal = ({ show, onClose, onUploadSuccess }: CameraModalProps) => {
     formData.append('files', capturedBlob, `${user.userId}.jpg`)
 
     try {
-      const uploadRes = await fetch(`${API_URL}/Upload?type=profile&id=${user.userId}`, {
+      const uploadRes = await authFetch(`${API_URL}/Upload?type=profile&id=${user.userId}`, {
         method: 'POST',
         body: formData,
       })
 
-      const [uploadedPath] = await uploadRes.json()
-      if (!uploadedPath) throw new Error('Upload failed')
+      if (!uploadRes || !Array.isArray(uploadRes) || !uploadRes[0]) {
+        throw new Error('Upload failed: no path returned')
+      }
 
-      const updateRes = await fetch(`${API_URL}/User/ProfilePic/${user.userId}`, {
+      const uploadedPath = uploadRes[0]
+
+      const updateRes = await authFetch(`${API_URL}/User/ProfilePic/${user.userId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(uploadedPath),
       })
 
-      if (!updateRes.ok) throw new Error('Failed to update profile pic')
+      if (!updateRes) {
+        throw new Error('Failed to update profile pic')
+      }
 
       onUploadSuccess(`/uploadedFiles/${uploadedPath}`)
       setPreviewImage(null)

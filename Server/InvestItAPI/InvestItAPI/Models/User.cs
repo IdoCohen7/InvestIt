@@ -125,16 +125,20 @@ namespace InvestItAPI.Models
         {
             DBservices dBservices = new DBservices();
             User user = dBservices.Login(email, password);
+
             if (user != null && PasswordHasher.VerifyPassword(password, user.PasswordHash))
             {
                 if (dBservices.IsExpert(user.UserId))
                 {
-                    return dBservices.GetExpertByUserId(user.UserId);
+                    user = dBservices.GetExpertByUserId(user.UserId);
                 }
+
                 return user;
             }
             return null;
         }
+
+
 
         static public int EditUser(User user)
         {

@@ -38,6 +38,11 @@ const useSignIn = () => {
     else navigate('/')
   }
 
+  type LoginResponse = {
+    user: UserType
+    token: string
+  }
+
   const login = handleSubmit(async (values: LoginFormFields) => {
     try {
       setLoading(true)
@@ -47,21 +52,30 @@ const useSignIn = () => {
         password: values.password,
       })
 
-      const res = await fetch(`${API_URL}/User/Login?${queryParams.toString()}`, {
-        method: 'GET',
+      const res = await fetch(`${API_URL}/Auth/Login`, {
+        method: 'POST',
         mode: 'cors',
         headers: {
           'Content-Type': 'application/json',
         },
+        body: JSON.stringify({
+          email: values.email,
+          password: values.password,
+        }),
       })
 
       if (!res.ok) {
         throw new Error(`Server responded with status ${res.status}`)
       }
 
-      const data: UserType = await res.json()
+      const data: LoginResponse = await res.json()
 
-      saveSession(data, true)
+      const userWithToken = {
+        ...data.user,
+        token: data.token,
+      }
+
+      saveSession(userWithToken, true)
 
       redirectUser()
       showNotification({ message: 'Successfully logged in. Redirecting....', variant: 'success' })

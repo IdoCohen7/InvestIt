@@ -1,18 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using InvestItAPI.Models;
-using InvestItAPI.DAL;
-using System.Linq.Expressions;
 using System.Data.SqlClient;
-
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace InvestItAPI.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class UserController : ControllerBase
     {
-        // GET: api/<UserController>
         [HttpGet]
         public IActionResult GetUsers()
         {
@@ -21,30 +18,14 @@ namespace InvestItAPI.Controllers
                 var users = InvestItAPI.Models.User.GetUsers();
 
                 if (users == null || users.Count == 0)
-                {
                     return NotFound("No users found.");
-
-                }
 
                 return Ok(users);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, "An errr occured while retrieving users.");
-            } 
-        }
-
-        [HttpGet("Login")]
-        public IActionResult Login(string email, string password)
-        {
-            var user = InvestItAPI.Models.User.Login(email, password);
-
-            if (user == null)
-            {
-                return Unauthorized(new { error = "Invalid email or password" });
+                return StatusCode(500, "An error occurred while retrieving users.");
             }
-
-            return Ok(user);
         }
 
         [HttpPost("Follow")]
@@ -61,7 +42,6 @@ namespace InvestItAPI.Controllers
             }
             catch (SqlException ex) when (ex.Number == 50000)
             {
-    
                 return BadRequest(new { error = ex.Message });
             }
             catch (Exception ex)
@@ -70,14 +50,13 @@ namespace InvestItAPI.Controllers
             }
         }
 
-
-
         [HttpGet("{userId}")]
         public IActionResult GetUserById(int userId, [FromQuery] int viewerId)
         {
             try
             {
                 var user = InvestItAPI.Models.User.GetUserById(userId, viewerId);
+
                 if (user == null)
                     return NotFound(new { message = "User not found." });
 
@@ -85,38 +64,10 @@ namespace InvestItAPI.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new
-                {
-                    error = "An error occurred while retrieving the user.",
-                    details = ex.Message
-                });
+                return StatusCode(500, new { error = "An error occurred while retrieving the user.", details = ex.Message });
             }
         }
 
-
-        // POST api/<UserController>
-        [HttpPost]
-        public IActionResult Post([FromBody] User user)
-        {
-            try
-            {
-                User? registeredUser = InvestItAPI.Models.User.RegisterUser(user);
-
-                if (registeredUser != null)
-                {
-                    return Ok(registeredUser);
-                }
-
-                return BadRequest(new { message = "Email already exists or registration failed." });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { error = ex.Message });
-            }
-        }
-
-
-        // PUT api/<UserController>/5
         [HttpPut("update")]
         public IActionResult UpdateUser([FromBody] User user)
         {
@@ -132,7 +83,7 @@ namespace InvestItAPI.Controllers
             else
                 return StatusCode(500, new { error = "Something went wrong" });
         }
-        // PUT api/User/ProfilePic/12
+
         [HttpPut("ProfilePic/{userId}")]
         public IActionResult UpdateProfilePic(int userId, [FromBody] string profilePic)
         {
@@ -156,11 +107,7 @@ namespace InvestItAPI.Controllers
         {
             try
             {
-                bool result = InvestItAPI.Models.User.ChangePassword(
-                    request.UserId,
-                    request.CurrentPassword,
-                    request.NewPassword
-                );
+                bool result = InvestItAPI.Models.User.ChangePassword(request.UserId, request.CurrentPassword, request.NewPassword);
 
                 if (result)
                     return Ok(new { message = "Password updated successfully." });
@@ -173,7 +120,6 @@ namespace InvestItAPI.Controllers
             }
         }
 
-        // GET api/User/Search
         [HttpGet("Search")]
         public IActionResult SearchUsers([FromQuery] string query, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
         {
@@ -193,9 +139,6 @@ namespace InvestItAPI.Controllers
             }
         }
 
-
-        
-        // DELETE api/<UserController>/5
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
@@ -204,19 +147,14 @@ namespace InvestItAPI.Controllers
                 int result = InvestItAPI.Models.User.DeleteUser(id);
 
                 if (result == 1)
-                {
                     return Ok(new { message = "User deleted successfully." });
-                }
-                else
-                {
-                    return NotFound(new { error = "User not found or already deleted." });
-                }
+
+                return NotFound(new { error = "User not found or already deleted." });
             }
             catch (Exception ex)
             {
                 return StatusCode(500, new { error = "An error occurred while deleting the user.", details = ex.Message });
             }
         }
-
     }
 }

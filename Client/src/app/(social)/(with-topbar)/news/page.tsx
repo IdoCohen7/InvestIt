@@ -2,18 +2,19 @@ import { useEffect, useState } from 'react'
 import { Card, Button, Spinner } from 'react-bootstrap'
 import { NewsItem } from '@/types/data'
 import { API_URL } from '@/utils/env'
+import { useAuthFetch } from '@/hooks/useAuthFetch'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const NewsPage = () => {
   const [allNews, setAllNews] = useState<NewsItem[]>([])
   const [visibleCount, setVisibleCount] = useState(3)
   const [loading, setLoading] = useState(true)
+  const authFetch = useAuthFetch()
 
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const res = await fetch(`${API_URL}/Finnhub/market-news`)
-        const data: NewsItem[] = await res.json()
+        const data: NewsItem[] = await authFetch(`${API_URL}/Finnhub/market-news`)
         setAllNews(data)
       } catch (error) {
         console.error('Failed to fetch news:', error)
@@ -23,7 +24,7 @@ const NewsPage = () => {
     }
 
     fetchNews()
-  }, [])
+  }, [authFetch])
 
   const visibleNews = allNews.slice(0, visibleCount)
 

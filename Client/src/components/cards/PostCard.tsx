@@ -21,6 +21,7 @@ import { useAuthContext } from '@/context/useAuthContext'
 import placeHolder from '@/assets/images/avatar/placeholder.jpg'
 import { Link } from 'react-router-dom'
 import { API_URL } from '@/utils/env'
+import { useAuthFetch } from '@/hooks/useAuthFetch' // <-- שימוש ב-hook
 
 interface PostCardProps {
   postId: number
@@ -31,14 +32,13 @@ interface PostCardProps {
   vector?: string | null
   likesCount: number
   commentsCount: number
-  hasLiked: boolean // ← ✅ חדש
+  hasLiked: boolean
   fullName: string
   userProfilePic: string
   userExperienceLevel: string
   onDelete?: (postId: number) => void
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const ActionMenu = ({ name }: { name?: string }) => (
   <Dropdown>
     <DropdownToggle as="a" className="text-secondary btn btn-secondary-soft-hover py-1 px-2 content-none" id="cardFeedAction">
@@ -88,10 +88,11 @@ const PostCard = ({
   userExperienceLevel,
   userProfilePic,
   fullName,
-  hasLiked: hasLikedProp, // ← ✅ שינוי כאן
+  hasLiked: hasLikedProp,
   onDelete,
 }: PostCardProps) => {
   const { user } = useAuthContext()
+  const authFetch = useAuthFetch() // <-- שימוש ב-hook
   const [commentsVisible, setCommentsVisible] = useState(false)
   const [comments, setComments] = useState<CommentType[]>([])
   const [newComment, setNewComment] = useState('')
@@ -107,15 +108,16 @@ const PostCard = ({
 
   const fetchComments = async (page = 1) => {
     try {
-      const res = await fetch(`${API_URL}/Comment?postId=${postId}&page=${page}&pageSize=${PAGE_SIZE}`)
+      const data = await authFetch(`${API_URL}/Comment?postId=${postId}&page=${page}&pageSize=${PAGE_SIZE}`, {
+        method: 'GET',
+      })
 
-      if (res.status === 204 || res.status === 404) {
+      if (!data || data.length === 0) {
         if (page === 1) setComments([])
         setHasMoreComments(false)
         return
       }
 
-      const data = await res.json()
       const formatted: CommentType[] = data.map((c: any) => ({
         commentId: c.commentId,
         postId: c.postId,
@@ -145,13 +147,11 @@ const PostCard = ({
         createdAt: new Date().toISOString(),
       }
 
-      const res = await fetch(`${API_URL}/Comment`, {
+      await authFetch(`${API_URL}/Comment`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(commentToSend),
       })
-
-      if (!res.ok) throw new Error('Failed to post comment')
 
       setNewComment('')
       setCommentPage(1)
@@ -186,10 +186,9 @@ const PostCard = ({
   const handleDeletePost = async () => {
     if (confirm('Are you sure you want to delete this post?')) {
       try {
-        const res = await fetch(`${API_URL}/Post/delete?postId=${postId}&userId=${user?.userId}`, {
+        await authFetch(`${API_URL}/Post/delete?postId=${postId}&userId=${user?.userId}`, {
           method: 'DELETE',
         })
-        if (!res.ok) throw new Error('Failed to delete post')
         onDelete?.(postId)
       } catch (err) {
         console.error('Error deleting post:', err)
@@ -199,10 +198,9 @@ const PostCard = ({
 
   const handleLike = async () => {
     try {
-      const res = await fetch(`${API_URL}/Post/${postId}/like?userId=${user?.userId}`, {
+      const data = await authFetch(`${API_URL}/Post/${postId}/like?userId=${user?.userId}`, {
         method: 'POST',
       })
-      const data = await res.json()
       if (data.status === 'Liked') {
         setLocalLikesCount((prev) => prev + 1)
         setHasLiked(true)
@@ -218,13 +216,11 @@ const PostCard = ({
   const handleEditPost = async () => {
     if (!editContent.trim()) return
     try {
-      const res = await fetch(`${API_URL}/Post/edit?postId=${postId}&userId=${user?.userId}`, {
+      await authFetch(`${API_URL}/Post/edit?postId=${postId}&userId=${user?.userId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(editContent),
       })
-
-      if (!res.ok) throw new Error('Failed to edit post')
 
       // אין צורך ב-res.json(), פשוט נעדכן מקומית
       setIsEditing(false)

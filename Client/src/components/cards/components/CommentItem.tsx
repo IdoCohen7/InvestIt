@@ -7,6 +7,7 @@ import { Card } from 'react-bootstrap'
 import placeHolder from '@/assets/images/avatar/placeholder.jpg'
 import { BsTrashFill } from 'react-icons/bs'
 import { useAuthContext } from '@/context/useAuthContext'
+import { useAuthFetch } from '@/hooks/useAuthFetch' // הוספת ייבוא useAuthFetch
 import { API_URL } from '@/utils/env'
 
 const CommentItem = ({
@@ -26,17 +27,17 @@ const CommentItem = ({
   const name = firstName + ' ' + lastName
   const avatar = profilePic || placeHolder
   const { user } = useAuthContext()
+  const authFetch = useAuthFetch() // שימוש ב-hook החדש
 
   const handleDeleteComment = async () => {
     if (!user || user.userId !== userId) return
     if (!confirm('Are you sure you want to delete this comment?')) return
 
     try {
-      const res = await fetch(`${API_URL}/Comment/${commentId}`, {
+      // שימוש ב-authFetch במקום fetch
+      await authFetch(`${API_URL}/Comment/${commentId}`, {
         method: 'DELETE',
       })
-
-      if (!res.ok) throw new Error('Failed to delete comment')
 
       if (onDelete) onDelete()
     } catch (err) {

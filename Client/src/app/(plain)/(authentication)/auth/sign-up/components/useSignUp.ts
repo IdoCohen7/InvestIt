@@ -43,7 +43,8 @@ const useSignUp = () => {
     try {
       setLoading(true)
 
-      const res = await fetch(`${API_URL}/User`, {
+      const res = await fetch(`${API_URL}/Auth/Register`, {
+        // <-- שים לב לנתיב
         method: 'POST',
         mode: 'cors',
         headers: {
@@ -54,21 +55,27 @@ const useSignUp = () => {
           firstName: values.firstName,
           lastName: values.lastName,
           email: values.email,
-          passwordHash: values.password,
+          passwordHash: values.password, // שם השדה בשרת הוא passwordHash? אם לא, תקן לפי השם המדויק
           profilePic: '',
           experienceLevel: '',
           bio: '',
-          createdAt: new Date().toLocaleDateString('en-GB'), // "14/04/2025"
+          createdAt: new Date().toISOString(), // עדיף ISO
           isActive: true,
         }),
       })
 
       if (!res.ok) {
-        throw new Error(`Server responded with status ${res.status}`)
+        const error = await res.json()
+        throw new Error(error?.error || `Server responded with status ${res.status}`)
       }
 
-      const data: UserType = await res.json()
-      saveSession(data, false)
+      const data = await res.json()
+
+      const userWithToken = {
+        ...data.user,
+        token: data.token,
+      }
+      saveSession(userWithToken, false)
 
       showNotification({ message: 'Registration successful. Redirecting...', variant: 'success' })
       navigate('/')

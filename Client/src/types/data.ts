@@ -20,6 +20,7 @@ export type UserType = {
   status: 'online' | 'offline'
   lastMessage: string
   lastActivity: Date
+  token?: string
 }
 
 export type CommentType = {

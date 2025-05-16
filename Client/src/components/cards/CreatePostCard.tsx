@@ -9,6 +9,7 @@ import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognitio
 import { API_URL } from '@/utils/env'
 import type { SocialPostType } from '@/types/data'
 import { formatDateToDDMMYYYY } from '@/utils/date'
+import { useAuthFetch } from '@/hooks/useAuthFetch'
 
 type Props = {
   onPostCreated?: (post: SocialPostType) => void
@@ -17,9 +18,9 @@ type Props = {
 const CreatePostCard = ({ onPostCreated }: Props) => {
   const [newPost, setNewPost] = useState('')
   const { user } = useAuthContext()
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { isTrue: isOpenPhoto, toggle: togglePhotoModel } = useToggle()
   const { showNotification } = useNotificationContext()
+  const authFetch = useAuthFetch()
 
   const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } = useSpeechRecognition()
   const [activeLanguage, setActiveLanguage] = useState<'en-US' | 'he-IL' | null>(null)
@@ -38,15 +39,11 @@ const CreatePostCard = ({ onPostCreated }: Props) => {
         updatedAt: formatDateToDDMMYYYY(new Date()),
       }
 
-      const res = await fetch(`${API_URL}/Post/add`, {
+      const created = await authFetch(`${API_URL}/Post/add`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       })
-
-      if (!res.ok) throw new Error('Failed to create post')
-
-      const created = await res.json()
 
       const fullPostObj: SocialPostType = {
         ...payload,
@@ -64,6 +61,7 @@ const CreatePostCard = ({ onPostCreated }: Props) => {
       setActiveLanguage(null)
 
       if (onPostCreated) onPostCreated(fullPostObj)
+      showNotification({ message: 'Post created successfully!', variant: 'success' })
     } catch (err) {
       showNotification({ message: err instanceof Error ? err.message : String(err), variant: 'danger' })
     }

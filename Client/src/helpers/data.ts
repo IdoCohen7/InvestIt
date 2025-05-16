@@ -1,31 +1,26 @@
-import { notificationData } from '@/assets/data/notification'
-import type { NotificationType, SocialPostType } from '@/types/data'
-import { sleep } from '@/utils/promise'
+// data.ts (API function)
 import { API_URL } from '@/utils/env'
 
-export const getAllNotifications = async (): Promise<NotificationType[]> => {
-  await sleep()
-  return notificationData
-}
+export const getAllFeeds = async (
+  page = 1,
+  pageSize = 10,
+  userId?: number,
+  fetchFn?: (input: RequestInfo, init?: RequestInit) => Promise<Response>,
+): Promise<SocialPostType[]> => {
+  const fetcher = fetchFn || fetch
+  const res = await fetcher(`${API_URL}/Post?userId=${userId ?? ''}&page=${page}&pageSize=${pageSize}`, {
+    method: 'GET',
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
 
-export const getAllFeeds = async (page = 1, pageSize = 10, userId?: number): Promise<SocialPostType[]> => {
-  try {
-    const res = await fetch(`${API_URL}/Post?userId=${userId ?? ''}&page=${page}&pageSize=${pageSize}`, {
-      method: 'GET',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-
-    if (!res.ok) {
-      throw new Error(`Failed to fetch posts: ${res.statusText}`)
-    }
-
-    const data = await res.json()
-    return data
-  } catch (err) {
-    console.error('getAllFeeds error:', err)
-    throw err
+  if (!res.ok) {
+    // אם statusText לא קיים, נשתמש ב־status במקום
+    const statusText = res.statusText || `status code ${res.status}`
+    throw new Error(`Failed to fetch posts: ${statusText}`)
   }
+
+  return res.json()
 }

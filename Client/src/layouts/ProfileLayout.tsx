@@ -21,6 +21,7 @@ import FallbackLoading from '@/components/FallbackLoading'
 import Preloader from '@/components/Preloader'
 import CameraModal from '@/components/cameraModal'
 import { useAuthContext } from '@/context/useAuthContext'
+import { useAuthFetch } from '@/hooks/useAuthFetch' // <-- הוספת ייבוא useAuthFetch
 import type { ChildrenType } from '@/types/component'
 import type { UserPage } from '@/types/data'
 import Banner from '@/assets/images/bg/banner2.png'
@@ -33,6 +34,7 @@ interface ProfileLayoutProps extends ChildrenType {
 
 const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
   const { user, saveSession } = useAuthContext()
+  const authFetch = useAuthFetch() // <-- שימוש ב-useAuthFetch
   const [profileUser, setProfileUser] = useState<UserPage | null>(null)
   const [showCamera, setShowCamera] = useState(false)
   const navigate = useNavigate()
@@ -41,10 +43,10 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
   const [followersCount, setFollowersCount] = useState<number | null>(null)
 
   const fetchProfileUser = async () => {
+    if (!user?.token) return
+
     try {
-      const res = await fetch(`${API_URL}/User/${userId}?viewerId=${user?.userId}`)
-      if (!res.ok) throw new Error('Failed to fetch profile user')
-      const data = await res.json()
+      const data = await authFetch(`${API_URL}/User/${userId}?viewerId=${user?.userId}`)
       setProfileUser(data)
       setIsFollowed(data.isFollowed)
       setFollowersCount(data.followersCount)
@@ -54,24 +56,26 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
     }
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleImageUpload = async (relativePath: string) => {
-    if (!profileUser) return
+    if (!profileUser || !user?.token) return
 
     const fullPath = `${UPLOAD_URL}/profilePics/${profileUser.userId}.jpg`
 
     try {
-      const res = await fetch(`${API_URL}/User/ProfilePic/${profileUser.userId}`, {
+      await authFetch(`${API_URL}/User/ProfilePic/${profileUser.userId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(fullPath),
       })
 
-      if (!res.ok) throw new Error('Failed to update profile picture')
+      // שמור את הטוקן כדי שלא יימחק
+      const updatedUser = { ...profileUser, profilePic: fullPath, token: user.token }
 
-      const updatedUser = { ...profileUser, profilePic: fullPath }
       setProfileUser(updatedUser)
-      if (user?.userId === profileUser.userId) saveSession(updatedUser, true)
+
+      if (user?.userId === profileUser.userId) {
+        saveSession(updatedUser, true) // חשוב לשמור גם את הטוקן
+      }
       setShowCamera(false)
       window.location.reload()
     } catch (err) {
@@ -83,11 +87,11 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
     if (!user || !profileUser || isFollowed === null || followersCount === null) return
 
     try {
-      const res = await fetch(`${API_URL}/User/Follow?followedId=${profileUser.userId}&followerId=${user.userId}`, { method: 'POST' })
+      await authFetch(`${API_URL}/User/Follow?followedId=${profileUser.userId}&followerId=${user.userId}`, {
+        method: 'POST',
+      })
 
-      if (!res.ok) throw new Error('Failed to toggle follow')
-
-      const newIsFollowed = isFollowed === true ? false : true
+      const newIsFollowed = !isFollowed
       const newFollowers = newIsFollowed ? followersCount + 1 : Math.max(followersCount - 1, 0)
 
       setIsFollowed(newIsFollowed)
@@ -108,10 +112,10 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
   }
 
   useEffect(() => {
-    if (userId && user?.userId) {
+    if (userId && user?.userId && user?.token) {
       fetchProfileUser()
     }
-  }, [userId, user?.userId])
+  }, [userId, user?.userId, user?.token])
 
   if (notFound) navigate('/not-found')
   if (!profileUser || isFollowed === null || followersCount === null) return <p className="text-center mt-5">Loading profile...</p>

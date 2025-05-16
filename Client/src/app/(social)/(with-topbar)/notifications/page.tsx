@@ -18,6 +18,7 @@ import {
 import { BsCheckLg, BsThreeDots } from 'react-icons/bs'
 import PageMetaData from '@/components/PageMetaData'
 import { useAuthContext } from '@/context/useAuthContext'
+import { useAuthFetch } from '@/hooks/useAuthFetch' // <-- ייבוא useAuthFetch
 import { Link } from 'react-router-dom'
 import { Notification } from '@/types/data'
 import { API_URL } from '@/utils/env'
@@ -29,31 +30,31 @@ const Notifications = () => {
   const [hasMore, setHasMore] = useState(true)
   const pageSize = 10
   const { user } = useAuthContext()
+  const authFetch = useAuthFetch()
 
-  const fetchNotifications = (pageToLoad: number) => {
-    fetch(`${API_URL}/Notification?userId=${user?.userId}&page=${pageToLoad}&pageSize=${pageSize}`)
-      .then((res) => {
-        if (!res.ok) throw new Error('Failed to fetch')
-        return res.json()
+  const fetchNotifications = async (pageToLoad: number) => {
+    try {
+      const newData: Notification[] = await authFetch(`${API_URL}/Notification?userId=${user?.userId}&page=${pageToLoad}&pageSize=${pageSize}`, {
+        method: 'GET',
       })
-      .then((newData: Notification[]) => {
-        setNotifications((prev) => [...prev, ...newData])
-        setHasMore(newData.length === pageSize)
-      })
-      .catch(console.error)
+      setNotifications((prev) => [...prev, ...newData])
+      setHasMore(newData.length === pageSize)
+    } catch (error) {
+      console.error('Failed to fetch notifications:', error)
+    }
   }
 
   useEffect(() => {
     if (user?.userId) {
       fetchNotifications(1)
 
-      // הפעלת סימון כהתראות נקראו
-      fetch(`${API_URL}/Notification?userId=${user.userId}`, {
+      // סימון התראות כנקראות
+      authFetch(`${API_URL}/Notification?userId=${user.userId}`, {
         method: 'PUT',
       })
         .then(() => {
           const unread = notifications.filter((n) => !n.isRead)
-          if (unread.length === 0) return // טיפ: אין צורך באנימציה אם כולן כבר נקראו
+          if (unread.length === 0) return
 
           const idsToAnimate = unread.map((n) => n.notificationId)
           setNotifications((prev) => prev.map((n) => ({ ...n, isRead: true })))

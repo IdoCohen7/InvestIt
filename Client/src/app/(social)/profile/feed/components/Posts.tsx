@@ -3,8 +3,10 @@ import PostCard from '@/components/cards/PostCard'
 import { SocialPostType } from '@/types/data'
 import LoadMoreButton from '@/app/(social)/feed/(container)/home/components/LoadMoreButton'
 import { useAuthContext } from '@/context/useAuthContext'
-import { API_URL } from '@/utils/env'
+import { useAuthFetch } from '@/hooks/useAuthFetch' // ייבוא useAuthFetch
+import { useNavigate } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
+import { API_URL } from '@/utils/env'
 
 const Posts = ({ userId }: { userId?: string }) => {
   const [posts, setPosts] = useState<SocialPostType[]>([])
@@ -12,22 +14,32 @@ const Posts = ({ userId }: { userId?: string }) => {
   const [page, setPage] = useState(1)
   const [isLoading, setIsLoading] = useState(false)
   const [hasMore, setHasMore] = useState(true)
-  const { user } = useAuthContext()
+  const { user, removeSession } = useAuthContext()
+  const authFetch = useAuthFetch()
+  const navigate = useNavigate()
   const PAGE_SIZE = 10
 
   const fetchPosts = async (pageToFetch: number) => {
-    if (!userId || !user?.userId) return
+    if (!userId || !user?.userId || !user?.token) return
     setIsLoading(true)
     try {
-      const res = await fetch(`${API_URL}/Post/UserPage?page=${pageToFetch}&pageSize=${PAGE_SIZE}&userId=${user.userId}&profileUserId=${userId}`)
+      const res = await authFetch(
+        `${API_URL}/Post/UserPage?page=${pageToFetch}&pageSize=${PAGE_SIZE}&userId=${user.userId}&profileUserId=${userId}`,
+        {
+          method: 'GET',
+          mode: 'cors',
+        },
+      )
 
-      if (res.status === 204) {
+      // ב-authFetch הטיפול ב-401 כבר מתבצע (removeSession + navigate)
+
+      if (res === null) {
         if (pageToFetch === 1) setPosts([])
         setHasMore(false)
         return
       }
 
-      const data: SocialPostType[] = await res.json()
+      const data: SocialPostType[] = res
 
       if (data.length < PAGE_SIZE) setHasMore(false)
 
@@ -46,12 +58,12 @@ const Posts = ({ userId }: { userId?: string }) => {
   }
 
   useEffect(() => {
-    if (!userId || !user?.userId) return
+    if (!userId || !user?.userId || !user?.token) return
     setPage(1)
     setHasMore(true)
     setDeletedPostIds([])
     fetchPosts(1)
-  }, [userId, user?.userId])
+  }, [userId, user?.userId, user?.token])
 
   const handlePostDelete = (postId: number) => {
     setDeletedPostIds((prev) => [...prev, postId])

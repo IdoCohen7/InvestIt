@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using InvestItAPI.Models;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -7,6 +8,7 @@ namespace InvestItAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ExpertController : ControllerBase
     {
         // GET: api/<ExpertController>

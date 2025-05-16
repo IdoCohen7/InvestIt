@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { timeSince } from '@/utils/date'
 import clsx from 'clsx'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Button, Card, CardBody, CardFooter, CardHeader, Dropdown, DropdownMenu, DropdownToggle } from 'react-bootstrap'
-import { BsBellFill } from 'react-icons/bs'
+import { BsBellFill, BsThreeDots, BsCheckLg } from 'react-icons/bs'
 import { useAuthContext } from '@/context/useAuthContext'
 import { Notification } from '@/types/data'
 import { API_URL } from '@/utils/env'
@@ -12,37 +12,75 @@ const NotificationDropdown = () => {
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [unreadCount, setUnreadCount] = useState(0)
   const [justReadIds, setJustReadIds] = useState<number[]>([])
-  const { user } = useAuthContext()
+  const { user, removeSession } = useAuthContext()
+  const navigate = useNavigate()
 
-  const loadNotifications = () => {
-    if (!user?.userId) return
+  const loadNotifications = async () => {
+    if (!user?.userId || !user?.token) return
 
-    fetch(`${API_URL}/Notification?userId=${user.userId}&page=1&pageSize=4`)
-      .then((res) => {
-        if (!res.ok) throw new Error('Failed to fetch notifications')
-        return res.json()
+    try {
+      const res = await fetch(`${API_URL}/Notification?userId=${user.userId}&page=1&pageSize=4`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
       })
-      .then(setNotifications)
-      .catch(console.error)
+      if (res.status === 401) {
+        removeSession()
+        navigate('/auth/sign-in')
+        return
+      }
+      if (!res.ok) throw new Error('Failed to fetch notifications')
+      const data = await res.json()
+      setNotifications(data)
+    } catch (err) {
+      console.error(err)
+    }
 
-    fetch(`${API_URL}/Notification/notificationsTotal?userId=${user.userId}`)
-      .then((res) => {
-        if (!res.ok) throw new Error('Failed to fetch unread count')
-        return res.json()
+    try {
+      const resCount = await fetch(`${API_URL}/Notification/notificationsTotal?userId=${user.userId}`, {
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
       })
-      .then(setUnreadCount)
-      .catch(console.error)
+      if (resCount.status === 401) {
+        removeSession()
+        navigate('/auth/sign-in')
+        return
+      }
+      if (!resCount.ok) throw new Error('Failed to fetch unread count')
+      const count = await resCount.json()
+      setUnreadCount(count)
+    } catch (err) {
+      console.error(err)
+    }
   }
 
   useEffect(() => {
     loadNotifications()
-  }, [user])
+  }, [user?.userId, user?.token])
 
   const handleDropdownToggle = (isOpen: boolean) => {
-    if (isOpen && user?.userId && unreadCount > 0) {
+    if (isOpen && user?.userId && unreadCount > 0 && user?.token) {
       fetch(`${API_URL}/Notification?userId=${user.userId}`, {
         method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
       })
+        .then(async (res) => {
+          if (res.status === 401) {
+            removeSession()
+            navigate('/auth/sign-in')
+            return
+          }
+          if (!res.ok) throw new Error('Failed to mark notifications as read')
+          // נסה לקרוא JSON, ואם לא מצליח - החזר null
+          try {
+            return await res.json()
+          } catch {
+            return null
+          }
+        })
         .then(() => {
           setUnreadCount(0)
 

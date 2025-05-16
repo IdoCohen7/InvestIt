@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import LoadMoreButton from '@/app/(social)/feed/(container)/home/components/LoadMoreButton'
 import { UserType } from '@/types/auth'
 import { useNotificationContext } from '@/context/useNotificationContext'
-import { API_URL } from '@/utils/env'
+import { useAuthFetch } from '@/hooks/useAuthFetch' // <-- ייבוא useAuthFetch
 import { Link } from 'react-router-dom'
+import { API_URL } from '@/utils/env'
 
 interface Props {
   query: string
@@ -18,18 +18,17 @@ const SearchResultsComponent = ({ query }: Props) => {
   const [page, setPage] = useState(1)
   const [totalCount, setTotalCount] = useState(0)
   const { showNotification } = useNotificationContext()
+  const authFetch = useAuthFetch() // <-- שימוש ב-useAuthFetch
 
   const fetchResults = async (pageToLoad: number) => {
     if (!query) return
     if (pageToLoad === 1) setLoading(true)
 
     try {
-      const response = await axios.get(`${API_URL}/User/Search`, {
-        params: { query, page: pageToLoad, pageSize: PAGE_SIZE },
-      })
+      const response = await authFetch(`${API_URL}/User/Search?query=${encodeURIComponent(query)}&page=${pageToLoad}&pageSize=${PAGE_SIZE}`)
 
-      const newUsers = response.data.users || []
-      const total = response.data.totalCount || 0
+      const newUsers = response.users || []
+      const total = response.totalCount || 0
       setTotalCount(total)
       setResults((prev) => (pageToLoad === 1 ? newUsers : [...prev, ...newUsers]))
     } catch (err) {

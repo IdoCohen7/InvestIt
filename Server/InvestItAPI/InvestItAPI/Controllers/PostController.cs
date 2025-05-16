@@ -2,6 +2,7 @@
 using InvestItAPI.Models;
 using InvestItAPI.DAL;
 using System.Runtime.CompilerServices;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -9,6 +10,7 @@ namespace InvestItAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PostController : ControllerBase
     {
         [HttpGet]
