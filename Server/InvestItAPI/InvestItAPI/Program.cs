@@ -68,6 +68,24 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// Supabase Client registration
+builder.Services.AddSingleton(provider =>
+{
+    var supabaseUrl = builder.Configuration["Supabase:Url"];
+    var supabaseKey = builder.Configuration["Supabase:Key"];
+
+    var options = new Supabase.SupabaseOptions
+    {
+        AutoConnectRealtime = false
+    };
+
+    var client = new Supabase.Client(supabaseUrl, supabaseKey, options);
+    client.InitializeAsync().Wait(); 
+
+    return client;
+});
+
+
 var app = builder.Build();
 
 //  WebSocket support

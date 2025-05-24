@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using InvestItAPI.Models;
 using System.Data.SqlClient;
+using InvestItAPI.DTO;
 
 namespace InvestItAPI.Controllers
 {

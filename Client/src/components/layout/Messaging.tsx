@@ -1,283 +1,214 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-import { messages } from '@/assets/data/other'
-import useToggle from '@/hooks/useToggle'
-import { type ChatMessageType, type UserType } from '@/types/data'
-import { addOrSubtractMinutesFromDate } from '@/utils/date'
-import clsx from 'clsx'
-import { Link } from 'react-router-dom'
-import { Button, Card, Collapse, Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Toast, ToastContainer, ToastHeader } from 'react-bootstrap'
+import { useEffect, useState } from 'react'
+import { API_URL } from '@/utils/env'
+import { useAuthFetch } from '@/hooks/useAuthFetch'
+import { supabase } from '@/supabase/supabase'
+import { useAuthContext } from '@/context/useAuthContext'
+import placeHolder from '@/assets/images/avatar/placeholder.jpg'
 
-import { useChatContext } from '@/context/useChatContext'
-import { yupResolver } from '@hookform/resolvers/yup'
-import { useForm } from 'react-hook-form'
-import { BsArchive, BsCameraVideo, BsChatSquareText, BsDashLg, BsFlag, BsTelephone, BsThreeDotsVertical, BsTrash, BsVolumeUp } from 'react-icons/bs'
-import { FaCheck, FaCheckDouble, FaCircle, FaFaceSmile, FaPaperclip, FaXmark } from 'react-icons/fa6'
-import * as yup from 'yup'
-import TextAreaFormInput from '../form/TextAreaFormInput'
-import SimplebarReactClient from '../wrappers/SimplebarReactClient'
+export default function ChatPage() {
+  const authFetch = useAuthFetch()
+  const { user } = useAuthContext()
+  const [chats, setChats] = useState<any[]>([])
+  const [activeChat, setActiveChat] = useState<any>(null)
+  const [messages, setMessages] = useState<any[]>([])
+  const [participants, setParticipants] = useState<Record<number, any>>({})
+  const [newMessage, setNewMessage] = useState('')
+  const [loadingMessages, setLoadingMessages] = useState(false)
 
-import avatar10 from '@/assets/images/avatar/10.jpg'
-
-const AlwaysScrollToBottom = () => {
-  const elementRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
-    if (elementRef?.current?.scrollIntoView) elementRef.current.scrollIntoView({ behavior: 'smooth' })
-  })
-  return <div ref={elementRef} />
-}
+    const loadChatsAndUsers = async () => {
+      try {
+        const chatList = await authFetch(`${API_URL}/Supabase/GetUserPrivateChats`)
+        setChats(chatList)
 
-const UserMessage = ({ message, toUser }: { message: ChatMessageType; toUser: UserType }) => {
-  const received = message.from.id === toUser.id
+        const otherUserIds = chatList
+          .map((chat: any) => (chat.user1Id === user?.userId ? chat.user2Id : chat.user1Id))
+          .filter((id: number, index: number, arr: number[]) => arr.indexOf(id) === index)
+
+        const fetchedUsers = await Promise.all(
+          otherUserIds.map(async (id) => {
+            const response = await authFetch(`${API_URL}/User/${id}?viewerId=${user?.userId}`)
+            return { id, data: response }
+          })
+        )
+
+        const usersById: Record<number, any> = {}
+        fetchedUsers.forEach(({ id, data }) => {
+          usersById[id] = data
+        })
+
+        setParticipants(usersById)
+      } catch (err) {
+        console.error('❌ Failed to load chats or users', err)
+      }
+    }
+
+    if (user) loadChatsAndUsers()
+  }, [])
+
+  useEffect(() => {
+    if (!activeChat) return
+
+    const loadMessages = async () => {
+      try {
+        setLoadingMessages(true)
+        const data = await authFetch(`${API_URL}/Supabase/GetPrivateMessages?chatId=${activeChat.id}`)
+        setMessages(data)
+      } catch (err) {
+        console.error('❌ Failed to fetch messages', err)
+      } finally {
+        setLoadingMessages(false)
+      }
+    }
+
+    loadMessages()
+  }, [activeChat])
+
+  useEffect(() => {
+    if (!activeChat) return
+
+    const channel = supabase
+      .channel(`chat-${activeChat.id}`)
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'PrivateMessages',
+          filter: `chat_id=eq.${activeChat.id}`
+        },
+        async (payload) => {
+          const newMsg = {
+            ...payload.new,
+            sentAt: new Date(payload.new.sent_at)
+          }
+
+          const senderId = newMsg.senderId
+          if (!participants[senderId] && senderId !== user?.userId) {
+            try {
+              const fetched = await authFetch(`${API_URL}/User/${senderId}?viewerId=${user?.userId}`)
+              setParticipants((prev) => ({ ...prev, [senderId]: fetched }))
+            } catch (err) {
+              console.error('❌ Failed to fetch participant on realtime:', err)
+            }
+          }
+
+          setMessages((prev) => [...prev, newMsg])
+        }
+      )
+      .subscribe()
+
+    return () => {
+      supabase.removeChannel(channel)
+    }
+  }, [activeChat, participants])
+
+  const sendMessage = async () => {
+    if (!activeChat || !newMessage.trim()) return
+    try {
+      await authFetch(`${API_URL}/Supabase/SendPrivateMessage`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ chatId: activeChat.id, message: newMessage })
+      })
+      setNewMessage('')
+    } catch (err) {
+      console.error('Failed to send message', err)
+    }
+  }
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault()
+      sendMessage()
+    }
+  }
+
   return (
-    <div className={clsx('d-flex mb-1', { 'justify-content-end text-end': received })}>
-      <div className="flex-shrink-0 avatar avatar-xs me-2">
-        {!received && <img className="avatar-img rounded-circle" src={message.from.avatar} alt="" />}
-      </div>
-      <div className="flex-grow-1">
-        <div className="w-100">
-          <div className={clsx('d-flex flex-column', received ? 'align-items-end' : 'align-items-start')}>
-            {message.image ? (
-              <div className="bg-light text-secondary p-2 px-3 rounded-2">
-                <p className="small mb-0">{message.message}</p>
-                <Card className="shadow-none p-2 border border-2 rounded mt-2">
-                  <img width={87} height={91} src={message.image} alt="image" />
-                </Card>
+    <div className="container py-4">
+      <h2 className="mb-4">💬 Private Chat</h2>
+      <div className="row">
+        <div className="col-md-4">
+          <h5>Your Chats</h5>
+          <ul className="list-group">
+            {chats.map((chat) => (
+              <li
+                key={chat.id}
+                className={`list-group-item ${activeChat?.id === chat.id ? 'active' : ''}`}
+                onClick={() => setActiveChat(chat)}
+                role="button"
+              >
+                Chat #{chat.id}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="col-md-8">
+          {activeChat ? (
+            loadingMessages ? (
+              <div className="text-center py-3">
+                <div className="spinner-border text-primary" role="status"></div>
               </div>
             ) : (
-              <div className={clsx('p-2 px-3 rounded-2', received ? 'bg-primary text-white' : 'bg-light text-secondary')}>{message.message}</div>
-            )}
-            {message.isRead ? (
-              <div className="d-flex my-2">
-                <div className="small text-secondary">
-                  {message.sentOn.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}
+              <div>
+                <h5>Chat ID: {activeChat.id}</h5>
+                <div className="border rounded p-3 mb-3" style={{ height: '300px', overflowY: 'auto' }}>
+                  {messages.map((msg) => {
+                    const isOwnMessage = msg.senderId === user?.userId
+                    const sender = isOwnMessage ? user : participants[msg.senderId]
+                    const senderName = sender ? `${sender.firstName} ${sender.lastName}` : `User ${msg.senderId}`
+                    const profilePic = sender?.profilePic || placeHolder
+
+                    return (
+                      <div
+                        key={msg.id}
+                        className={`mb-2 d-flex gap-2 ${isOwnMessage ? 'justify-content-end text-end' : 'justify-content-start text-start'}`}
+                      >
+                        {!isOwnMessage && (
+                          <img
+                            src={profilePic}
+                            alt="Profile"
+                            style={{ width: 40, height: 40, borderRadius: '50%' }}
+                          />
+                        )}
+                        <div>
+                          <strong>{senderName}:</strong> {msg.content}
+                          <br />
+                          <small className="text-muted">
+                            {msg.sentAt ? new Date(msg.sentAt).toLocaleTimeString() : ''}
+                          </small>
+                        </div>
+                        {isOwnMessage && (
+                          <img
+                            src={profilePic}
+                            alt="Profile"
+                            style={{ width: 40, height: 40, borderRadius: '50%' }}
+                          />
+                        )}
+                      </div>
+                    )
+                  })}
                 </div>
-                <div className="small ms-2">
-                  <FaCheckDouble className="text-info" />
+                <div className="d-flex gap-2">
+                  <input
+                    className="form-control"
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    onKeyDown={handleKeyPress}
+                    placeholder="Type a message..."
+                  />
+                  <button className="btn btn-primary" onClick={sendMessage}>
+                    Send
+                  </button>
                 </div>
               </div>
-            ) : message.isSend ? (
-              <div className="d-flex my-2">
-                <div className="small text-secondary">
-                  {message.sentOn.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}
-                </div>
-                <div className="small ms-2">
-                  <FaCheck />
-                </div>
-              </div>
-            ) : (
-              <div className="small my-2">{message.sentOn.toLocaleString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true })}</div>
-            )}
-          </div>
+            )
+          ) : (
+            <p>Select a chat to begin.</p>
+          )}
         </div>
       </div>
     </div>
   )
 }
-
-const Messaging = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { isTrue: isOpen, toggle, setTrue } = useToggle()
-  const { activeChat } = useChatContext()
-  const { isTrue: isOpenCollapseToast, toggle: toggleToastCollapse } = useToggle(true)
-
-  const [userMessages, setUserMessages] = useState<ChatMessageType[]>([])
-  const messageSchema = yup.object({
-    newMessage: yup.string().required('Please enter message'),
-  })
-
-  const { reset, handleSubmit, control } = useForm({
-    resolver: yupResolver(messageSchema),
-  })
-
-  const [toUser] = useState<UserType>({
-    id: '108',
-    lastActivity: addOrSubtractMinutesFromDate(0),
-    lastMessage: 'Hey! Okay, thank you for letting me know. See you!',
-    status: 'online',
-    avatar: avatar10,
-    mutualCount: 30,
-    name: 'Judy Nguyen',
-    role: 'web',
-  })
-
-  const getMessagesForUser = useCallback(() => {
-    if (activeChat) {
-      setUserMessages(
-        messages.filter((m) => (m.to.id === toUser.id && m.from.id === activeChat.id) || (toUser.id === m.from.id && m.to.id === activeChat.id)),
-      )
-    }
-  }, [activeChat, toUser])
-
-  useEffect(() => {
-    getMessagesForUser()
-  }, [activeChat])
-
-  const sendChatMessage = (values: { newMessage?: string }) => {
-    if (activeChat) {
-      const newUserMessages = [...userMessages]
-      newUserMessages.push({
-        id: (userMessages.length + 1).toString(),
-        from: toUser,
-        to: activeChat,
-        message: values.newMessage ?? '',
-        sentOn: addOrSubtractMinutesFromDate(-0.1),
-      })
-      setTimeout(() => {
-        const otherNewMessages = [...newUserMessages]
-        otherNewMessages.push({
-          id: (userMessages.length + 1).toString(),
-          from: activeChat,
-          to: toUser,
-          message: values.newMessage ?? '',
-          sentOn: addOrSubtractMinutesFromDate(0),
-        })
-        setUserMessages(otherNewMessages)
-      }, 1000)
-      setUserMessages(newUserMessages)
-      reset()
-    }
-  }
-
-  return (
-    <>
-      <ul className="list-unstyled">
-        <li className="mt-3 d-grid">
-          <Link className="btn btn-primary-soft" to="/messaging">
-            See all in messaging
-          </Link>
-        </li>
-      </ul>
-      <div aria-live="polite" aria-atomic="true" className="position-relative">
-        <ToastContainer className="toast-chat d-flex gap-3 align-items-end">
-          <Toast
-            show={isOpen}
-            onClose={toggle}
-            id="chatToast"
-            className="mb-0 bg-mode"
-            role="alert"
-            aria-live="assertive"
-            aria-atomic="true"
-            data-bs-autohide="false">
-            <ToastHeader closeButton={false} className="bg-mode">
-              <div className="d-flex justify-content-between align-items-center w-100">
-                <div className="d-flex">
-                  <div className={clsx('flex-shrink-0 avatar me-2', { 'avatar-story': activeChat?.isStory })}>
-                    {activeChat?.avatar && <img className="avatar-img rounded-circle" src={activeChat.avatar} alt="avatar" />}
-                  </div>
-                  <div className="flex-grow-1">
-                    <h6 className="mb-0 mt-1">{activeChat?.name}</h6>
-                    <div className="small text-secondary">
-                      <FaCircle className={`text-${activeChat?.status === 'offline' ? 'danger' : 'success'} me-1`} />
-                      {activeChat?.status}
-                    </div>
-                  </div>
-                </div>
-                <div className="d-flex">
-                  <Dropdown drop="start">
-                    <DropdownToggle
-                      as="a"
-                      className="btn btn-secondary-soft-hover py-1 px-2 content-none"
-                      id="chatcoversationDropdown"
-                      data-bs-toggle="dropdown"
-                      data-bs-auto-close="outside"
-                      aria-expanded="false">
-                      <BsThreeDotsVertical />
-                    </DropdownToggle>
-                    <DropdownMenu className="dropdown-menu-end" aria-labelledby="chatcoversationDropdown">
-                      <li>
-                        <DropdownItem>
-                          <BsCameraVideo className="me-2 fw-icon" />
-                          Video call
-                        </DropdownItem>
-                      </li>
-                      <li>
-                        <DropdownItem>
-                          <BsTelephone className="me-2 fw-icon" />
-                          Audio call
-                        </DropdownItem>
-                      </li>
-                      <li>
-                        <DropdownItem>
-                          <BsTrash className="me-2 fw-icon" />
-                          Delete
-                        </DropdownItem>
-                      </li>
-                      <li>
-                        <DropdownItem>
-                          <BsChatSquareText className="me-2 fw-icon" />
-                          Mark as unread
-                        </DropdownItem>
-                      </li>
-                      <li>
-                        <DropdownItem>
-                          <BsVolumeUp className="me-2 fw-icon" />
-                          Muted
-                        </DropdownItem>
-                      </li>
-                      <li>
-                        <DropdownItem>
-                          <BsArchive className="me-2 fw-icon" />
-                          Archive
-                        </DropdownItem>
-                      </li>
-                      <li className="dropdown-divider" />
-                      <li>
-                        <DropdownItem>
-                          <BsFlag className="me-2 fw-icon" />
-                          Report
-                        </DropdownItem>
-                      </li>
-                    </DropdownMenu>
-                  </Dropdown>
-                  <a className="btn btn-secondary-soft-hover py-1 px-2" data-bs-toggle="collapse" onClick={toggleToastCollapse}>
-                    <BsDashLg />
-                  </a>
-                  <button onClick={toggle} className="btn btn-secondary-soft-hover py-1 px-2" data-bs-dismiss="toast" aria-label="Close">
-                    <FaXmark />
-                  </button>
-                </div>
-              </div>
-            </ToastHeader>
-            <Collapse in={isOpenCollapseToast} className="toast-body">
-              <div>
-                <SimplebarReactClient className="chat-conversation-content custom-scrollbar h-200px">
-                  <div className="text-center small my-2">Jul 16, 2022, 06:15 am</div>
-                  {userMessages.map((message) => (
-                    <UserMessage message={message} key={message.id} toUser={toUser} />
-                  ))}
-                  <AlwaysScrollToBottom />
-                </SimplebarReactClient>
-                <form onSubmit={handleSubmit(sendChatMessage)} className="mt-2">
-                  <TextAreaFormInput
-                    className="mb-sm-0 mb-3"
-                    name="newMessage"
-                    control={control}
-                    rows={1}
-                    placeholder="Type a message"
-                    noValidate
-                    containerClassName="w-100"
-                  />
-                  <div className="d-sm-flex align-items-end mt-2">
-                    <Button variant="danger-soft" size="sm" className="me-2">
-                      <FaFaceSmile className="fs-6" />
-                    </Button>
-                    <Button variant="secondary-soft" size="sm" className="me-2">
-                      <FaPaperclip className="fs-6" />
-                    </Button>
-                    <Button variant="success-soft" size="sm" className="me-2">
-                      Gif
-                    </Button>
-                    <Button variant="primary" size="sm" className="ms-auto" type="submit">
-                      Send
-                    </Button>
-                  </div>
-                </form>
-              </div>
-            </Collapse>
-          </Toast>
-        </ToastContainer>
-      </div>
-    </>
-  )
-}
-export default Messaging
