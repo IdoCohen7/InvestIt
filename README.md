@@ -29,7 +29,7 @@
 
 ### 👨‍💻 Frontend
 - `TypeScript`
-- `React` (כולל שימוש ב־Framer Motion, Zustand, Tailwind)
+- `React` 
 
 ### 🖥️ Backend
 - `C#`, `.NET 7`
@@ -56,8 +56,9 @@
 ## 🧑‍💻 מפתח
 
 **Ido Cohen**  
-**Aya Braunstein**
+**Aya Braunstein**  
 **Ofri Rahat Levy**
+
 🧑‍🎓 פרויקט גמר בהתמחות פיתוח אפליקציות – תואר במדעי המחשב
 
 ---
