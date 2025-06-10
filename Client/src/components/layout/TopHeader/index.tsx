@@ -20,7 +20,7 @@ const TopHeader = () => {
 
         <ul className="nav flex-nowrap align-items-center ms-sm-3 list-unstyled">
           <li className="nav-item ms-2">
-            <Link className="nav-link bg-light icon-md btn btn-light p-0" to="/groups">
+            <Link className="nav-link bg-light icon-md btn btn-light p-0" to="/messaging">
               <BsChatLeftTextFill size={15} />
             </Link>
           </li>

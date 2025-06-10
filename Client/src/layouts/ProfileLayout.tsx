@@ -14,14 +14,14 @@ import {
   DropdownToggle,
   Row,
 } from 'react-bootstrap'
-import { BsBookmark, BsEnvelope, BsFileEarmarkPdf, BsGear, BsLock, BsPatchCheckFill, BsPencilFill, BsThreeDots } from 'react-icons/bs'
+import { BsBookmark, BsEnvelope, BsFileEarmarkPdf, BsGear, BsLock, BsPatchCheckFill, BsPencilFill, BsThreeDots, BsChatDots } from 'react-icons/bs'
 import { API_URL, UPLOAD_URL } from '@/utils/env'
 import placeHolder from '@/assets/images/avatar/placeholder.jpg'
 import FallbackLoading from '@/components/FallbackLoading'
 import Preloader from '@/components/Preloader'
 import CameraModal from '@/components/cameraModal'
 import { useAuthContext } from '@/context/useAuthContext'
-import { useAuthFetch } from '@/hooks/useAuthFetch' // <-- הוספת ייבוא useAuthFetch
+import { useAuthFetch } from '@/hooks/useAuthFetch'
 import type { ChildrenType } from '@/types/component'
 import type { UserPage } from '@/types/data'
 import Banner from '@/assets/images/bg/banner2.png'
@@ -34,7 +34,7 @@ interface ProfileLayoutProps extends ChildrenType {
 
 const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
   const { user, saveSession } = useAuthContext()
-  const authFetch = useAuthFetch() // <-- שימוש ב-useAuthFetch
+  const authFetch = useAuthFetch()
   const [profileUser, setProfileUser] = useState<UserPage | null>(null)
   const [showCamera, setShowCamera] = useState(false)
   const navigate = useNavigate()
@@ -68,13 +68,11 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
         body: JSON.stringify(fullPath),
       })
 
-      // שמור את הטוקן כדי שלא יימחק
       const updatedUser = { ...profileUser, profilePic: fullPath, token: user.token }
-
       setProfileUser(updatedUser)
 
       if (user?.userId === profileUser.userId) {
-        saveSession(updatedUser, true) // חשוב לשמור גם את הטוקן
+        saveSession(updatedUser, true)
       }
       setShowCamera(false)
       window.location.reload()
@@ -108,6 +106,22 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
       )
     } catch (err) {
       console.error('Error toggling follow:', err)
+    }
+  }
+
+  const handleMessageClick = async () => {
+    if (!user || !profileUser) return
+
+    try {
+      await authFetch(`${API_URL}/Supabase/CreatePrivateChat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userIdToChatWith: profileUser.userId }),
+      })
+
+      navigate('/messaging')
+    } catch (err) {
+      console.error('Error creating private chat:', err)
     }
   }
 
@@ -155,7 +169,6 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
                         src={profileUser.profilePic || placeHolder}
                         alt="avatar"
                       />
-
                       {isOwner && <div className="avatar-overlay"></div>}
                     </div>
 
@@ -196,36 +209,34 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
                               <BsThreeDots />
                             </DropdownToggle>
                             <DropdownMenu className="dropdown-menu-end" aria-labelledby="profileAction2">
-                              <li>
-                                <DropdownItem>
-                                  <BsBookmark size={22} className="fa-fw pe-2" /> Share profile in a message
-                                </DropdownItem>
-                              </li>
-                              <li>
-                                <DropdownItem>
-                                  <BsFileEarmarkPdf size={22} className="fa-fw pe-2" /> Save your profile to PDF
-                                </DropdownItem>
-                              </li>
-                              <li>
-                                <DropdownItem>
-                                  <BsLock size={22} className="fa-fw pe-2" /> Lock profile
-                                </DropdownItem>
-                              </li>
-                              <li>
-                                <hr className="dropdown-divider" />
-                              </li>
-                              <li>
-                                <DropdownItem>
-                                  <BsGear size={22} className="fa-fw pe-2" /> Profile settings
-                                </DropdownItem>
-                              </li>
+                              {/* ... */}
                             </DropdownMenu>
                           </Dropdown>
                         </>
                       ) : (
-                        <Button variant={isFollowed ? 'outline-primary' : 'primary'} onClick={handleFollowToggle} className="px-4">
-                          {isFollowed ? 'Unfollow' : 'Follow'}
-                        </Button>
+                        <>
+                          <Button variant={isFollowed ? 'outline-primary' : 'primary'} onClick={handleFollowToggle} className="px-4">
+                            {isFollowed ? 'Unfollow' : 'Follow'}
+                          </Button>
+
+                          <Button
+                            variant="outline-primary"
+                            onClick={async () => {
+                              try {
+                                await authFetch(`${API_URL}/Supabase/CreatePrivateChat`, {
+                                  method: 'POST',
+                                  headers: { 'Content-Type': 'application/json' },
+                                  body: JSON.stringify({ userIdToChatWith: profileUser.userId }),
+                                })
+                                navigate('/messaging')
+                              } catch (err) {
+                                console.error('Error creating private chat:', err)
+                              }
+                            }}
+                            className="px-4">
+                            Message
+                          </Button>
+                        </>
                       )}
                     </div>
                   </div>

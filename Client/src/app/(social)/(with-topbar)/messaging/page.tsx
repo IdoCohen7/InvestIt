@@ -19,6 +19,7 @@ export default function ChatPage() {
     const loadChatsAndUsers = async () => {
       try {
         const chatList = await authFetch(`${API_URL}/Supabase/GetUserPrivateChats`)
+
         setChats(chatList)
 
         const otherUserIds = chatList
@@ -131,15 +132,23 @@ export default function ChatPage() {
         <div className="col-md-4">
           <h5>Your Chats</h5>
           <ul className="list-group">
-            {chats.map((chat) => (
-              <li
-                key={chat.id}
-                className={`list-group-item ${activeChat?.id === chat.id ? 'active' : ''}`}
-                onClick={() => setActiveChat(chat)}
-                role="button">
-                Chat #{chat.id}
-              </li>
-            ))}
+            {chats.map((chat) => {
+              const otherUserId = chat.user1Id === user?.userId ? chat.user2Id : chat.user1Id
+              const participant = participants[otherUserId]
+              const name = participant ? `${participant.firstName} ${participant.lastName}` : `User ${otherUserId}`
+              const profilePic = participant?.profilePic || placeHolder
+
+              return (
+                <li
+                  key={chat.id}
+                  className={`list-group-item d-flex align-items-center gap-2 ${activeChat?.id === chat.id ? 'active' : ''}`}
+                  onClick={() => setActiveChat(chat)}
+                  role="button">
+                  <img src={profilePic} alt="Profile" style={{ width: 35, height: 35, borderRadius: '50%' }} />
+                  <div>{name}</div>
+                </li>
+              )
+            })}
           </ul>
         </div>
 
@@ -151,25 +160,24 @@ export default function ChatPage() {
               </div>
             ) : (
               <div>
-                <h5>Chat ID: {activeChat.id}</h5>
+                <h5>Chat with {participants[activeChat.user1Id === user?.userId ? activeChat.user2Id : activeChat.user1Id]?.firstName}</h5>
                 <div className="border rounded p-3 mb-3" style={{ height: '300px', overflowY: 'auto' }}>
                   {messages.map((msg) => {
                     const isOwnMessage = msg.senderId === user?.userId
                     const sender = isOwnMessage ? user : participants[msg.senderId]
                     const senderName = sender ? `${sender.firstName} ${sender.lastName}` : `User ${msg.senderId}`
-                    const profilePic = sender?.profilePic || placeHolder
 
                     return (
                       <div
                         key={msg.id}
-                        className={`mb-2 d-flex gap-2 ${isOwnMessage ? 'justify-content-end text-end' : 'justify-content-start text-start'}`}>
-                        {!isOwnMessage && <img src={profilePic} alt="Profile" style={{ width: 40, height: 40, borderRadius: '50%' }} />}
-                        <div>
+                        className={`mb-2 d-flex ${isOwnMessage ? 'justify-content-end text-end' : 'justify-content-start text-start'}`}>
+                        <div
+                          className={`p-2 rounded ${isOwnMessage ? 'bg-primary text-white' : 'bg-light'}`}
+                          style={{ maxWidth: '70%', display: 'inline-block' }}>
                           <strong>{senderName}:</strong> {msg.content}
                           <br />
                           <small className="text-muted">{msg.sentAt ? new Date(msg.sentAt).toLocaleTimeString() : ''}</small>
                         </div>
-                        {isOwnMessage && <img src={profilePic} alt="Profile" style={{ width: 40, height: 40, borderRadius: '50%' }} />}
                       </div>
                     )
                   })}

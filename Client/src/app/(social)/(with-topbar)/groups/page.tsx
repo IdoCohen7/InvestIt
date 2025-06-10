@@ -11,11 +11,15 @@ interface Message {
   content: string
   created_at: string
   userId?: number
+  group: string
 }
+
+const GROUPS = ['Stock Market', 'Crypto', 'Real Estate', 'Financial Freedom']
 
 const GroupsPage = () => {
   const [messages, setMessages] = useState<Message[]>([])
   const [content, setContent] = useState('')
+  const [selectedGroup, setSelectedGroup] = useState('Stock Market')
   const messagesEndRef = useRef<HTMLDivElement | null>(null)
   const navigate = useNavigate()
 
@@ -23,7 +27,8 @@ const GroupsPage = () => {
   const fullName = `${user?.firstName ?? ''} ${user?.lastName ?? ''}`.trim()
 
   async function fetchMessages(): Promise<void> {
-    const { data, error } = await supabase.from('Stocks').select('id, name, content, created_at, userId')
+    const { data, error } = await supabase.from('GroupChats').select('id, name, content, created_at, userId, group').eq('group', selectedGroup)
+
     if (error) console.error('Error fetching messages:', error)
     else setMessages(data ?? [])
   }
@@ -31,11 +36,12 @@ const GroupsPage = () => {
   async function createMessage(): Promise<void> {
     if (!content.trim()) return
 
-    const { error } = await supabase.from('Stocks').insert([
+    const { error } = await supabase.from('GroupChats').insert([
       {
         name: fullName,
         content: content.trim(),
         userId: user?.userId,
+        group: selectedGroup,
       },
     ])
 
@@ -44,9 +50,14 @@ const GroupsPage = () => {
 
   useEffect(() => {
     fetchMessages()
+  }, [selectedGroup])
+
+  useEffect(() => {
     const channel = supabase
-      .channel('supabase_realtime_messages_publication')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'Stocks' }, (payload) => {
+      .channel('supabase_realtime_groupchat')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'GroupChats' }, (payload) => {
+        if (payload.new.group !== selectedGroup) return
+
         if (payload.eventType === 'INSERT') {
           setMessages((prev) => [...prev, payload.new as Message])
         } else if (payload.eventType === 'UPDATE') {
@@ -60,7 +71,7 @@ const GroupsPage = () => {
     return () => {
       supabase.removeChannel(channel)
     }
-  }, [])
+  }, [selectedGroup])
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
@@ -84,7 +95,15 @@ const GroupsPage = () => {
                 <Card.Body>
                   <h1 className="h5 mb-3">Groups</h1>
                   <ul className="list-group">
-                    <li className="list-group-item active">📈 Stocks</li>
+                    {GROUPS.map((group) => (
+                      <li
+                        key={group}
+                        className={`list-group-item ${selectedGroup === group ? 'active' : ''}`}
+                        onClick={() => setSelectedGroup(group)}
+                        style={{ cursor: 'pointer' }}>
+                        {group}
+                      </li>
+                    ))}
                   </ul>
                 </Card.Body>
               </Card>
@@ -92,7 +111,7 @@ const GroupsPage = () => {
             <Col lg={8} xxl={9} className="d-flex flex-column">
               <Card className="p-3 flex-grow-1 rounded-0 border-0" style={{ direction: 'rtl', display: 'flex', flexDirection: 'column' }}>
                 <div className="mb-3">
-                  <h5>💬 Chat in Stocks</h5>
+                  <h5>💬 Chat in {selectedGroup}</h5>
                   <div className="flex-grow-1 overflow-auto" style={{ maxHeight: 'calc(100vh - 230px)' }}>
                     {messages.map((msg) => {
                       const isMyMessage = msg.userId === user?.userId
