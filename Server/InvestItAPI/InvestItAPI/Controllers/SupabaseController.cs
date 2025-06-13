@@ -27,33 +27,26 @@ namespace InvestItAPI.Controllers
             var chats1 = await _supabase.From<PrivateChat>().Where(x => x.User1Id == userId).Get();
             var chats2 = await _supabase.From<PrivateChat>().Where(x => x.User2Id == userId).Get();
 
-            var allChats = chats1.Models.Concat(chats2.Models).GroupBy(c => c.Id).Select(g => g.First()).ToList();
-
-            var otherUserIds = allChats
-                .Select(c => c.User1Id == userId ? c.User2Id : c.User1Id)
-                .Distinct()
+            var allChats = chats1.Models.Concat(chats2.Models)
+                .GroupBy(c => c.Id)
+                .Select(g => g.First())
                 .ToList();
-
-            var usersResult = await _supabase.From<User>().Where(u => otherUserIds.Contains(u.UserId)).Get();
-            var usersById = usersResult.Models.ToDictionary(u => u.UserId);
 
             var dto = allChats.Select(c =>
             {
                 var otherId = c.User1Id == userId ? c.User2Id : c.User1Id;
-                var otherUser = usersById.ContainsKey(otherId) ? usersById[otherId] : null;
 
                 return new PrivateChatWithUserDto
                 {
                     Id = c.Id,
                     OtherUserId = otherId,
-                    OtherUserName = otherUser != null ? $"{otherUser.FirstName} {otherUser.LastName}" : $"User {otherId}",
-                    OtherUserProfilePic = otherUser?.ProfilePic,
                     CreatedAt = c.CreatedAt
                 };
             });
 
             return Ok(dto);
         }
+
 
 
         [HttpGet("GetPrivateMessages")]

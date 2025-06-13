@@ -19,12 +19,12 @@ export default function ChatPage() {
     const loadChatsAndUsers = async () => {
       try {
         const chatList = await authFetch(`${API_URL}/Supabase/GetUserPrivateChats`)
-
         setChats(chatList)
 
         const otherUserIds = chatList
-          .map((chat: any) => (chat.user1Id === user?.userId ? chat.user2Id : chat.user1Id))
-          .filter((id: number, index: number, arr: number[]) => arr.indexOf(id) === index)
+          .map((chat: any) => chat.otherUserId)
+          .filter((id: number | null): id is number => id !== null)
+          .filter((id, index, arr) => arr.indexOf(id) === index)
 
         const fetchedUsers = await Promise.all(
           otherUserIds.map(async (id) => {
@@ -133,10 +133,10 @@ export default function ChatPage() {
           <h5>Your Chats</h5>
           <ul className="list-group">
             {chats.map((chat) => {
-              const otherUserId = chat.user1Id === user?.userId ? chat.user2Id : chat.user1Id
+              const otherUserId = chat.otherUserId
               const participant = participants[otherUserId]
-              const name = participant ? `${participant.firstName} ${participant.lastName}` : `User ${otherUserId}`
-              const profilePic = participant?.profilePic || placeHolder
+              const name = participant ? `${participant.firstName} ${participant.lastName}` : chat.otherUserName || `User ${otherUserId}`
+              const profilePic = participant?.profilePic || chat.otherUserProfilePic || placeHolder
 
               return (
                 <li
@@ -160,7 +160,12 @@ export default function ChatPage() {
               </div>
             ) : (
               <div>
-                <h5>Chat with {participants[activeChat.user1Id === user?.userId ? activeChat.user2Id : activeChat.user1Id]?.firstName}</h5>
+                <h5>
+                  Chat with{' '}
+                  {participants[activeChat.otherUserId]
+                    ? `${participants[activeChat.otherUserId].firstName}`
+                    : activeChat.otherUserName || `User ${activeChat.otherUserId}`}
+                </h5>
                 <div className="border rounded p-3 mb-3" style={{ height: '300px', overflowY: 'auto' }}>
                   {messages.map((msg) => {
                     const isOwnMessage = msg.senderId === user?.userId
