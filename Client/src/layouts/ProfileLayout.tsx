@@ -1,20 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  CardTitle,
-  Col,
-  Container,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Row,
-} from 'react-bootstrap'
-import { BsBookmark, BsEnvelope, BsFileEarmarkPdf, BsGear, BsLock, BsPatchCheckFill, BsPencilFill, BsThreeDots, BsChatDots } from 'react-icons/bs'
+import { Button, Card, CardBody, CardHeader, CardTitle, Col, Container, Dropdown, DropdownMenu, DropdownToggle, Row } from 'react-bootstrap'
+import { BsEnvelope, BsPatchCheckFill, BsPencilFill, BsThreeDots, BsChatDots } from 'react-icons/bs'
 import { API_URL, UPLOAD_URL } from '@/utils/env'
 import placeHolder from '@/assets/images/avatar/placeholder.jpg'
 import FallbackLoading from '@/components/FallbackLoading'
@@ -25,6 +12,7 @@ import { useAuthFetch } from '@/hooks/useAuthFetch'
 import type { ChildrenType } from '@/types/component'
 import type { UserPage } from '@/types/data'
 import Banner from '@/assets/images/bg/banner2.png'
+import ExpertEditModal from '@/components/cards/EditExpertModal'
 
 const TopHeader = lazy(() => import('@/components/layout/TopHeader'))
 
@@ -41,6 +29,9 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
   const [notFound, setNotFound] = useState(false)
   const [isFollowed, setIsFollowed] = useState<boolean | null>(null)
   const [followersCount, setFollowersCount] = useState<number | null>(null)
+  const [showExpertEdit, setShowExpertEdit] = useState(false)
+
+  const isExpert = !!profileUser?.expertiseArea
 
   const fetchProfileUser = async () => {
     if (!user?.token) return
@@ -125,6 +116,15 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
     }
   }
 
+  const handleExpertChatClick = async () => {
+    if (!user || !profileUser) return
+
+    const confirmed = window.confirm(`Are you sure you want to pay $${profileUser.price} to chat with this expert?`)
+    if (!confirmed) return
+
+    await handleMessageClick()
+  }
+
   useEffect(() => {
     if (userId && user?.userId && user?.token) {
       fetchProfileUser()
@@ -176,7 +176,7 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
                       <div className="text-sm-start text-center">
                         <h1 className="mb-0 h5 d-flex align-items-center justify-content-center justify-content-sm-start">
                           {profileUser.firstName} {profileUser.lastName}
-                          <BsPatchCheckFill className="text-success small ms-2" />
+                          {isExpert && <BsPatchCheckFill className="text-warning small ms-2" title="Verified Expert" />}
                         </h1>
                       </div>
 
@@ -204,13 +204,17 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
                           <Button variant="danger-soft" onClick={() => navigate('/settings/account')}>
                             <BsPencilFill size={19} className="pe-1" /> Edit profile
                           </Button>
+                          {isExpert && isOwner && (
+                            <Button variant="warning" onClick={() => setShowExpertEdit(true)}>
+                              Edit Expert Info
+                            </Button>
+                          )}
+
                           <Dropdown>
                             <DropdownToggle as="a" className="icon-md btn btn-light content-none" id="profileAction2">
                               <BsThreeDots />
                             </DropdownToggle>
-                            <DropdownMenu className="dropdown-menu-end" aria-labelledby="profileAction2">
-                              {/* ... */}
-                            </DropdownMenu>
+                            <DropdownMenu className="dropdown-menu-end" aria-labelledby="profileAction2"></DropdownMenu>
                           </Dropdown>
                         </>
                       ) : (
@@ -218,24 +222,15 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
                           <Button variant={isFollowed ? 'outline-primary' : 'primary'} onClick={handleFollowToggle} className="px-4">
                             {isFollowed ? 'Unfollow' : 'Follow'}
                           </Button>
-
-                          <Button
-                            variant="outline-primary"
-                            onClick={async () => {
-                              try {
-                                await authFetch(`${API_URL}/Supabase/CreatePrivateChat`, {
-                                  method: 'POST',
-                                  headers: { 'Content-Type': 'application/json' },
-                                  body: JSON.stringify({ userIdToChatWith: profileUser.userId }),
-                                })
-                                navigate('/messaging')
-                              } catch (err) {
-                                console.error('Error creating private chat:', err)
-                              }
-                            }}
-                            className="px-4">
-                            Message
-                          </Button>
+                          {isExpert && profileUser.availableForChat ? (
+                            <Button variant="success" className="px-4" onClick={handleExpertChatClick}>
+                              <BsChatDots className="me-1" /> Chat with Expert
+                            </Button>
+                          ) : (
+                            <Button variant="outline-primary" onClick={handleMessageClick} className="px-4">
+                              Message
+                            </Button>
+                          )}
                         </>
                       )}
                     </div>
@@ -262,6 +257,30 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
                       </ul>
                     </CardBody>
                   </Card>
+
+                  {isExpert && (
+                    <Card className="mt-4">
+                      <CardHeader className="border-0 pb-0">
+                        <CardTitle>Expert Details</CardTitle>
+                      </CardHeader>
+                      <CardBody className="pt-0">
+                        <ul className="list-unstyled mb-0">
+                          <li className="mb-2">
+                            <strong>Expertise:</strong> {profileUser.expertiseArea}
+                          </li>
+                          <li className="mb-2">
+                            <strong>Rate:</strong> ${profileUser.price}
+                          </li>
+                          <li className="mb-2">
+                            <strong>Available for chat:</strong> {profileUser.availableForChat ? 'Yes' : 'No'}
+                          </li>
+                          <li className="mb-2">
+                            <strong>Rating:</strong> ⭐ {profileUser.rating}
+                          </li>
+                        </ul>
+                      </CardBody>
+                    </Card>
+                  )}
                 </Col>
               </Row>
             </Col>
@@ -270,6 +289,46 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
       </main>
 
       {isOwner && <CameraModal show={showCamera} onClose={() => setShowCamera(false)} onUploadSuccess={handleImageUpload} />}
+      {isOwner && isExpert && (
+        <ExpertEditModal
+          show={showExpertEdit}
+          onClose={() => setShowExpertEdit(false)}
+          currentExpertData={{
+            expertiseArea: profileUser.expertiseArea || '',
+            price: profileUser.price || 0,
+            availableForChat: profileUser.availableForChat || false,
+          }}
+          onSave={async (updated) => {
+            try {
+              const payload = {
+                userId: profileUser.userId,
+                ...updated,
+              }
+
+              console.log('🚀 Sending to server:', payload) // ✅ כאן תראה מה נשלח בפועל
+
+              await authFetch(`${API_URL}/Expert/update-expert`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+              })
+
+              setProfileUser((prev) =>
+                prev
+                  ? {
+                      ...prev,
+                      expertiseArea: updated.expertiseArea,
+                      price: updated.price,
+                      availableForChat: updated.availableForChat,
+                    }
+                  : prev,
+              )
+            } catch (err) {
+              console.error('Failed to update expert info:', err)
+            }
+          }}
+        />
+      )}
     </>
   )
 }

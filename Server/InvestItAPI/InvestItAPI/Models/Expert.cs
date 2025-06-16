@@ -1,4 +1,6 @@
-﻿namespace InvestItAPI.Models
+﻿using InvestItAPI.DAL;
+
+namespace InvestItAPI.Models
 {
     public class Expert : User
     {
@@ -16,5 +18,11 @@
         }
 
         public Expert() { }
+
+        public static void UpdateExpert(Expert expert)
+        {
+            DBservices dBservices = new DBservices();
+            dBservices.UpdateExpert(expert.UserId, expert.ExpertiseArea, expert.Price ,expert.AvailableForChat);
+        }
     }
 }

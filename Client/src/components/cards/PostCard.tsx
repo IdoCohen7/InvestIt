@@ -1,19 +1,7 @@
 // PostCard.tsx
 import { useState } from 'react'
-import { Card, CardBody, CardFooter, CardHeader, Dropdown, DropdownDivider, DropdownItem, DropdownMenu, DropdownToggle } from 'react-bootstrap'
-import {
-  BsBookmark,
-  BsChatFill,
-  BsFlag,
-  BsHandThumbsUpFill,
-  BsPersonX,
-  BsSendFill,
-  BsSlashCircle,
-  BsThreeDots,
-  BsXCircle,
-  BsTrashFill,
-  BsPencilSquare,
-} from 'react-icons/bs'
+import { Card, CardBody, CardFooter, CardHeader } from 'react-bootstrap'
+import { BsChatFill, BsHandThumbsUpFill, BsSendFill, BsTrashFill, BsPencilSquare } from 'react-icons/bs'
 import LoadContentButton from '../LoadContentButton'
 import CommentItem from './components/CommentItem'
 import type { CommentType } from '@/types/data'
@@ -22,6 +10,7 @@ import placeHolder from '@/assets/images/avatar/placeholder.jpg'
 import { Link } from 'react-router-dom'
 import { API_URL } from '@/utils/env'
 import { useAuthFetch } from '@/hooks/useAuthFetch' // <-- שימוש ב-hook
+import { BsPatchCheckFill } from 'react-icons/bs'
 
 interface PostCardProps {
   postId: number
@@ -36,46 +25,9 @@ interface PostCardProps {
   fullName: string
   userProfilePic: string
   userExperienceLevel: string
+  isExpert?: boolean
   onDelete?: (postId: number) => void
 }
-
-const ActionMenu = ({ name }: { name?: string }) => (
-  <Dropdown>
-    <DropdownToggle as="a" className="text-secondary btn btn-secondary-soft-hover py-1 px-2 content-none" id="cardFeedAction">
-      <BsThreeDots />
-    </DropdownToggle>
-    <DropdownMenu className="dropdown-menu-end" aria-labelledby="cardFeedAction">
-      <li>
-        <DropdownItem>
-          <BsBookmark className="pe-2" /> Save post
-        </DropdownItem>
-      </li>
-      <li>
-        <DropdownItem>
-          <BsPersonX className="pe-2" /> Unfollow {name}
-        </DropdownItem>
-      </li>
-      <li>
-        <DropdownItem>
-          <BsXCircle className="pe-2" /> Hide post
-        </DropdownItem>
-      </li>
-      <li>
-        <DropdownItem>
-          <BsSlashCircle className="pe-2" /> Block
-        </DropdownItem>
-      </li>
-      <li>
-        <DropdownDivider />
-      </li>
-      <li>
-        <DropdownItem>
-          <BsFlag className="pe-2" /> Report post
-        </DropdownItem>
-      </li>
-    </DropdownMenu>
-  </Dropdown>
-)
 
 const PostCard = ({
   postId,
@@ -89,6 +41,7 @@ const PostCard = ({
   userProfilePic,
   fullName,
   hasLiked: hasLikedProp,
+  isExpert,
   onDelete,
 }: PostCardProps) => {
   const { user } = useAuthContext()
@@ -251,7 +204,10 @@ const PostCard = ({
             </div>
             <div>
               <div className="nav nav-divider">
-                <h6 className="nav-item card-title mb-0 text-body">{fullName}</h6>
+                <h6 className="nav-item card-title mb-0 text-body d-flex align-items-center">
+                  {fullName}
+                  {isExpert && <BsPatchCheckFill className="text-warning ms-2" title="Verified Expert" />}
+                </h6>
                 <span className="nav-item small">{createdAt} </span>
               </div>
               <p className="mb-0 small text-muted">{userExperienceLevel}</p>

@@ -277,7 +277,7 @@ namespace InvestItAPI.DAL
 
                 cmd.Parameters.AddWithValue("@Page", page);
                 cmd.Parameters.AddWithValue("@PageSize", pageSize);
-                cmd.Parameters.AddWithValue("@UserId", userId); // 🆕 מוסיפים את מזהה המשתמש
+                cmd.Parameters.AddWithValue("@UserId", userId);
 
                 List<object> posts = new List<object>();
                 SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
@@ -299,7 +299,8 @@ namespace InvestItAPI.DAL
                         FullName = dataReader["fullName"].ToString(),
                         UserProfilePic = dataReader["userProfilePic"].ToString(),
                         UserExperienceLevel = dataReader["userExperienceLevel"].ToString(),
-                        HasLiked = Convert.ToBoolean(dataReader["hasLiked"]) 
+                        HasLiked = Convert.ToBoolean(dataReader["hasLiked"]),
+                        IsExpert = Convert.ToBoolean(dataReader["isExpert"]) // 🆕 חדש!
                     };
 
                     posts.Add(post);
@@ -319,6 +320,7 @@ namespace InvestItAPI.DAL
                 }
             }
         }
+
 
 
         public User? Register(User user)
@@ -384,15 +386,31 @@ namespace InvestItAPI.DAL
 
             try
             {
-                con = connect("myProjDB"); // create the connection
-                cmd = CreateCommandWithStoredProcedure_Email("SP_Login", con, email); // create the command
-
-                User u = new User();
-
+                con = connect("myProjDB");
+                cmd = CreateCommandWithStoredProcedure_Email("SP_Login", con, email);
                 SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                User u = null;
 
                 while (dataReader.Read())
                 {
+                    // אם יש ערכים לעמודות של מומחה, ניצור Expert
+                    bool isExpert = !(dataReader.IsDBNull(dataReader.GetOrdinal("expertise_area")));
+
+                    if (isExpert)
+                    {
+                        var expert = new Expert();
+                        expert.ExpertiseArea = dataReader["expertise_area"].ToString();
+                        expert.Price = Convert.ToDecimal(dataReader["price"]);
+                        expert.AvailableForChat = Convert.ToBoolean(dataReader["available_for_chat"]);
+                        expert.Rating = float.Parse(dataReader["rating"].ToString());
+                        u = expert;
+                    }
+                    else
+                    {
+                        u = new User();
+                    }
+
                     u.UserId = Convert.ToInt32(dataReader["user_id"]);
                     u.FirstName = dataReader["firstName"].ToString();
                     u.LastName = dataReader["lastName"].ToString();
@@ -409,18 +427,15 @@ namespace InvestItAPI.DAL
             }
             catch (Exception ex)
             {
-                // write to log
                 throw new Exception("Couldn't retrieve any user", ex);
             }
             finally
             {
                 if (con != null)
-                {
-                    // close the db connection
                     con.Close();
-                }
             }
         }
+
 
         public int AddPost(Post post)
         {
@@ -1154,7 +1169,76 @@ namespace InvestItAPI.DAL
                 }
             }
         }
+        public void UpdateExpert(int userId, string expertiseArea, decimal price, bool availableForChat)
+        {
+            SqlConnection con = null;
+            SqlCommand cmd;
 
+            try
+            {
+                con = connect("myProjDB");
+                cmd = new SqlCommand("SP_UpdateExpert", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@UserId", userId);
+                cmd.Parameters.AddWithValue("@ExpertiseArea", expertiseArea);
+                cmd.Parameters.AddWithValue("@Price", price);
+                cmd.Parameters.AddWithValue("@AvailableForChat", availableForChat);
+                cmd.ExecuteNonQuery(); 
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error while updating expert details", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+        }
+
+        public void CreateNotification(
+    int userId,
+    string message,
+    bool isRead,
+    DateTime createdAt,
+    int actorId,
+    string actorName,
+    int objectId,
+    string type)
+        {
+            SqlConnection con = null;
+
+            try
+            {
+                con = connect("myProjDB");
+                SqlCommand cmd = new SqlCommand("SP_CreateNotification", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@UserId", userId);
+                cmd.Parameters.AddWithValue("@Message", message);
+                cmd.Parameters.AddWithValue("@IsRead", isRead);
+                cmd.Parameters.AddWithValue("@CreatedAt", createdAt);
+                cmd.Parameters.AddWithValue("@ActorId", actorId);
+                cmd.Parameters.AddWithValue("@ActorName", actorName);
+                cmd.Parameters.AddWithValue("@ObjectId", objectId);
+                cmd.Parameters.AddWithValue("@Type", type);
+
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Failed to insert notification", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+        }
 
 
 
