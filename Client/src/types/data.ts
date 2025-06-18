@@ -114,7 +114,7 @@ export type Notification = {
   actorName: string
   actorProfilePic: string | null
   objectId: number
-  type: 'comment' | 'like' | 'follow'
+  type: 'comment' | 'like' | 'follow' | 'expert_chat'
   isRead: boolean
   createdAt: string
 }

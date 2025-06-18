@@ -51,6 +51,41 @@ namespace InvestItAPI.Controllers
             }
         }
 
+        [HttpPost("Consultation")]
+        public IActionResult InsertConsultation([FromBody] ConsultationRequest request)
+        {
+            try
+            {
+                InvestItAPI.Models.User.InsertConsultation(request.UserId, request.ExpertId);
+            }
+            catch (SqlException ex) when (ex.Number == 50000)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error: {ex.Message}");
+            }
+
+            return Ok();
+        }
+
+        [HttpGet("Consultation/Valid")]
+        public IActionResult IsConsultationValid(int userId, int expertId)
+        {
+            try
+            {
+                bool isValid = InvestItAPI.Models.User.IsConsultationValid(userId, expertId);
+                return Ok(new { isValidConsultation = isValid });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
+
+
         [HttpGet("{userId}")]
         public IActionResult GetUserById(int userId, [FromQuery] int viewerId)
         {

@@ -3,8 +3,40 @@
   "WorkspaceRootPath": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|c:\\users\\idoco\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\investit\\server\\investitapi\\investitapi\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|solutionrelative:investitapi\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|c:\\users\\idoco\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\investit\\server\\investitapi\\investitapi\\dal\\dbservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|solutionrelative:investitapi\\dal\\dbservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|c:\\users\\idoco\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\investit\\server\\investitapi\\investitapi\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|solutionrelative:investitapi\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|c:\\users\\idoco\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\investit\\server\\investitapi\\investitapi\\dto\\consultationrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|solutionrelative:investitapi\\dto\\consultationrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|c:\\users\\idoco\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\investit\\server\\investitapi\\investitapi\\models\\notification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|solutionrelative:investitapi\\models\\notification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|c:\\users\\idoco\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\investit\\server\\investitapi\\investitapi\\controllers\\notificationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|solutionrelative:investitapi\\controllers\\notificationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|c:\\users\\idoco\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\investit\\server\\investitapi\\investitapi\\controllers\\supabasecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|solutionrelative:investitapi\\controllers\\supabasecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|c:\\users\\idoco\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\investit\\server\\investitapi\\investitapi\\controllers\\expertcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|solutionrelative:investitapi\\controllers\\expertcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|c:\\users\\idoco\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\investit\\server\\investitapi\\investitapi\\controllers\\uploadcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|solutionrelative:investitapi\\controllers\\uploadcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|c:\\users\\idoco\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\investit\\server\\investitapi\\investitapi\\models\\expert.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -19,14 +51,6 @@
       "RelativeMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|solutionrelative:investitapi\\controllers\\finnhubcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|c:\\users\\idoco\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\investit\\server\\investitapi\\investitapi\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|solutionrelative:investitapi\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|c:\\users\\idoco\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\investit\\server\\investitapi\\investitapi\\dal\\dbservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|solutionrelative:investitapi\\dal\\dbservices.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|c:\\users\\idoco\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\investit\\server\\investitapi\\investitapi\\models\\post.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|solutionrelative:investitapi\\models\\post.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -35,16 +59,8 @@
       "RelativeMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|solutionrelative:investitapi\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|c:\\users\\idoco\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\investit\\server\\investitapi\\investitapi\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|solutionrelative:investitapi\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|c:\\users\\idoco\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\investit\\server\\investitapi\\investitapi\\controllers\\commentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|solutionrelative:investitapi\\controllers\\commentcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|c:\\users\\idoco\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\investit\\server\\investitapi\\investitapi\\controllers\\supabasecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|solutionrelative:investitapi\\controllers\\supabasecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|c:\\users\\idoco\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\investit\\server\\investitapi\\investitapi\\dto\\privatechatwithuserdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -87,16 +103,8 @@
       "RelativeMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|solutionrelative:investitapi\\dto\\changepasswordrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|c:\\users\\idoco\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\investit\\server\\investitapi\\investitapi\\controllers\\notificationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|solutionrelative:investitapi\\controllers\\notificationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|c:\\users\\idoco\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\investit\\server\\investitapi\\investitapi\\controllers\\postcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|solutionrelative:investitapi\\controllers\\postcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|c:\\users\\idoco\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\investit\\server\\investitapi\\investitapi\\controllers\\uploadcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|solutionrelative:investitapi\\controllers\\uploadcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|c:\\users\\idoco\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\investit\\server\\investitapi\\investitapi\\tools\\tokenservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -109,10 +117,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|c:\\users\\idoco\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\investit\\server\\investitapi\\investitapi\\tools\\finnhubservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|solutionrelative:investitapi\\tools\\finnhubservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|c:\\users\\idoco\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\investit\\server\\investitapi\\investitapi\\models\\notification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|solutionrelative:investitapi\\models\\notification.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B9222A27-88B3-4292-B8E8-DE5FCAD98551}|InvestItAPI\\InvestItAPI.csproj|c:\\users\\idoco\\onedrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\investit\\server\\investitapi\\investitapi\\appsettings.development.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
@@ -162,291 +166,57 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ExpertUpdateRequest.cs",
-              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\ExpertUpdateRequest.cs",
-              "RelativeDocumentMoniker": "InvestItAPI\\DTO\\ExpertUpdateRequest.cs",
-              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\ExpertUpdateRequest.cs",
-              "RelativeToolTip": "InvestItAPI\\DTO\\ExpertUpdateRequest.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAFAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-16T14:08:28.113Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "ExpertController.cs",
-              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\ExpertController.cs",
-              "RelativeDocumentMoniker": "InvestItAPI\\Controllers\\ExpertController.cs",
-              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\ExpertController.cs",
-              "RelativeToolTip": "InvestItAPI\\Controllers\\ExpertController.cs",
-              "ViewState": "AQIAAB4AAAAAAAAAAAAYwDAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-07T16:18:05.366Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Expert.cs",
-              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Models\\Expert.cs",
-              "RelativeDocumentMoniker": "InvestItAPI\\Models\\Expert.cs",
-              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Models\\Expert.cs",
-              "RelativeToolTip": "InvestItAPI\\Models\\Expert.cs",
-              "ViewState": "AQIAAAgAAAAAAAAAAAAYwBcAAAAyAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-07T16:13:32.738Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "AuthController.cs",
-              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\AuthController.cs",
-              "RelativeDocumentMoniker": "InvestItAPI\\Controllers\\AuthController.cs",
-              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\AuthController.cs",
-              "RelativeToolTip": "InvestItAPI\\Controllers\\AuthController.cs",
-              "ViewState": "AQIAAAkAAAAAAAAAAAAswEYAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-16T13:06:46.441Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "User.cs",
-              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Models\\User.cs",
-              "RelativeDocumentMoniker": "InvestItAPI\\Models\\User.cs",
-              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Models\\User.cs",
-              "RelativeToolTip": "InvestItAPI\\Models\\User.cs",
-              "ViewState": "AQIAAHQAAAAAAAAAAAAgwHsAAAAgAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-11T18:43:03.494Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
               "Title": "DBservices.cs",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DAL\\DBservices.cs",
               "RelativeDocumentMoniker": "InvestItAPI\\DAL\\DBservices.cs",
               "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DAL\\DBservices.cs",
               "RelativeToolTip": "InvestItAPI\\DAL\\DBservices.cs",
-              "ViewState": "AQIAAIwEAAAAAAAAAAAgwJoEAAAqAAAA",
+              "ViewState": "AQIAAOIEAAAAAAAAAAAwwPgEAAA1AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-12T13:58:30.553Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "Post.cs",
-              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Models\\Post.cs",
-              "RelativeDocumentMoniker": "InvestItAPI\\Models\\Post.cs",
-              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Models\\Post.cs",
-              "RelativeToolTip": "InvestItAPI\\Models\\Post.cs",
-              "ViewState": "AQIAABkAAAAAAAAAAADwvyIAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-14T14:11:59.765Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 0,
               "Title": "UserController.cs",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\UserController.cs",
               "RelativeDocumentMoniker": "InvestItAPI\\Controllers\\UserController.cs",
               "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\UserController.cs",
               "RelativeToolTip": "InvestItAPI\\Controllers\\UserController.cs",
-              "ViewState": "AQIAAEEAAAAAAAAAAAAgwFUAAAAJAAAA",
+              "ViewState": "AQIAAD8AAAAAAAAAAAAIwFUAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-11T18:51:55.212Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "FinnhubController.cs",
-              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\FinnhubController.cs",
-              "RelativeDocumentMoniker": "InvestItAPI\\Controllers\\FinnhubController.cs",
-              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\FinnhubController.cs",
-              "RelativeToolTip": "InvestItAPI\\Controllers\\FinnhubController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAPAAAA",
+              "DocumentIndex": 4,
+              "Title": "Notification.cs",
+              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Models\\Notification.cs",
+              "RelativeDocumentMoniker": "InvestItAPI\\Models\\Notification.cs",
+              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Models\\Notification.cs",
+              "RelativeToolTip": "InvestItAPI\\Models\\Notification.cs",
+              "ViewState": "AQIAABYAAAAAAAAAAAAAwDEAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-26T15:21:30.559Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-05-15T09:11:33.979Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "CommentController.cs",
-              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\CommentController.cs",
-              "RelativeDocumentMoniker": "InvestItAPI\\Controllers\\CommentController.cs",
-              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\CommentController.cs",
-              "RelativeToolTip": "InvestItAPI\\Controllers\\CommentController.cs",
-              "ViewState": "AQIAAAMAAAAAAAAAAAAAAAkAAAAPAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-04-06T13:48:53.499Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Program.cs",
-              "RelativeDocumentMoniker": "InvestItAPI\\Program.cs",
-              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Program.cs",
-              "RelativeToolTip": "InvestItAPI\\Program.cs",
-              "ViewState": "AQIAAF0AAAAAAAAAAAAAAF4AAAAoAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-12T14:02:58.05Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 6,
               "Title": "SupabaseController.cs",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\SupabaseController.cs",
               "RelativeDocumentMoniker": "InvestItAPI\\Controllers\\SupabaseController.cs",
               "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\SupabaseController.cs",
               "RelativeToolTip": "InvestItAPI\\Controllers\\SupabaseController.cs",
-              "ViewState": "AQIAADMAAAAAAAAAAAAYwBMAAAAIAAAA",
+              "ViewState": "AQIAAHkAAAAAAAAAAAAkwBMAAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-24T12:36:48.453Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "PrivateChat.cs",
-              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\PrivateChat.cs",
-              "RelativeDocumentMoniker": "InvestItAPI\\DTO\\PrivateChat.cs",
-              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\PrivateChat.cs",
-              "RelativeToolTip": "InvestItAPI\\DTO\\PrivateChat.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-24T12:35:22.573Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "CreateChatRequest.cs",
-              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\CreateChatRequest.cs",
-              "RelativeDocumentMoniker": "InvestItAPI\\DTO\\CreateChatRequest.cs",
-              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\CreateChatRequest.cs",
-              "RelativeToolTip": "InvestItAPI\\DTO\\CreateChatRequest.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-24T12:34:58.891Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "PrivateChatWithUserDTO.cs",
-              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\PrivateChatWithUserDTO.cs",
-              "RelativeDocumentMoniker": "InvestItAPI\\DTO\\PrivateChatWithUserDTO.cs",
-              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\PrivateChatWithUserDTO.cs",
-              "RelativeToolTip": "InvestItAPI\\DTO\\PrivateChatWithUserDTO.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAsAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-10T14:32:08.514Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\appsettings.json",
-              "RelativeDocumentMoniker": "InvestItAPI\\appsettings.json",
-              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\appsettings.json",
-              "RelativeToolTip": "InvestItAPI\\appsettings.json",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-03-12T14:01:16.031Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 19,
-              "Title": "SendMessageRequest.cs",
-              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\SendMessageRequest.cs",
-              "RelativeDocumentMoniker": "InvestItAPI\\DTO\\SendMessageRequest.cs",
-              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\SendMessageRequest.cs",
-              "RelativeToolTip": "InvestItAPI\\DTO\\SendMessageRequest.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAoAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-24T12:36:24.529Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "PrivateChatDTO.cs",
-              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\PrivateChatDTO.cs",
-              "RelativeDocumentMoniker": "InvestItAPI\\DTO\\PrivateChatDTO.cs",
-              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\PrivateChatDTO.cs",
-              "RelativeToolTip": "InvestItAPI\\DTO\\PrivateChatDTO.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-24T12:35:51.961Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "PrivateMessage.cs",
-              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\PrivateMessage.cs",
-              "RelativeDocumentMoniker": "InvestItAPI\\DTO\\PrivateMessage.cs",
-              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\PrivateMessage.cs",
-              "RelativeToolTip": "InvestItAPI\\DTO\\PrivateMessage.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-24T12:35:44.054Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "PrivateMessageDTO.cs",
-              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\PrivateMessageDTO.cs",
-              "RelativeDocumentMoniker": "InvestItAPI\\DTO\\PrivateMessageDTO.cs",
-              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\PrivateMessageDTO.cs",
-              "RelativeToolTip": "InvestItAPI\\DTO\\PrivateMessageDTO.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAkAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-24T12:36:03.688Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 20,
-              "Title": "ChangePasswordRequest.cs",
-              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\ChangePasswordRequest.cs",
-              "RelativeDocumentMoniker": "InvestItAPI\\DTO\\ChangePasswordRequest.cs",
-              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\ChangePasswordRequest.cs",
-              "RelativeToolTip": "InvestItAPI\\DTO\\ChangePasswordRequest.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-24T11:34:19.521Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 22,
-              "Title": "PostController.cs",
-              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\PostController.cs",
-              "RelativeDocumentMoniker": "InvestItAPI\\Controllers\\PostController.cs",
-              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\PostController.cs",
-              "RelativeToolTip": "InvestItAPI\\Controllers\\PostController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAAmAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-14T14:15:55.368Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 21,
-              "Title": "NotificationController.cs",
-              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\NotificationController.cs",
-              "RelativeDocumentMoniker": "InvestItAPI\\Controllers\\NotificationController.cs",
-              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\NotificationController.cs",
-              "RelativeToolTip": "InvestItAPI\\Controllers\\NotificationController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAPAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T09:17:19.819Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 8,
               "Title": "UploadController.cs",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\UploadController.cs",
               "RelativeDocumentMoniker": "InvestItAPI\\Controllers\\UploadController.cs",
@@ -458,7 +228,261 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "NotificationController.cs",
+              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\NotificationController.cs",
+              "RelativeDocumentMoniker": "InvestItAPI\\Controllers\\NotificationController.cs",
+              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\NotificationController.cs",
+              "RelativeToolTip": "InvestItAPI\\Controllers\\NotificationController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAADAAAABNAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-15T09:17:19.819Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Models\\User.cs",
+              "RelativeDocumentMoniker": "InvestItAPI\\Models\\User.cs",
+              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Models\\User.cs",
+              "RelativeToolTip": "InvestItAPI\\Models\\User.cs",
+              "ViewState": "AQIAALwAAAAAAAAAAAAAAMQAAAAuAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-11T18:43:03.494Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ConsultationRequest.cs",
+              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\ConsultationRequest.cs",
+              "RelativeDocumentMoniker": "InvestItAPI\\DTO\\ConsultationRequest.cs",
+              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\ConsultationRequest.cs",
+              "RelativeToolTip": "InvestItAPI\\DTO\\ConsultationRequest.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-18T16:09:38.793Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Post.cs",
+              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Models\\Post.cs",
+              "RelativeDocumentMoniker": "InvestItAPI\\Models\\Post.cs",
+              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Models\\Post.cs",
+              "RelativeToolTip": "InvestItAPI\\Models\\Post.cs",
+              "ViewState": "AQIAABkAAAAAAAAAAADwvyIAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-14T14:11:59.765Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "ExpertController.cs",
+              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\ExpertController.cs",
+              "RelativeDocumentMoniker": "InvestItAPI\\Controllers\\ExpertController.cs",
+              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\ExpertController.cs",
+              "RelativeToolTip": "InvestItAPI\\Controllers\\ExpertController.cs",
+              "ViewState": "AQIAAAwAAAAAAAAAAAAAADAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-07T16:18:05.366Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\AuthController.cs",
+              "RelativeDocumentMoniker": "InvestItAPI\\Controllers\\AuthController.cs",
+              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\AuthController.cs",
+              "RelativeToolTip": "InvestItAPI\\Controllers\\AuthController.cs",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAswEYAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-16T13:06:46.441Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Expert.cs",
+              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Models\\Expert.cs",
+              "RelativeDocumentMoniker": "InvestItAPI\\Models\\Expert.cs",
+              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Models\\Expert.cs",
+              "RelativeToolTip": "InvestItAPI\\Models\\Expert.cs",
+              "ViewState": "AQIAAAgAAAAAAAAAAAAYwBcAAAAyAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-07T16:13:32.738Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ExpertUpdateRequest.cs",
+              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\ExpertUpdateRequest.cs",
+              "RelativeDocumentMoniker": "InvestItAPI\\DTO\\ExpertUpdateRequest.cs",
+              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\ExpertUpdateRequest.cs",
+              "RelativeToolTip": "InvestItAPI\\DTO\\ExpertUpdateRequest.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-16T14:08:28.113Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "FinnhubController.cs",
+              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\FinnhubController.cs",
+              "RelativeDocumentMoniker": "InvestItAPI\\Controllers\\FinnhubController.cs",
+              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\FinnhubController.cs",
+              "RelativeToolTip": "InvestItAPI\\Controllers\\FinnhubController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAPAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-26T15:21:30.559Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "CommentController.cs",
+              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\CommentController.cs",
+              "RelativeDocumentMoniker": "InvestItAPI\\Controllers\\CommentController.cs",
+              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\CommentController.cs",
+              "RelativeToolTip": "InvestItAPI\\Controllers\\CommentController.cs",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAAAkAAAAPAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-06T13:48:53.499Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Program.cs",
+              "RelativeDocumentMoniker": "InvestItAPI\\Program.cs",
+              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Program.cs",
+              "RelativeToolTip": "InvestItAPI\\Program.cs",
+              "ViewState": "AQIAAF0AAAAAAAAAAAAAAF4AAAAoAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-12T14:02:58.05Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "PrivateChat.cs",
+              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\PrivateChat.cs",
+              "RelativeDocumentMoniker": "InvestItAPI\\DTO\\PrivateChat.cs",
+              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\PrivateChat.cs",
+              "RelativeToolTip": "InvestItAPI\\DTO\\PrivateChat.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-24T12:35:22.573Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "CreateChatRequest.cs",
+              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\CreateChatRequest.cs",
+              "RelativeDocumentMoniker": "InvestItAPI\\DTO\\CreateChatRequest.cs",
+              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\CreateChatRequest.cs",
+              "RelativeToolTip": "InvestItAPI\\DTO\\CreateChatRequest.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-24T12:34:58.891Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "PrivateChatWithUserDTO.cs",
+              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\PrivateChatWithUserDTO.cs",
+              "RelativeDocumentMoniker": "InvestItAPI\\DTO\\PrivateChatWithUserDTO.cs",
+              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\PrivateChatWithUserDTO.cs",
+              "RelativeToolTip": "InvestItAPI\\DTO\\PrivateChatWithUserDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAUAAAAsAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-10T14:32:08.514Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\appsettings.json",
+              "RelativeDocumentMoniker": "InvestItAPI\\appsettings.json",
+              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\appsettings.json",
+              "RelativeToolTip": "InvestItAPI\\appsettings.json",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-03-12T14:01:16.031Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "SendMessageRequest.cs",
+              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\SendMessageRequest.cs",
+              "RelativeDocumentMoniker": "InvestItAPI\\DTO\\SendMessageRequest.cs",
+              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\SendMessageRequest.cs",
+              "RelativeToolTip": "InvestItAPI\\DTO\\SendMessageRequest.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAoAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-24T12:36:24.529Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "PrivateChatDTO.cs",
+              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\PrivateChatDTO.cs",
+              "RelativeDocumentMoniker": "InvestItAPI\\DTO\\PrivateChatDTO.cs",
+              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\PrivateChatDTO.cs",
+              "RelativeToolTip": "InvestItAPI\\DTO\\PrivateChatDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAkAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-24T12:35:51.961Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "PrivateMessage.cs",
+              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\PrivateMessage.cs",
+              "RelativeDocumentMoniker": "InvestItAPI\\DTO\\PrivateMessage.cs",
+              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\PrivateMessage.cs",
+              "RelativeToolTip": "InvestItAPI\\DTO\\PrivateMessage.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-24T12:35:44.054Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "PrivateMessageDTO.cs",
+              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\PrivateMessageDTO.cs",
+              "RelativeDocumentMoniker": "InvestItAPI\\DTO\\PrivateMessageDTO.cs",
+              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\PrivateMessageDTO.cs",
+              "RelativeToolTip": "InvestItAPI\\DTO\\PrivateMessageDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAkAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-24T12:36:03.688Z"
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 24,
+              "Title": "ChangePasswordRequest.cs",
+              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\ChangePasswordRequest.cs",
+              "RelativeDocumentMoniker": "InvestItAPI\\DTO\\ChangePasswordRequest.cs",
+              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\DTO\\ChangePasswordRequest.cs",
+              "RelativeToolTip": "InvestItAPI\\DTO\\ChangePasswordRequest.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-24T11:34:19.521Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 25,
+              "Title": "PostController.cs",
+              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\PostController.cs",
+              "RelativeDocumentMoniker": "InvestItAPI\\Controllers\\PostController.cs",
+              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Controllers\\PostController.cs",
+              "RelativeToolTip": "InvestItAPI\\Controllers\\PostController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAAmAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-14T14:15:55.368Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 26,
               "Title": "TokenService.cs",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Tools\\TokenService.cs",
               "RelativeDocumentMoniker": "InvestItAPI\\Tools\\TokenService.cs",
@@ -470,7 +494,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 28,
               "Title": "FinnhubService.cs",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Tools\\FinnhubService.cs",
               "RelativeDocumentMoniker": "InvestItAPI\\Tools\\FinnhubService.cs",
@@ -482,7 +506,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 27,
               "Title": "EmailService.cs",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Tools\\EmailService.cs",
               "RelativeDocumentMoniker": "InvestItAPI\\Tools\\EmailService.cs",
@@ -494,19 +518,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
-              "Title": "Notification.cs",
-              "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Models\\Notification.cs",
-              "RelativeDocumentMoniker": "InvestItAPI\\Models\\Notification.cs",
-              "ToolTip": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Models\\Notification.cs",
-              "RelativeToolTip": "InvestItAPI\\Models\\Notification.cs",
-              "ViewState": "AQIAABUAAAAAAAAAAADwvx8AAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-15T09:11:33.979Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 29,
               "Title": "appsettings.Development.json",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\appsettings.Development.json",
               "RelativeDocumentMoniker": "InvestItAPI\\appsettings.Development.json",
@@ -518,7 +530,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 31,
+              "DocumentIndex": 32,
               "Title": "VectorHelper.cs",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Tools\\VectorHelper.cs",
               "RelativeDocumentMoniker": "InvestItAPI\\Tools\\VectorHelper.cs",
@@ -530,7 +542,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 32,
+              "DocumentIndex": 33,
               "Title": "PostService.cs",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Tools\\PostService.cs",
               "RelativeDocumentMoniker": "InvestItAPI\\Tools\\PostService.cs",
@@ -542,7 +554,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 30,
               "Title": "PasswordHasher.cs",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Tools\\PasswordHasher.cs",
               "RelativeDocumentMoniker": "InvestItAPI\\Tools\\PasswordHasher.cs",
@@ -554,7 +566,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 30,
+              "DocumentIndex": 31,
               "Title": "UserService.cs",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Tools\\UserService.cs",
               "RelativeDocumentMoniker": "InvestItAPI\\Tools\\UserService.cs",
@@ -566,7 +578,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 33,
+              "DocumentIndex": 34,
               "Title": "110.jpg - Bitmap [640x480, 24 bit, JPG]",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\uploadedFiles\\profilePics\\110.jpg",
               "RelativeDocumentMoniker": "InvestItAPI\\uploadedFiles\\profilePics\\110.jpg",
@@ -578,7 +590,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 34,
+              "DocumentIndex": 35,
               "Title": "Comment.cs",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Models\\Comment.cs",
               "RelativeDocumentMoniker": "InvestItAPI\\Models\\Comment.cs",
@@ -590,7 +602,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 35,
+              "DocumentIndex": 36,
               "Title": "RecommendationService.cs",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\Tools\\RecommendationService.cs",
               "RelativeDocumentMoniker": "InvestItAPI\\Tools\\RecommendationService.cs",
@@ -602,7 +614,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 36,
+              "DocumentIndex": 37,
               "Title": "InvestItAPI.csproj",
               "DocumentMoniker": "C:\\Users\\idoco\\OneDrive\\\u05E9\u05D5\u05DC\u05D7\u05DF \u05D4\u05E2\u05D1\u05D5\u05D3\u05D4\\\u05DC\u05D9\u05DE\u05D5\u05D3\u05D9\u05DD\\InvestIt\\Server\\InvestItAPI\\InvestItAPI\\InvestItAPI.csproj",
               "RelativeDocumentMoniker": "InvestItAPI\\InvestItAPI.csproj",

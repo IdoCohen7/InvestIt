@@ -43,9 +43,22 @@ namespace InvestItAPI.Controllers
 
         // POST api/<NotificationController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult CreateNotification([FromBody] Notification notification)
         {
+            if (notification == null)
+                return BadRequest(new { error = "Invalid notification data" });
+
+            try
+            {
+                Notification.CreateNotification(notification);
+                return Ok(new { message = "Notification created successfully" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
         }
+
 
         // PUT api/<NotificationController>/5
         [HttpPut()]

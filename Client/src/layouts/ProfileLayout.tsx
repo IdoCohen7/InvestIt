@@ -13,6 +13,7 @@ import type { ChildrenType } from '@/types/component'
 import type { UserPage } from '@/types/data'
 import Banner from '@/assets/images/bg/banner2.png'
 import ExpertEditModal from '@/components/cards/EditExpertModal'
+import { useNotificationContext } from '@/context/useNotificationContext'
 
 const TopHeader = lazy(() => import('@/components/layout/TopHeader'))
 
@@ -30,6 +31,7 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
   const [isFollowed, setIsFollowed] = useState<boolean | null>(null)
   const [followersCount, setFollowersCount] = useState<number | null>(null)
   const [showExpertEdit, setShowExpertEdit] = useState(false)
+  const { showNotification } = useNotificationContext()
 
   const isExpert = !!profileUser?.expertiseArea
 
@@ -104,25 +106,93 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
     if (!user || !profileUser) return
 
     try {
+      // creating chat
       await authFetch(`${API_URL}/Supabase/CreatePrivateChat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userIdToChatWith: profileUser.userId }),
       })
 
+      // notifying the expert
+      await authFetch(`${API_URL}/Notification`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: profileUser.userId,
+          actorId: user.userId,
+          actorName: `${user.firstName} ${user.lastName}`,
+          objectId: 0,
+          type: 'expert_chat',
+          isRead: false,
+          createdAt: new Date().toISOString(),
+          actorProfilePic: user.profilePic || '',
+        }),
+      })
+
+      // 3. navigate to messaging page
       navigate('/messaging')
     } catch (err) {
-      console.error('Error creating private chat:', err)
+      console.error('Error creating private chat or notification:', err)
     }
   }
 
   const handleExpertChatClick = async () => {
     if (!user || !profileUser) return
 
-    const confirmed = window.confirm(`Are you sure you want to pay $${profileUser.price} to chat with this expert?`)
-    if (!confirmed) return
+    // if the expert is not available for chat, show a notification
+    if (!profileUser.availableForChat) {
+      showNotification({
+        message: `${profileUser.firstName} is not available for chat.`,
+        variant: 'warning',
+      })
+      return
+    }
 
-    await handleMessageClick()
+    let isValidConsultation = false
+
+    // check if the user has a valid consultation with the expert
+    try {
+      const res = await authFetch(`${API_URL}/User/Consultation/Valid?userId=${user.userId}&expertId=${profileUser.userId}`)
+      isValidConsultation = res.isValidConsultation
+    } catch (err) {
+      console.warn('Failed to check consultation validity:', err)
+    }
+
+    //if the user does not have a valid consultation, ask for confirmation to pay
+    if (!isValidConsultation) {
+      const confirmed = window.confirm(
+        `You are currently not subscribed to this expert.\n Are you sure you want to pay $${profileUser.price} to chat with this expert?`,
+      )
+      if (!confirmed) return
+
+      try {
+        await authFetch(`${API_URL}/User/Consultation`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: user.userId,
+            expertId: profileUser.userId,
+          }),
+        })
+      } catch (err) {
+        console.warn('Failed to insert new consultation:', err)
+        showNotification({
+          message: 'Unable to register new consultation. Redirecting anyway...',
+          variant: 'info',
+        })
+      }
+    }
+
+    // בכל מקרה, נפתח את הצ'אט
+    try {
+      await handleMessageClick()
+    } catch (err) {
+      console.error('Error creating or opening chat:', err)
+      showNotification({
+        message: 'Failed to open chat.',
+        variant: 'danger',
+      })
+    }
   }
 
   useEffect(() => {
@@ -222,15 +292,15 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
                           <Button variant={isFollowed ? 'outline-primary' : 'primary'} onClick={handleFollowToggle} className="px-4">
                             {isFollowed ? 'Unfollow' : 'Follow'}
                           </Button>
-                          {isExpert && profileUser.availableForChat ? (
+                          {isExpert ? (
                             <Button variant="success" className="px-4" onClick={handleExpertChatClick}>
                               <BsChatDots className="me-1" /> Chat with Expert
                             </Button>
-                          ) : (
+                          ) : !user?.expertiseArea ? (
                             <Button variant="outline-primary" onClick={handleMessageClick} className="px-4">
                               Message
                             </Button>
-                          )}
+                          ) : null}
                         </>
                       )}
                     </div>
@@ -304,8 +374,6 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
                 userId: profileUser.userId,
                 ...updated,
               }
-
-              console.log('🚀 Sending to server:', payload) // ✅ כאן תראה מה נשלח בפועל
 
               await authFetch(`${API_URL}/Expert/update-expert`, {
                 method: 'PUT',

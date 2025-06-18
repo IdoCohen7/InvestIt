@@ -1198,15 +1198,7 @@ namespace InvestItAPI.DAL
             }
         }
 
-        public void CreateNotification(
-    int userId,
-    string message,
-    bool isRead,
-    DateTime createdAt,
-    int actorId,
-    string actorName,
-    int objectId,
-    string type)
+        public void CreateNotification(Notification notification)
         {
             SqlConnection con = null;
 
@@ -1216,14 +1208,13 @@ namespace InvestItAPI.DAL
                 SqlCommand cmd = new SqlCommand("SP_CreateNotification", con);
                 cmd.CommandType = CommandType.StoredProcedure;
 
-                cmd.Parameters.AddWithValue("@UserId", userId);
-                cmd.Parameters.AddWithValue("@Message", message);
-                cmd.Parameters.AddWithValue("@IsRead", isRead);
-                cmd.Parameters.AddWithValue("@CreatedAt", createdAt);
-                cmd.Parameters.AddWithValue("@ActorId", actorId);
-                cmd.Parameters.AddWithValue("@ActorName", actorName);
-                cmd.Parameters.AddWithValue("@ObjectId", objectId);
-                cmd.Parameters.AddWithValue("@Type", type);
+                cmd.Parameters.AddWithValue("@UserId", notification.UserId);
+                cmd.Parameters.AddWithValue("@IsRead", notification.IsRead);
+                cmd.Parameters.AddWithValue("@CreatedAt", DateTime.Now);
+                cmd.Parameters.AddWithValue("@ActorId", notification.ActorId);
+                cmd.Parameters.AddWithValue("@ActorName", notification.ActorName);
+                cmd.Parameters.AddWithValue("@ObjectId", notification.ObjectId);
+                cmd.Parameters.AddWithValue("@Type", notification.Type);
 
                 cmd.ExecuteNonQuery();
             }
@@ -1240,6 +1231,64 @@ namespace InvestItAPI.DAL
             }
         }
 
+        public void InsertConsultation(int userId, int expertId)
+        {
+            SqlConnection con = null;
+
+            try
+            {
+                con = connect("myProjDB"); // שם קונקשן סטרינג
+                SqlCommand cmd = new SqlCommand("InsertConsultation", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@user_id", userId);
+                cmd.Parameters.AddWithValue("@expert_id", expertId);
+
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error inserting consultation: " + ex.Message);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+        }
+
+        public bool IsConsultationValid(int userId, int expertId)
+        {
+            SqlConnection con = null;
+
+            try
+            {
+                con = connect("myProjDB"); 
+                SqlCommand cmd = new SqlCommand("CheckConsultationValidity", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@user_id", userId);
+                cmd.Parameters.AddWithValue("@expert_id", expertId);
+
+                object result = cmd.ExecuteScalar(); 
+
+                if (result != null && result != DBNull.Value)
+                {
+                    return Convert.ToBoolean(result);
+                }
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error checking consultation validity: " + ex.Message);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+        }
 
 
 

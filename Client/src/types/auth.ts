@@ -10,4 +10,7 @@ export type UserType = {
   createdAt: string
   isActive: boolean
   token?: string
+  availableForChat?: boolean
+  expertiseArea?: string
+  price?: number
 }

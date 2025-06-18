@@ -187,5 +187,17 @@ namespace InvestItAPI.Models
             DBservices dBservices = new DBservices ();
             return dBservices.GetUserById(userId, viewerId);
         }
+
+        static public void InsertConsultation(int userId, int expertId)
+        {
+            DBservices dBservices = new DBservices ();
+            dBservices.InsertConsultation(userId, expertId);
+        }
+
+        public static bool IsConsultationValid(int userId, int expertId)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.IsConsultationValid(userId, expertId);
+        }
     }
 }

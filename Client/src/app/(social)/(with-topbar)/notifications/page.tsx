@@ -22,6 +22,7 @@ import { useAuthFetch } from '@/hooks/useAuthFetch' // <-- ייבוא useAuthFet
 import { Link } from 'react-router-dom'
 import { Notification } from '@/types/data'
 import { API_URL } from '@/utils/env'
+import placeHolder from '@/assets/images/avatar/placeholder.jpg'
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState<Notification[]>([])
@@ -80,17 +81,12 @@ const Notifications = () => {
         return 'liked your post.'
       case 'follow':
         return 'started following you.'
+      case 'expert_chat':
+        return 'sent you a message in Expert Chat.'
       default:
         return 'sent you a notification.'
     }
   }
-
-  const getInitials = (name: string) =>
-    name
-      .split(' ')
-      .map((w) => w[0])
-      .join('')
-      .toUpperCase()
 
   return (
     <>
@@ -137,19 +133,21 @@ const Notifications = () => {
                               'just-read': justReadIds.includes(notification.notificationId),
                             })}>
                             <div className="avatar text-center">
-                              {notification.actorProfilePic ? (
+                              {notification.actorProfilePic?.trim() ? (
                                 <img
                                   src={notification.actorProfilePic}
                                   alt={notification.actorName}
                                   className="avatar-img rounded-circle"
                                   style={{ width: '48px', height: '48px', objectFit: 'cover' }}
+                                  onError={(e) => (e.currentTarget.src = placeHolder)}
                                 />
                               ) : (
-                                <div className="avatar-img rounded-circle bg-primary">
-                                  <span className="text-white position-absolute top-50 start-50 translate-middle fw-bold">
-                                    {getInitials(notification.actorName)}
-                                  </span>
-                                </div>
+                                <img
+                                  src={placeHolder}
+                                  alt="placeholder"
+                                  className="avatar-img rounded-circle"
+                                  style={{ width: '48px', height: '48px', objectFit: 'cover' }}
+                                />
                               )}
                             </div>
                             <div className="mx-sm-3 my-2 my-sm-0">

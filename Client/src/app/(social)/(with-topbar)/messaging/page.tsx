@@ -4,6 +4,8 @@ import { useAuthFetch } from '@/hooks/useAuthFetch'
 import { supabase } from '@/supabase/supabase'
 import { useAuthContext } from '@/context/useAuthContext'
 import placeHolder from '@/assets/images/avatar/placeholder.jpg'
+import { BsPatchCheckFill } from 'react-icons/bs'
+import { set } from 'react-hook-form'
 
 export default function ChatPage() {
   const authFetch = useAuthFetch()
@@ -14,6 +16,30 @@ export default function ChatPage() {
   const [participants, setParticipants] = useState<Record<number, any>>({})
   const [newMessage, setNewMessage] = useState('')
   const [loadingMessages, setLoadingMessages] = useState(false)
+
+  const checkExpertChat = async (chat: any) => {
+    const otherUserId = chat.otherUserId
+    const participant = participants[otherUserId]
+
+    // if the other user is an expert, we need to validate the consultation
+    if (participant?.expertiseArea) {
+      try {
+        const res = await authFetch(`${API_URL}/User/Consultation/Valid?userId=${user?.userId}&expertId=${otherUserId}`)
+
+        if (!res.isValidConsultation) {
+          alert('You do not have an active consultation with this expert.')
+          return
+        }
+      } catch (err) {
+        console.error('❌ Failed to validate consultation before opening chat:', err)
+        alert('Unable to verify consultation status. Please try again later.')
+        return
+      }
+    }
+
+    // if everything is fine, set the active chat
+    setActiveChat(chat)
+  }
 
   useEffect(() => {
     const loadChatsAndUsers = async () => {
@@ -142,10 +168,13 @@ export default function ChatPage() {
                 <li
                   key={chat.id}
                   className={`list-group-item d-flex align-items-center gap-2 ${activeChat?.id === chat.id ? 'active' : ''}`}
-                  onClick={() => setActiveChat(chat)}
+                  onClick={() => checkExpertChat(chat)}
                   role="button">
                   <img src={profilePic} alt="Profile" style={{ width: 35, height: 35, borderRadius: '50%' }} />
-                  <div>{name}</div>
+                  <div className="d-flex align-items-center gap-1">
+                    {name}
+                    {participant?.expertiseArea && <BsPatchCheckFill className="text-warning small" title="Verified Expert" />}
+                  </div>
                 </li>
               )
             })}

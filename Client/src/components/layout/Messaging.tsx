@@ -29,7 +29,7 @@ export default function ChatPage() {
           otherUserIds.map(async (id) => {
             const response = await authFetch(`${API_URL}/User/${id}?viewerId=${user?.userId}`)
             return { id, data: response }
-          })
+          }),
         )
 
         const usersById: Record<number, any> = {}
@@ -75,12 +75,12 @@ export default function ChatPage() {
           event: 'INSERT',
           schema: 'public',
           table: 'PrivateMessages',
-          filter: `chat_id=eq.${activeChat.id}`
+          filter: `chat_id=eq.${activeChat.id}`,
         },
         async (payload) => {
           const newMsg = {
             ...payload.new,
-            sentAt: new Date(payload.new.sent_at)
+            sentAt: new Date(payload.new.sent_at),
           }
 
           const senderId = newMsg.senderId
@@ -94,7 +94,7 @@ export default function ChatPage() {
           }
 
           setMessages((prev) => [...prev, newMsg])
-        }
+        },
       )
       .subscribe()
 
@@ -109,7 +109,7 @@ export default function ChatPage() {
       await authFetch(`${API_URL}/Supabase/SendPrivateMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chatId: activeChat.id, message: newMessage })
+        body: JSON.stringify({ chatId: activeChat.id, message: newMessage }),
       })
       setNewMessage('')
     } catch (err) {
@@ -136,8 +136,7 @@ export default function ChatPage() {
                 key={chat.id}
                 className={`list-group-item ${activeChat?.id === chat.id ? 'active' : ''}`}
                 onClick={() => setActiveChat(chat)}
-                role="button"
-              >
+                role="button">
                 Chat #{chat.id}
               </li>
             ))}
@@ -163,29 +162,14 @@ export default function ChatPage() {
                     return (
                       <div
                         key={msg.id}
-                        className={`mb-2 d-flex gap-2 ${isOwnMessage ? 'justify-content-end text-end' : 'justify-content-start text-start'}`}
-                      >
-                        {!isOwnMessage && (
-                          <img
-                            src={profilePic}
-                            alt="Profile"
-                            style={{ width: 40, height: 40, borderRadius: '50%' }}
-                          />
-                        )}
+                        className={`mb-2 d-flex gap-2 ${isOwnMessage ? 'justify-content-end text-end' : 'justify-content-start text-start'}`}>
+                        {!isOwnMessage && <img src={profilePic} alt="Profile" style={{ width: 40, height: 40, borderRadius: '50%' }} />}
                         <div>
                           <strong>{senderName}:</strong> {msg.content}
                           <br />
-                          <small className="text-muted">
-                            {msg.sentAt ? new Date(msg.sentAt).toLocaleTimeString() : ''}
-                          </small>
+                          <small className="text-muted">{msg.sentAt ? new Date(msg.sentAt).toLocaleTimeString() : ''}</small>
                         </div>
-                        {isOwnMessage && (
-                          <img
-                            src={profilePic}
-                            alt="Profile"
-                            style={{ width: 40, height: 40, borderRadius: '50%' }}
-                          />
-                        )}
+                        {isOwnMessage && <img src={profilePic} alt="Profile" style={{ width: 40, height: 40, borderRadius: '50%' }} />}
                       </div>
                     )
                   })}
