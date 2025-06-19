@@ -32,6 +32,11 @@ namespace InvestItAPI.Models
             return dBservices.GetPosts(userId, page, pageSize);
         }
 
+        public static List<object> GetFollowedPosts(int userId, int page, int pageSize)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.GetFollowedPosts(userId, page, pageSize);
+        }
 
 
         static public int AddPost(Post post)

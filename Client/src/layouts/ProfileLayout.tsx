@@ -153,7 +153,9 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
     // check if the user has a valid consultation with the expert
     try {
       const res = await authFetch(`${API_URL}/User/Consultation/Valid?userId=${user.userId}&expertId=${profileUser.userId}`)
-      isValidConsultation = res.isValidConsultation
+      if (res.consultationStatus == 1) {
+        isValidConsultation = true
+      }
     } catch (err) {
       console.warn('Failed to check consultation validity:', err)
     }

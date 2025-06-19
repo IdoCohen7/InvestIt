@@ -194,7 +194,7 @@ namespace InvestItAPI.Models
             dBservices.InsertConsultation(userId, expertId);
         }
 
-        public static bool IsConsultationValid(int userId, int expertId)
+        public static int IsConsultationValid(int userId, int expertId)
         {
             DBservices dBservices = new DBservices();
             return dBservices.IsConsultationValid(userId, expertId);

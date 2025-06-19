@@ -75,8 +75,9 @@ namespace InvestItAPI.Controllers
         {
             try
             {
-                bool isValid = InvestItAPI.Models.User.IsConsultationValid(userId, expertId);
-                return Ok(new { isValidConsultation = isValid });
+                int status = InvestItAPI.Models.User.IsConsultationValid(userId, expertId);
+                return Ok(new { consultationStatus = status });
+                // 1 = valid, -1 = expired, 0 = none
             }
             catch (Exception ex)
             {

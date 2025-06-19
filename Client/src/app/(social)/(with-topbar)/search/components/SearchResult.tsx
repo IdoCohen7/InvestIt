@@ -5,6 +5,7 @@ import { useNotificationContext } from '@/context/useNotificationContext'
 import { useAuthFetch } from '@/hooks/useAuthFetch' // <-- ייבוא useAuthFetch
 import { Link } from 'react-router-dom'
 import { API_URL } from '@/utils/env'
+import placeHolder from '@/assets/images/avatar/biggerPlaceholder.png'
 
 interface Props {
   query: string
@@ -72,7 +73,7 @@ const SearchResultsComponent = ({ query }: Props) => {
                       transition: 'transform 0.2s, box-shadow 0.2s',
                     }}>
                     <img
-                      src={user.profilePic}
+                      src={user.profilePic ? user.profilePic : placeHolder}
                       className="card-img-top"
                       alt={user.firstName}
                       style={{ objectFit: 'cover', height: '140px', aspectRatio: '4 / 3' }}
@@ -81,10 +82,10 @@ const SearchResultsComponent = ({ query }: Props) => {
                       <h6 className="card-title mb-1">
                         {user.firstName} {user.lastName}
                       </h6>
-                      <p className="card-text text-truncate" title={user.bio}>
+                      <p className="card-text text-truncate" title={user.bio ? user.bio : 'No bio available'}>
                         {user.bio}
                       </p>
-                      <small className="text-muted">Experience: {user.experienceLevel}</small>
+                      <small className="text-muted">Experience: {user.experienceLevel ? user.experienceLevel : 'No Level'}</small>
                     </div>
                   </div>
                 </Link>

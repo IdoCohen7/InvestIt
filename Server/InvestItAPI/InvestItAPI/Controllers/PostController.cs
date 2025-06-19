@@ -37,6 +37,30 @@ namespace InvestItAPI.Controllers
             }
         }
 
+        [HttpGet("Followed")]
+        public IActionResult GetFollowedPosts([FromQuery] int userId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        {
+            try
+            {
+                var posts = InvestItAPI.Models.Post.GetFollowedPosts(userId, page, pageSize);
+
+                if (posts == null || posts.Count == 0)
+                {
+                    return NotFound(new { message = "No posts found." });
+                }
+
+                return Ok(posts);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    error = "An error occurred while retrieving posts.",
+                    details = ex.Message
+                });
+            }
+        }
+
         [HttpGet("UserPage")]
         public IActionResult GetPostOfUser([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] int userId = 0, [FromQuery] int profileUserId = 0)
         {

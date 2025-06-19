@@ -25,8 +25,7 @@ export default function ChatPage() {
     if (participant?.expertiseArea) {
       try {
         const res = await authFetch(`${API_URL}/User/Consultation/Valid?userId=${user?.userId}&expertId=${otherUserId}`)
-
-        if (!res.isValidConsultation) {
+        if (res.consultationStatus != 1) {
           alert('You do not have an active consultation with this expert.')
           return
         }

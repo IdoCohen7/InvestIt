@@ -321,6 +321,64 @@ namespace InvestItAPI.DAL
             }
         }
 
+        public List<object> GetFollowedPosts(int userId, int page, int pageSize)
+        {
+            SqlConnection con = null;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("myProjDB");
+
+                cmd = new SqlCommand("SP_GetAllPostsByFollowedUsers", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@Page", page);
+                cmd.Parameters.AddWithValue("@PageSize", pageSize);
+                cmd.Parameters.AddWithValue("@UserId", userId);
+
+                List<object> posts = new List<object>();
+                SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+                while (dataReader.Read())
+                {
+                    var post = new
+                    {
+                        PostId = Convert.ToInt32(dataReader["post_id"]),
+                        UserId = Convert.ToInt32(dataReader["user_id"]),
+                        Content = dataReader["content"].ToString(),
+                        CreatedAt = Convert.ToDateTime(dataReader["created_at"]).ToString("dd/MM/yyyy"),
+                        UpdatedAt = dataReader["updated_at"] != DBNull.Value
+                            ? Convert.ToDateTime(dataReader["updated_at"]).ToString("o")
+                            : null,
+                        Vector = dataReader["post_vector"] != DBNull.Value ? dataReader["post_vector"].ToString() : null,
+                        LikesCount = Convert.ToInt32(dataReader["likesCount"]),
+                        CommentsCount = Convert.ToInt32(dataReader["commentsCount"]),
+                        FullName = dataReader["fullName"].ToString(),
+                        UserProfilePic = dataReader["userProfilePic"].ToString(),
+                        UserExperienceLevel = dataReader["userExperienceLevel"].ToString(),
+                        HasLiked = Convert.ToBoolean(dataReader["hasLiked"]),
+                        IsExpert = Convert.ToBoolean(dataReader["isExpert"])
+                    };
+
+                    posts.Add(post);
+                }
+
+                return posts;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error while retrieving followed posts", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+        }
+
 
 
         public User? Register(User user)
@@ -1257,27 +1315,27 @@ namespace InvestItAPI.DAL
             }
         }
 
-        public bool IsConsultationValid(int userId, int expertId)
+        public int IsConsultationValid(int userId, int expertId)
         {
             SqlConnection con = null;
 
             try
             {
-                con = connect("myProjDB"); 
+                con = connect("myProjDB");
                 SqlCommand cmd = new SqlCommand("CheckConsultationValidity", con);
                 cmd.CommandType = CommandType.StoredProcedure;
 
                 cmd.Parameters.AddWithValue("@user_id", userId);
                 cmd.Parameters.AddWithValue("@expert_id", expertId);
 
-                object result = cmd.ExecuteScalar(); 
+                object result = cmd.ExecuteScalar();
 
                 if (result != null && result != DBNull.Value)
                 {
-                    return Convert.ToBoolean(result);
+                    return Convert.ToInt32(result); // נחזיר את הערך כפי שהוא (1 / -1 / 0)
                 }
 
-                return false;
+                return 0; // ברירת מחדל: אין ייעוץ כלל
             }
             catch (Exception ex)
             {
@@ -1289,6 +1347,7 @@ namespace InvestItAPI.DAL
                     con.Close();
             }
         }
+
 
 
 
