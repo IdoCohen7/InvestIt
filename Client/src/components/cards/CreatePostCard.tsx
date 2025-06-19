@@ -20,6 +20,7 @@ const CreatePostCard = ({ onPostCreated }: Props) => {
   const { user } = useAuthContext()
   const { isTrue: isOpenPhoto, toggle: togglePhotoModel } = useToggle()
   const { showNotification } = useNotificationContext()
+  const [selectedImage, setSelectedImage] = useState<File | null>(null)
   const authFetch = useAuthFetch()
 
   const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } = useSpeechRecognition()
@@ -45,6 +46,18 @@ const CreatePostCard = ({ onPostCreated }: Props) => {
         body: JSON.stringify(payload),
       })
 
+      // שליחת תמונה רק אם קיימת
+      if (selectedImage) {
+        const formData = new FormData()
+        formData.append('files', selectedImage)
+
+        await authFetch(`${API_URL}/Upload?type=post&id=${created.postId}`, {
+          method: 'POST',
+          body: formData,
+          headers: {}, // חשוב! אל תגדיר Content-Type כדי ש-Browser יגדיר boundary
+        })
+      }
+
       const fullPostObj: SocialPostType = {
         ...payload,
         postId: created.postId,
@@ -54,13 +67,15 @@ const CreatePostCard = ({ onPostCreated }: Props) => {
         commentsCount: 0,
         likesCount: 0,
         hasLiked: false,
+        img: selectedImage ? 'מיקום התמונה בשרת אם חוזר' : '', // אופציונלי
       }
 
       setNewPost('')
+      setSelectedImage(null)
       resetTranscript()
       setActiveLanguage(null)
 
-      if (onPostCreated) onPostCreated(fullPostObj)
+      onPostCreated?.(fullPostObj)
       showNotification({ message: 'Post created successfully!', variant: 'success' })
     } catch (err) {
       showNotification({ message: err instanceof Error ? err.message : String(err), variant: 'danger' })
@@ -109,7 +124,16 @@ const CreatePostCard = ({ onPostCreated }: Props) => {
       <ul className="nav nav-pills nav-stack small fw-normal">
         <li className="nav-item">
           <a className="nav-link bg-light py-1 px-2 mb-0" onClick={togglePhotoModel}>
-            <BsImageFill size={20} className="text-success pe-2" /> Photo
+            <input
+              type="file"
+              accept="image/*"
+              style={{ display: 'none' }}
+              id="upload-image"
+              onChange={(e) => setSelectedImage(e.target.files?.[0] || null)}
+            />
+            <label htmlFor="upload-image" className="nav-link bg-light py-1 px-2 mb-0" style={{ cursor: 'pointer' }}>
+              <BsImageFill size={20} className="text-success pe-2" /> Photo
+            </label>{' '}
           </a>
         </li>
         <li className="nav-item">

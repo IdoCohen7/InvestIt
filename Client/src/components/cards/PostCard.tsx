@@ -27,6 +27,7 @@ interface PostCardProps {
   userExperienceLevel: string
   isExpert?: boolean
   onDelete?: (postId: number) => void
+  img?: string
 }
 
 const PostCard = ({
@@ -42,6 +43,7 @@ const PostCard = ({
   fullName,
   hasLiked: hasLikedProp,
   isExpert,
+  img,
   onDelete,
 }: PostCardProps) => {
   const { user } = useAuthContext()
@@ -239,6 +241,12 @@ const PostCard = ({
         ) : (
           <>
             <p>{editContent}</p>
+            {img && (
+              <div className="mt-3">
+                <img src={img} alt="Post" className="img-fluid rounded" style={{ maxHeight: '400px', objectFit: 'cover', width: '100%' }} />
+              </div>
+            )}
+
             {editedAt && !isEditing && !isNaN(Date.parse(editedAt)) && editedAt !== createdAt && (
               <p className="text-muted small mb-1">
                 Edited on{' '}

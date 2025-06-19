@@ -300,7 +300,9 @@ namespace InvestItAPI.DAL
                         UserProfilePic = dataReader["userProfilePic"].ToString(),
                         UserExperienceLevel = dataReader["userExperienceLevel"].ToString(),
                         HasLiked = Convert.ToBoolean(dataReader["hasLiked"]),
-                        IsExpert = Convert.ToBoolean(dataReader["isExpert"]) // 🆕 חדש!
+                        IsExpert = Convert.ToBoolean(dataReader["isExpert"]),
+                        img = dataReader["img"].ToString()
+
                     };
 
                     posts.Add(post);
@@ -358,7 +360,8 @@ namespace InvestItAPI.DAL
                         UserProfilePic = dataReader["userProfilePic"].ToString(),
                         UserExperienceLevel = dataReader["userExperienceLevel"].ToString(),
                         HasLiked = Convert.ToBoolean(dataReader["hasLiked"]),
-                        IsExpert = Convert.ToBoolean(dataReader["isExpert"])
+                        IsExpert = Convert.ToBoolean(dataReader["isExpert"]),
+                        img = dataReader["img"].ToString()
                     };
 
                     posts.Add(post);
@@ -1049,8 +1052,7 @@ namespace InvestItAPI.DAL
                         followersCount = Convert.ToInt32(reader["followersCount"]),
                         followingCount = Convert.ToInt32(reader["followingCount"]),
                         postsCount = Convert.ToInt32(reader["postsCount"]),
-                        isFollowed = Convert.ToBoolean(reader["isFollowed"])
-                    };
+                        isFollowed = Convert.ToBoolean(reader["isFollowed"])                    };
                 }
 
                 return null;
@@ -1100,7 +1102,9 @@ namespace InvestItAPI.DAL
                         FullName = reader["fullName"].ToString(),
                         UserProfilePic = reader["userProfilePic"].ToString(),
                         UserExperienceLevel = reader["userExperienceLevel"].ToString(),
-                        HasLiked = Convert.ToBoolean(reader["hasLiked"])
+                        HasLiked = Convert.ToBoolean(reader["hasLiked"]),
+                        img = reader["img"].ToString()
+
                     };
 
                     posts.Add(post);

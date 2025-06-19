@@ -32,7 +32,7 @@ const Feeds = ({ newPost, followedOnly }: { newPost: SocialPostType | null; foll
         setHasMore(false)
       }
 
-      setPosts((prev) => (reset ? newPosts : [...prev, ...newPosts.filter((p) => !prev.some((e) => e.postId === p.postId))]))
+      setPosts((prev) => (reset ? newPosts : [...prev, ...newPosts.filter((p: SocialPostType) => !prev.some((e) => e.postId === p.postId))]))
 
       setCurrentPage(pageToFetch)
     } catch (err: any) {
