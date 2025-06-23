@@ -14,6 +14,8 @@ namespace InvestItAPI.Models
         public double SimilarityScore { get; set; } // runtime variable, not saved in DB
         public string Vector { get; set; } // nullable
         public string UpdatedAt { get; set; }
+        public string? Img { get; set; } 
+
 
         public Post(int postId, int userId, string content, string createdAt, string updatedAt)
         {
@@ -77,6 +79,13 @@ namespace InvestItAPI.Models
             DBservices dBservices = new DBservices();
             return dBservices.GetPostsOfUser(page, pageSize, userId, profileUserId);
         }
+
+        public static bool SetImage(int postId, string imgPath)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.UpdatePostImage(postId, imgPath);
+        }
+
 
     }
 }

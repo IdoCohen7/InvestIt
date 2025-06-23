@@ -91,13 +91,14 @@ var app = builder.Build();
 //  WebSocket support
 app.UseWebSockets();
 
-//  Static file hosting for profile pictures
+//  Static file hosting for profile pictures and post images
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "uploadedFiles", "profilePics")),
-    RequestPath = "/uploadedFiles/profilePics"
+        Path.Combine(Directory.GetCurrentDirectory(), "uploadedFiles")),
+    RequestPath = "/uploadedFiles"
 });
+
 
 //  Swagger (dev only, but enabled here)
 app.UseSwagger();

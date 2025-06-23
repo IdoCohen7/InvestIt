@@ -2,7 +2,7 @@ import { lazy, Suspense, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Button, Card, CardBody, CardHeader, CardTitle, Col, Container, Dropdown, DropdownMenu, DropdownToggle, Row } from 'react-bootstrap'
 import { BsEnvelope, BsPatchCheckFill, BsPencilFill, BsThreeDots, BsChatDots } from 'react-icons/bs'
-import { API_URL, UPLOAD_URL } from '@/utils/env'
+import { API_URL } from '@/utils/env'
 import placeHolder from '@/assets/images/avatar/placeholder.jpg'
 import FallbackLoading from '@/components/FallbackLoading'
 import Preloader from '@/components/Preloader'
@@ -49,28 +49,29 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
     }
   }
 
-  const handleImageUpload = async (relativePath: string) => {
+  const handleImageUpload = async (imageUrl: string) => {
     if (!profileUser || !user?.token) return
 
-    const fullPath = `${UPLOAD_URL}/profilePics/${profileUser.userId}.jpg`
-
     try {
+      // שלב 1: עדכון פרופיל עם URL שכבר התקבל
       await authFetch(`${API_URL}/User/ProfilePic/${profileUser.userId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(fullPath),
+        body: JSON.stringify(imageUrl),
       })
 
-      const updatedUser = { ...profileUser, profilePic: fullPath, token: user.token }
+      const updatedUser = { ...profileUser, profilePic: imageUrl, token: user.token }
       setProfileUser(updatedUser)
 
       if (user?.userId === profileUser.userId) {
         saveSession(updatedUser, true)
       }
+
       setShowCamera(false)
       window.location.reload()
     } catch (err) {
       console.error('Error updating profile picture:', err)
+      showNotification({ message: 'Failed to update profile picture.', variant: 'danger' })
     }
   }
 

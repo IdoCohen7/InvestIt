@@ -133,6 +133,29 @@ namespace InvestItAPI.Controllers
             return StatusCode(500, "Failed to update the post");
         }
 
+        [HttpPut("{postId}/image")]
+        public IActionResult SetPostImage(int postId, [FromBody] string imgPath)
+        {
+
+            if (string.IsNullOrWhiteSpace(imgPath))
+                return BadRequest("Image path is required.");
+
+            try
+            {
+                bool success = InvestItAPI.Models.Post.SetImage(postId, imgPath);
+
+                if (success)
+                    return Ok(new { message = "Image updated successfully." });
+
+                return StatusCode(404, $"Post with id {postId} not found or update failed.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal error: {ex.Message}");
+            }
+        }
+
+
         [HttpPost("{postId}/like")]
         public IActionResult ToggleLike(int postId, [FromQuery] int userId)
         {

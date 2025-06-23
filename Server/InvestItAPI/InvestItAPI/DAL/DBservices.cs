@@ -149,8 +149,6 @@ namespace InvestItAPI.DAL
 
             cmd.Parameters.AddWithValue("@user_id", post.UserId);
             cmd.Parameters.AddWithValue("@content", post.Content);
-
-            
             cmd.Parameters.Add("@post_vector", SqlDbType.NVarChar, -1).Value =
      (object?)post.Vector ?? DBNull.Value;
 
@@ -1351,6 +1349,39 @@ namespace InvestItAPI.DAL
                     con.Close();
             }
         }
+
+        public bool UpdatePostImage(int postId, string imgPath)
+        {
+            SqlConnection con = null;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("myProjDB"); // פתח חיבור
+                cmd = new SqlCommand("SP_UpdatePostImage", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@post_id", postId);
+                cmd.Parameters.AddWithValue("@img", imgPath);
+
+                int affected = cmd.ExecuteNonQuery(); // מחזיר כמה שורות עודכנו
+
+                Console.WriteLine($"Updated image for post {postId} → {imgPath}");
+
+                return affected > 0;
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine($"SQL Exception: {ex.Message}");
+                return false;
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+        }
+
 
 
 

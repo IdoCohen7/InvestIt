@@ -48,6 +48,7 @@ export type SocialPostType = {
   userExperienceLevel: string
   showComments?: boolean
   hasLiked: boolean
+  img?: string // תמונה יכולה להיות ריקה
 }
 
 export type NewsItem = {

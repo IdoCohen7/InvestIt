@@ -4,7 +4,8 @@ import { useAuthContext } from '@/context/useAuthContext'
 import Webcam from 'react-webcam'
 import { API_URL } from '@/utils/env'
 import { useNotificationContext } from '@/context/useNotificationContext'
-import { useAuthFetch } from '@/hooks/useAuthFetch' // ייבוא useAuthFetch
+import { useAuthFetch } from '@/hooks/useAuthFetch'
+import { UPLOAD_URL } from '@/utils/env'
 
 interface CameraModalProps {
   show: boolean
@@ -19,7 +20,7 @@ const CameraModal = ({ show, onClose, onUploadSuccess }: CameraModalProps) => {
   const [capturedBlob, setCapturedBlob] = useState<Blob | null>(null)
   const { user } = useAuthContext()
   const { showNotification } = useNotificationContext()
-  const authFetch = useAuthFetch() // שימוש ב-hook החדש
+  const authFetch = useAuthFetch()
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -47,32 +48,47 @@ const CameraModal = ({ show, onClose, onUploadSuccess }: CameraModalProps) => {
   const uploadImage = async () => {
     if (!capturedBlob || !user) return
 
+    const fileExtension = capturedBlob.type.split('/')[1] || 'jpg'
+    const fileName = `${user.userId}.${fileExtension}`
     const formData = new FormData()
-    formData.append('files', capturedBlob, `${user.userId}.jpg`)
+    formData.append('files', capturedBlob, fileName)
 
     try {
-      const uploadRes = await authFetch(`${API_URL}/Upload?type=profile&id=${user.userId}`, {
+      // שלב 1: העלאה עם fetch רגיל כדי להימנע משבירת content-type
+      const uploadRes = await fetch(`${API_URL}/Upload?type=profile&id=${user.userId}`, {
         method: 'POST',
+        headers: {
+          Authorization: `Bearer ${user.token}`,
+        },
         body: formData,
       })
 
-      if (!uploadRes || !Array.isArray(uploadRes) || !uploadRes[0]) {
+      if (!uploadRes.ok) {
+        throw new Error(`Upload failed: ${uploadRes.status}`)
+      }
+
+      let uploadResponse: string[] = []
+      try {
+        uploadResponse = await uploadRes.json()
+      } catch (parseErr) {
+        throw new Error('Upload succeeded but response was not JSON.')
+      }
+
+      if (!Array.isArray(uploadResponse) || !uploadResponse[0]) {
         throw new Error('Upload failed: no path returned')
       }
 
-      const uploadedPath = uploadRes[0]
+      const relativePath = uploadResponse[0]
+      const fullImageUrl = `${UPLOAD_URL}${relativePath.startsWith('/') ? '' : '/'}${relativePath}`
 
-      const updateRes = await authFetch(`${API_URL}/User/ProfilePic/${user.userId}`, {
+      // שלב 2: עדכון URL במסד הנתונים עם authFetch
+      await authFetch(`${API_URL}/User/ProfilePic/${user.userId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(uploadedPath),
+        body: JSON.stringify(fullImageUrl),
       })
 
-      if (!updateRes) {
-        throw new Error('Failed to update profile pic')
-      }
-
-      onUploadSuccess(`/uploadedFiles/${uploadedPath}`)
+      onUploadSuccess(fullImageUrl)
       setPreviewImage(null)
       onClose()
     } catch (err) {
@@ -101,13 +117,15 @@ const CameraModal = ({ show, onClose, onUploadSuccess }: CameraModalProps) => {
       <Modal.Body className="text-center">
         {previewImage ? (
           <>
-            <img src={previewImage} alt="Preview" className="rounded w-100 mb-3" />
-            <Button variant="success" className="me-2" onClick={uploadImage}>
-              Upload
-            </Button>
-            <Button variant="secondary" onClick={retakeImage}>
-              Retake
-            </Button>
+            <img src={previewImage} alt="Preview" className="rounded mb-3" style={{ maxWidth: '150px', maxHeight: '150px', objectFit: 'cover' }} />
+            <div className="d-flex justify-content-center gap-2">
+              <Button variant="success" onClick={uploadImage}>
+                Upload
+              </Button>
+              <Button variant="secondary" onClick={retakeImage}>
+                Retake
+              </Button>
+            </div>
           </>
         ) : (
           <>
