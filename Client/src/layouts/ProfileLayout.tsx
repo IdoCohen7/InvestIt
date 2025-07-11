@@ -31,9 +31,33 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
   const [isFollowed, setIsFollowed] = useState<boolean | null>(null)
   const [followersCount, setFollowersCount] = useState<number | null>(null)
   const [showExpertEdit, setShowExpertEdit] = useState(false)
+  const [canRate, setCanRate] = useState(false)
+  const [expertRating, setExpertRating] = useState<number | null>(null)
+
   const { showNotification } = useNotificationContext()
 
   const isExpert = !!profileUser?.expertiseArea
+
+  const checkConsultationStatus = async () => {
+    if (!user || !profileUser) return
+
+    try {
+      const res = await authFetch(`${API_URL}/User/Consultation/Valid?userId=${user.userId}&expertId=${profileUser.userId}`)
+      const status = res.consultationStatus
+
+      if (status === 1 || status === -1) {
+        setCanRate(true)
+      }
+    } catch (err) {
+      console.warn('Failed to check consultation status:', err)
+    }
+  }
+
+  useEffect(() => {
+    if (profileUser && user?.userId && user?.token && profileUser.expertiseArea) {
+      checkConsultationStatus()
+    }
+  }, [profileUser, user?.userId, user?.token])
 
   const fetchProfileUser = async () => {
     if (!user?.token) return
@@ -41,6 +65,15 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
     try {
       const data = await authFetch(`${API_URL}/User/${userId}?viewerId=${user?.userId}`)
       setProfileUser(data)
+      if (data.expertiseArea) {
+        try {
+          const res = await authFetch(`${API_URL}/Expert/AverageRating?expertId=${data.userId}`)
+          setExpertRating(res.averageRating)
+        } catch (err) {
+          console.error('Failed to fetch expert rating:', err)
+        }
+      }
+
       setIsFollowed(data.isFollowed)
       setFollowersCount(data.followersCount)
     } catch (err) {
@@ -151,11 +184,15 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
 
     let isValidConsultation = false
 
-    // check if the user has a valid consultation with the expert
     try {
       const res = await authFetch(`${API_URL}/User/Consultation/Valid?userId=${user.userId}&expertId=${profileUser.userId}`)
-      if (res.consultationStatus == 1) {
-        isValidConsultation = true
+
+      const status = res.consultationStatus
+      if (status === 1 || status === -1) {
+        setCanRate(true) // ✅ ניתן לדרג
+      }
+      if (status === 1) {
+        isValidConsultation = true // ✅ ניתן גם לשוחח
       }
     } catch (err) {
       console.warn('Failed to check consultation validity:', err)
@@ -208,6 +245,23 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
   if (!profileUser || isFollowed === null || followersCount === null) return <p className="text-center mt-5">Loading profile...</p>
 
   const isOwner = profileUser.userId === user?.userId
+
+  const submitRating = async (val: number) => {
+    if (!user || !profileUser) return
+    try {
+      await authFetch(`${API_URL}/User/RateExpert?userId=${user.userId}&expertId=${profileUser.userId}&rating=${val}`, {
+        method: 'POST',
+      })
+
+      const res = await authFetch(`${API_URL}/Expert/AverageRating?expertId=${profileUser.userId}`)
+      setExpertRating(res.averageRating)
+
+      showNotification({ message: 'Rating submitted successfully', variant: 'success' })
+    } catch (err) {
+      console.error('Error submitting rating:', err)
+      showNotification({ message: 'Failed to submit rating.', variant: 'danger' })
+    }
+  }
 
   return (
     <>
@@ -337,7 +391,7 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
                         <CardTitle>Expert Details</CardTitle>
                       </CardHeader>
                       <CardBody className="pt-0">
-                        <ul className="list-unstyled mb-0">
+                        <ul className="list-unstyled mb-3">
                           <li className="mb-2">
                             <strong>Expertise:</strong> {profileUser.expertiseArea}
                           </li>
@@ -348,9 +402,27 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
                             <strong>Available for chat:</strong> {profileUser.availableForChat ? 'Yes' : 'No'}
                           </li>
                           <li className="mb-2">
-                            <strong>Rating:</strong> ⭐ {profileUser.rating}
+                            <strong>Rating:</strong> ⭐ {expertRating ? expertRating.toFixed(2) : 'No ratings yet'}
                           </li>
                         </ul>
+
+                        {canRate && !isOwner && (
+                          <div className="d-flex align-items-center mt-2">
+                            <strong className="me-2 mb-0">Your Rating:</strong>
+                            {[1, 2, 3, 4, 5].map((val) => (
+                              <span
+                                key={val}
+                                onClick={() => submitRating(val)}
+                                style={{
+                                  cursor: 'pointer',
+                                  fontSize: '1.5rem',
+                                  color: expertRating && expertRating >= val ? 'gold' : 'gray',
+                                }}>
+                                ★
+                              </span>
+                            ))}
+                          </div>
+                        )}
                       </CardBody>
                     </Card>
                   )}

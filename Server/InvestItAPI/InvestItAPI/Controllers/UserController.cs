@@ -70,6 +70,7 @@ namespace InvestItAPI.Controllers
             return Ok();
         }
 
+
         [HttpGet("Consultation/Valid")]
         public IActionResult IsConsultationValid(int userId, int expertId)
         {
@@ -85,6 +86,23 @@ namespace InvestItAPI.Controllers
             }
         }
 
+        [HttpPost("RateExpert")]
+        public IActionResult RateExpert(int userId, int expertId, double rating)
+        {
+            try
+            {
+                bool success = InvestItAPI.Models.User.UpdateConsultationRating(userId, expertId, rating);
+
+                if (!success)
+                    return NotFound("Consultation not found or rating update failed.");
+
+                return Ok("Rating updated successfully.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error: {ex.Message}");
+            }
+        }
 
 
         [HttpGet("{userId}")]

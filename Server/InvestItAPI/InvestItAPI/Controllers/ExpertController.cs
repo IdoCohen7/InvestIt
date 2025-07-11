@@ -20,6 +20,27 @@ namespace InvestItAPI.Controllers
             return new string[] { "value1", "value2" };
         }
 
+        [HttpGet("AverageRating")]
+        public IActionResult GetAverageRating(int expertId)
+        {
+            try
+            {
+                var (totalRatings, averageRating) = InvestItAPI.Models.Expert.GetExpertAverageRating(expertId);
+
+                return Ok(new
+                {
+                    expertId,
+                    totalRatings,
+                    averageRating
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error: {ex.Message}");
+            }
+        }
+
+
         // GET api/<ExpertController>/5
         [HttpGet("{id}")]
         public string Get(int id)

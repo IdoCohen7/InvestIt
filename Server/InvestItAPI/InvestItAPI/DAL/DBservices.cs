@@ -1502,6 +1502,73 @@ namespace InvestItAPI.DAL
             return affected > 0;
         }
 
+        public bool UpdateConsultationRating(int userId, int expertId, double rating)
+        {
+            SqlConnection con = null;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("myProjDB");
+                cmd = new SqlCommand("SP_UpdateConsultationRating", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@user_id", userId);
+                cmd.Parameters.AddWithValue("@expert_id", expertId);
+                cmd.Parameters.AddWithValue("@rating", rating);
+
+                int affected = cmd.ExecuteNonQuery();
+                return affected > 0;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error updating consultation rating", ex);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+        }
+
+        public (int totalRatings, double averageRating) GetExpertAverageRating(int expertId)
+        {
+            SqlConnection con = null;
+            SqlCommand cmd;
+            SqlDataReader reader;
+
+            try
+            {
+                con = connect("myProjDB");
+                cmd = new SqlCommand("SP_GetExpertAverageRating", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@expert_id", expertId);
+
+                reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    int totalRatings = reader.IsDBNull(reader.GetOrdinal("total_ratings")) ? 0 : reader.GetInt32(reader.GetOrdinal("total_ratings"));
+                    double averageRating = reader.IsDBNull(reader.GetOrdinal("average_rating")) ? 0.0 : reader.GetDouble(reader.GetOrdinal("average_rating"));
+                    return (totalRatings, averageRating);
+                }
+                else
+                {
+                    return (0, 0.0);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error retrieving average rating for expert", ex);
+            }
+            finally
+            {
+                if (con != null)
+                    con.Close();
+            }
+        }
+
 
 
 

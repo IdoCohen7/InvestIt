@@ -139,7 +139,11 @@ namespace InvestItAPI.Models
             return null;
         }
 
-
+        static public bool UpdateConsultationRating(int userId, int expertId, double rating)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.UpdateConsultationRating(userId, expertId, rating);
+        }
 
         static public int EditUser(User user)
         {

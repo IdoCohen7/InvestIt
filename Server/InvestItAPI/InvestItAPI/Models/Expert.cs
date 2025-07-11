@@ -24,5 +24,13 @@ namespace InvestItAPI.Models
             DBservices dBservices = new DBservices();
             dBservices.UpdateExpert(expert.UserId, expert.ExpertiseArea, expert.Price ,expert.AvailableForChat);
         }
+
+        public static (int, double) GetExpertAverageRating(int expertId)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.GetExpertAverageRating(expertId);
+        }
+
+         
     }
 }
