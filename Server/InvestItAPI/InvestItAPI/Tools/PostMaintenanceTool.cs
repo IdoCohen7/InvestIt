@@ -19,7 +19,8 @@ namespace InvestItAPI.Tools
             {
                 try
                 {
-                    string category = await HuggingFaceClassifier.ClassifyTextAsync(post.Content);
+                    HuggingFaceClassifier classifer = new HuggingFaceClassifier();
+                    string category = await classifer.ClassifyTextAsync(post.Content);
                     bool updated = db.UpdatePostCategory(post.PostId, category);
 
                     if (updated)

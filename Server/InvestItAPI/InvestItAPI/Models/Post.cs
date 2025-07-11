@@ -53,8 +53,8 @@ namespace InvestItAPI.Models
         static public int AddPost(Post post)
         {
             DBservices dbServices = new DBservices();
-
-            post.Category = HuggingFaceClassifier.ClassifyTextAsync(post.Content).Result;
+            HuggingFaceClassifier classifer = new HuggingFaceClassifier();
+            post.Category = classifer.ClassifyTextAsync(post.Content).Result;
 
             return dbServices.AddPost(post);
         }
