@@ -68,18 +68,37 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+// Supabase Client registration
+builder.Services.AddSingleton(provider =>
+{
+    var supabaseUrl = builder.Configuration["Supabase:Url"];
+    var supabaseKey = builder.Configuration["Supabase:Key"];
+
+    var options = new Supabase.SupabaseOptions
+    {
+        AutoConnectRealtime = false
+    };
+
+    var client = new Supabase.Client(supabaseUrl, supabaseKey, options);
+    client.InitializeAsync().Wait(); 
+
+    return client;
+});
+
+
 var app = builder.Build();
 
 //  WebSocket support
 app.UseWebSockets();
 
-//  Static file hosting for profile pictures
+//  Static file hosting for profile pictures and post images
 app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(
-        Path.Combine(Directory.GetCurrentDirectory(), "uploadedFiles", "profilePics")),
-    RequestPath = "/uploadedFiles/profilePics"
+        Path.Combine(Directory.GetCurrentDirectory(), "uploadedFiles")),
+    RequestPath = "/uploadedFiles"
 });
+
 
 //  Swagger (dev only, but enabled here)
 app.UseSwagger();
@@ -146,4 +165,5 @@ app.Map("/ws/prices", async context =>
 });
 
 app.MapControllers();
+
 app.Run();

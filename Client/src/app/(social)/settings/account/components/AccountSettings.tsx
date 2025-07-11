@@ -12,6 +12,18 @@ import { useNotificationContext } from '@/context/useNotificationContext'
 import { API_URL } from '@/utils/env'
 import { useAuthFetch } from '@/hooks/useAuthFetch'
 
+const interestOptions = ['Stock Market', 'Crypto', 'Real Estate', 'Savings and Budgeting', 'Pension and Conservative Investments']
+
+const interestMap: { [key: string]: string } = {
+  'Stock Market': 'שוק ההון',
+  Crypto: 'קריפטו',
+  'Real Estate': 'נדל״ן',
+  'Savings and Budgeting': 'חיסכון וניהול תקציב',
+  'Pension and Conservative Investments': 'פנסיה והשקעות סולידיות',
+}
+
+const reverseInterestMap = Object.fromEntries(Object.entries(interestMap).map(([en, he]) => [he, en]))
+
 const ChangePassword = () => {
   const [firstPassword, setFirstPassword] = useState<string>('')
   const { user, removeSession } = useAuthContext()
@@ -93,6 +105,7 @@ const AccountSettings = () => {
   const { user, saveSession } = useAuthContext()
   const { showNotification } = useNotificationContext()
   const [bioLength, setBioLength] = useState<number>(0)
+  const [selectedInterest, setSelectedInterest] = useState<string>('')
   const authFetch = useAuthFetch()
 
   const createFormSchema = yup.object({
@@ -126,6 +139,9 @@ const AccountSettings = () => {
         lName: user.lastName || '',
         bio: user.bio || '',
       })
+
+      const englishInterest = reverseInterestMap[user.interestCategory || ''] || ''
+      setSelectedInterest(englishInterest)
     }
   }, [user, reset])
 
@@ -141,6 +157,7 @@ const AccountSettings = () => {
       profilePic: user.profilePic || '',
       experienceLevel: user.experienceLevel || 'No Level',
       bio: formData.bio,
+      interestCategory: interestMap[selectedInterest] || '',
       createdAt: user.createdAt,
       isActive: user.isActive,
     }
@@ -153,6 +170,7 @@ const AccountSettings = () => {
       })
 
       saveSession({ ...updatedUser, token: user.token }, true)
+
       showNotification({ message: 'User updated successfully!', variant: 'success' })
     } catch (err) {
       console.error('Error updating profile:', err)
@@ -171,6 +189,22 @@ const AccountSettings = () => {
           <form className="row g-3" onSubmit={handleSubmit(onSubmit)}>
             <TextFormInput name="fName" label="First name" control={control} containerClassName="col-sm-6 col-lg-4" />
             <TextFormInput name="lName" label="Last name" control={control} containerClassName="col-sm-6 col-lg-4" />
+
+            <Col sm={6} lg={4}>
+              <label htmlFor="interestCategory" className="form-label">
+                Interest Category
+              </label>
+              <select id="interestCategory" className="form-select" value={selectedInterest} onChange={(e) => setSelectedInterest(e.target.value)}>
+                <option value="" disabled>
+                  Select category...
+                </option>
+                {interestOptions.map((opt) => (
+                  <option key={opt} value={opt}>
+                    {opt}
+                  </option>
+                ))}
+              </select>
+            </Col>
 
             <Col xs={12}>
               <TextAreaFormInput name="bio" label="Bio" rows={4} placeholder="Description (Required)" control={control} />

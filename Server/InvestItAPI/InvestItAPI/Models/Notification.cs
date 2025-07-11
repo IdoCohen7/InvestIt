@@ -36,7 +36,14 @@ namespace InvestItAPI.Models
             dBservices.MarkNotificationsAsRead(userId);
 
         }
+
+        public static void CreateNotification(Notification notification)
+        {
+            DBservices dBservices = new DBservices();
+            dBservices.CreateNotification(notification);
+        }
+
     }
 
-   
+
 }

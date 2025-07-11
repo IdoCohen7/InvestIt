@@ -1,4 +1,4 @@
-﻿namespace InvestItAPI.Models
+﻿namespace InvestItAPI.DTO
 {
     public class ChangePasswordRequest
     {

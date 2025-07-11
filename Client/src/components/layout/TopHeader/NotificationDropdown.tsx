@@ -7,6 +7,7 @@ import { BsBellFill, BsThreeDots, BsCheckLg } from 'react-icons/bs'
 import { useAuthContext } from '@/context/useAuthContext'
 import { Notification } from '@/types/data'
 import { API_URL } from '@/utils/env'
+import placeHolder from '@/assets/images/avatar/placeholder.jpg'
 
 const NotificationDropdown = () => {
   const [notifications, setNotifications] = useState<Notification[]>([])
@@ -106,6 +107,8 @@ const NotificationDropdown = () => {
         return 'liked your post.'
       case 'follow':
         return 'started following you.'
+      case 'expert_chat':
+        return 'sent you a message in Expert Chat.'
       default:
         return 'sent you a notification.'
     }
@@ -144,7 +147,7 @@ const NotificationDropdown = () => {
                       'just-read': justReadIds.includes(notification.notificationId),
                     })}>
                     <div className="avatar text-center">
-                      {notification.actorProfilePic ? (
+                      {notification.actorProfilePic?.trim() ? (
                         <img
                           className="avatar-img rounded-circle"
                           src={notification.actorProfilePic}
@@ -152,13 +155,15 @@ const NotificationDropdown = () => {
                           style={{ width: '40px', height: '40px', objectFit: 'cover' }}
                         />
                       ) : (
-                        <div className="avatar-img rounded-circle bg-primary">
-                          <span className="text-white position-absolute top-50 start-50 translate-middle fw-bold">
-                            {getInitials(notification.actorName)}
-                          </span>
-                        </div>
+                        <img
+                          className="avatar-img rounded-circle"
+                          src={placeHolder}
+                          alt="placeholder"
+                          style={{ width: '40px', height: '40px', objectFit: 'cover' }}
+                        />
                       )}
                     </div>
+
                     <div className="mx-sm-3 my-2 my-sm-0">
                       <p className="small mb-1">
                         <Link to={`/profile/feed/${notification.actorId}`} className="text-decoration-none fw-semibold text-white">

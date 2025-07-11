@@ -25,12 +25,50 @@ namespace InvestItAPI.Controllers
 
             var token = _tokenService.GenerateToken(user);
 
+            if (user is Expert expert)
+            {
+                return Ok(new
+                {
+                    user = new
+                    {
+                        expert.UserId,
+                        expert.FirstName,
+                        expert.LastName,
+                        expert.Email,
+                        expert.PasswordHash,
+                        expert.ProfilePic,
+                        expert.ExperienceLevel,
+                        expert.Bio,
+                        expert.CreatedAt,
+                        expert.IsActive,
+                        expert.ExpertiseArea,
+                        expert.Price,
+                        expert.AvailableForChat,
+                        expert.Rating
+                    },
+                    token
+                });
+            }
+
             return Ok(new
             {
-                user,
+                user = new
+                {
+                    user.UserId,
+                    user.FirstName,
+                    user.LastName,
+                    user.Email,
+                    user.PasswordHash,
+                    user.ProfilePic,
+                    user.ExperienceLevel,
+                    user.Bio,
+                    user.CreatedAt,
+                    user.IsActive
+                },
                 token
             });
         }
+
 
         [HttpPost("Register")]
         public IActionResult Register([FromBody] User user)

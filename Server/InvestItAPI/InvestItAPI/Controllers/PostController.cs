@@ -10,7 +10,7 @@ namespace InvestItAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //    [Authorize]
     public class PostController : ControllerBase
     {
         [HttpGet]
@@ -19,6 +19,58 @@ namespace InvestItAPI.Controllers
             try
             {
                 var posts = InvestItAPI.Models.Post.GetPosts(userId, page, pageSize);
+
+                if (posts == null || posts.Count == 0)
+                {
+                    return NotFound(new { message = "No posts found." });
+                }
+
+                return Ok(posts);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    error = "An error occurred while retrieving posts.",
+                    details = ex.Message
+                });
+            }
+        }
+
+        [HttpGet("Personalized")]
+        public IActionResult GetPersonalizedFeed([FromQuery] int userId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        {
+            try
+            {
+                var posts = InvestItAPI.Models.Post.GetPersonalizedFeed(userId, page, pageSize);
+
+                if (posts == null || posts.Count == 0)
+                {
+                    return NotFound(new { message = "No personalized posts found." });
+                }
+
+                return Ok(posts);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    error = "An error occurred while retrieving personalized feed.",
+                    details = ex.Message,
+                    inner = ex.InnerException?.Message 
+                });
+            }
+        }
+
+
+
+
+        [HttpGet("Followed")]
+        public IActionResult GetFollowedPosts([FromQuery] int userId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        {
+            try
+            {
+                var posts = InvestItAPI.Models.Post.GetFollowedPosts(userId, page, pageSize);
 
                 if (posts == null || posts.Count == 0)
                 {
@@ -108,6 +160,29 @@ namespace InvestItAPI.Controllers
 
             return StatusCode(500, "Failed to update the post");
         }
+
+        [HttpPut("{postId}/image")]
+        public IActionResult SetPostImage(int postId, [FromBody] string imgPath)
+        {
+
+            if (string.IsNullOrWhiteSpace(imgPath))
+                return BadRequest("Image path is required.");
+
+            try
+            {
+                bool success = InvestItAPI.Models.Post.SetImage(postId, imgPath);
+
+                if (success)
+                    return Ok(new { message = "Image updated successfully." });
+
+                return StatusCode(404, $"Post with id {postId} not found or update failed.");
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal error: {ex.Message}");
+            }
+        }
+
 
         [HttpPost("{postId}/like")]
         public IActionResult ToggleLike(int postId, [FromQuery] int userId)

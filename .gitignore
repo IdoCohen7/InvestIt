@@ -52,3 +52,4 @@ Server/InvestItAPI/InvestItAPI/web.config
 *.pubxml
 Server/InvestItAPI/InvestItAPI/Properties/PublishProfiles/FolderProfile.pubxml.user
 *.bin
+/Server/InvestItAPI/InvestItAPI/uploadedFiles

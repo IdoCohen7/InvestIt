@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using InvestItAPI.Models;
 using System.Data.SqlClient;
+using InvestItAPI.DTO;
 
 namespace InvestItAPI.Controllers
 {
@@ -49,6 +50,42 @@ namespace InvestItAPI.Controllers
                 return StatusCode(500, $"Error: {ex.Message}");
             }
         }
+
+        [HttpPost("Consultation")]
+        public IActionResult InsertConsultation([FromBody] ConsultationRequest request)
+        {
+            try
+            {
+                InvestItAPI.Models.User.InsertConsultation(request.UserId, request.ExpertId);
+            }
+            catch (SqlException ex) when (ex.Number == 50000)
+            {
+                return BadRequest(new { error = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error: {ex.Message}");
+            }
+
+            return Ok();
+        }
+
+        [HttpGet("Consultation/Valid")]
+        public IActionResult IsConsultationValid(int userId, int expertId)
+        {
+            try
+            {
+                int status = InvestItAPI.Models.User.IsConsultationValid(userId, expertId);
+                return Ok(new { consultationStatus = status });
+                // 1 = valid, -1 = expired, 0 = none
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
+
+
 
         [HttpGet("{userId}")]
         public IActionResult GetUserById(int userId, [FromQuery] int viewerId)
@@ -101,6 +138,25 @@ namespace InvestItAPI.Controllers
                 return StatusCode(500, new { error = ex.Message });
             }
         }
+
+        [HttpPut("{userId}/Interest")]
+        public IActionResult SetUserInterest(int userId, [FromBody] string interest)
+        {
+            try
+            {
+                bool result = InvestItAPI.Models.User.SetUserInterest(userId, interest);
+
+                if (result)
+                    return Ok(new { message = $"Interest category updated to '{interest}' for user {userId}." });
+
+                return NotFound(new { error = "User not found or interest update failed." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "An error occurred while updating interest category.", details = ex.Message });
+            }
+        }
+
 
         [HttpPut("ChangePassword")]
         public IActionResult ChangePassword([FromBody] ChangePasswordRequest request)

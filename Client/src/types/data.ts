@@ -48,6 +48,7 @@ export type SocialPostType = {
   userExperienceLevel: string
   showComments?: boolean
   hasLiked: boolean
+  img?: string // תמונה יכולה להיות ריקה
 }
 
 export type NewsItem = {
@@ -114,7 +115,7 @@ export type Notification = {
   actorName: string
   actorProfilePic: string | null
   objectId: number
-  type: 'comment' | 'like' | 'follow'
+  type: 'comment' | 'like' | 'follow' | 'expert_chat'
   isRead: boolean
   createdAt: string
 }

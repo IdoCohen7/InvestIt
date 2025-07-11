@@ -1,30 +1,19 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import {
-  Button,
-  Card,
-  CardBody,
-  CardHeader,
-  CardTitle,
-  Col,
-  Container,
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownToggle,
-  Row,
-} from 'react-bootstrap'
-import { BsBookmark, BsEnvelope, BsFileEarmarkPdf, BsGear, BsLock, BsPatchCheckFill, BsPencilFill, BsThreeDots } from 'react-icons/bs'
-import { API_URL, UPLOAD_URL } from '@/utils/env'
+import { Button, Card, CardBody, CardHeader, CardTitle, Col, Container, Dropdown, DropdownMenu, DropdownToggle, Row } from 'react-bootstrap'
+import { BsEnvelope, BsPatchCheckFill, BsPencilFill, BsThreeDots, BsChatDots } from 'react-icons/bs'
+import { API_URL } from '@/utils/env'
 import placeHolder from '@/assets/images/avatar/placeholder.jpg'
 import FallbackLoading from '@/components/FallbackLoading'
 import Preloader from '@/components/Preloader'
 import CameraModal from '@/components/cameraModal'
 import { useAuthContext } from '@/context/useAuthContext'
-import { useAuthFetch } from '@/hooks/useAuthFetch' // <-- הוספת ייבוא useAuthFetch
+import { useAuthFetch } from '@/hooks/useAuthFetch'
 import type { ChildrenType } from '@/types/component'
 import type { UserPage } from '@/types/data'
 import Banner from '@/assets/images/bg/banner2.png'
+import ExpertEditModal from '@/components/cards/EditExpertModal'
+import { useNotificationContext } from '@/context/useNotificationContext'
 
 const TopHeader = lazy(() => import('@/components/layout/TopHeader'))
 
@@ -34,13 +23,17 @@ interface ProfileLayoutProps extends ChildrenType {
 
 const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
   const { user, saveSession } = useAuthContext()
-  const authFetch = useAuthFetch() // <-- שימוש ב-useAuthFetch
+  const authFetch = useAuthFetch()
   const [profileUser, setProfileUser] = useState<UserPage | null>(null)
   const [showCamera, setShowCamera] = useState(false)
   const navigate = useNavigate()
   const [notFound, setNotFound] = useState(false)
   const [isFollowed, setIsFollowed] = useState<boolean | null>(null)
   const [followersCount, setFollowersCount] = useState<number | null>(null)
+  const [showExpertEdit, setShowExpertEdit] = useState(false)
+  const { showNotification } = useNotificationContext()
+
+  const isExpert = !!profileUser?.expertiseArea
 
   const fetchProfileUser = async () => {
     if (!user?.token) return
@@ -56,30 +49,29 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
     }
   }
 
-  const handleImageUpload = async (relativePath: string) => {
+  const handleImageUpload = async (imageUrl: string) => {
     if (!profileUser || !user?.token) return
 
-    const fullPath = `${UPLOAD_URL}/profilePics/${profileUser.userId}.jpg`
-
     try {
+      // שלב 1: עדכון פרופיל עם URL שכבר התקבל
       await authFetch(`${API_URL}/User/ProfilePic/${profileUser.userId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(fullPath),
+        body: JSON.stringify(imageUrl),
       })
 
-      // שמור את הטוקן כדי שלא יימחק
-      const updatedUser = { ...profileUser, profilePic: fullPath, token: user.token }
-
+      const updatedUser = { ...profileUser, profilePic: imageUrl, token: user.token }
       setProfileUser(updatedUser)
 
       if (user?.userId === profileUser.userId) {
-        saveSession(updatedUser, true) // חשוב לשמור גם את הטוקן
+        saveSession(updatedUser, true)
       }
+
       setShowCamera(false)
       window.location.reload()
     } catch (err) {
       console.error('Error updating profile picture:', err)
+      showNotification({ message: 'Failed to update profile picture.', variant: 'danger' })
     }
   }
 
@@ -108,6 +100,101 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
       )
     } catch (err) {
       console.error('Error toggling follow:', err)
+    }
+  }
+
+  const handleMessageClick = async () => {
+    if (!user || !profileUser) return
+
+    try {
+      // creating chat
+      await authFetch(`${API_URL}/Supabase/CreatePrivateChat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userIdToChatWith: profileUser.userId }),
+      })
+
+      // notifying the expert
+      await authFetch(`${API_URL}/Notification`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: profileUser.userId,
+          actorId: user.userId,
+          actorName: `${user.firstName} ${user.lastName}`,
+          objectId: 0,
+          type: 'expert_chat',
+          isRead: false,
+          createdAt: new Date().toISOString(),
+          actorProfilePic: user.profilePic || '',
+        }),
+      })
+
+      // 3. navigate to messaging page
+      navigate('/messaging')
+    } catch (err) {
+      console.error('Error creating private chat or notification:', err)
+    }
+  }
+
+  const handleExpertChatClick = async () => {
+    if (!user || !profileUser) return
+
+    // if the expert is not available for chat, show a notification
+    if (!profileUser.availableForChat) {
+      showNotification({
+        message: `${profileUser.firstName} is not available for chat.`,
+        variant: 'warning',
+      })
+      return
+    }
+
+    let isValidConsultation = false
+
+    // check if the user has a valid consultation with the expert
+    try {
+      const res = await authFetch(`${API_URL}/User/Consultation/Valid?userId=${user.userId}&expertId=${profileUser.userId}`)
+      if (res.consultationStatus == 1) {
+        isValidConsultation = true
+      }
+    } catch (err) {
+      console.warn('Failed to check consultation validity:', err)
+    }
+
+    //if the user does not have a valid consultation, ask for confirmation to pay
+    if (!isValidConsultation) {
+      const confirmed = window.confirm(
+        `You are currently not subscribed to this expert.\n Are you sure you want to pay $${profileUser.price} to chat with this expert?`,
+      )
+      if (!confirmed) return
+
+      try {
+        await authFetch(`${API_URL}/User/Consultation`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userId: user.userId,
+            expertId: profileUser.userId,
+          }),
+        })
+      } catch (err) {
+        console.warn('Failed to insert new consultation:', err)
+        showNotification({
+          message: 'Unable to register new consultation. Redirecting anyway...',
+          variant: 'info',
+        })
+      }
+    }
+
+    // בכל מקרה, נפתח את הצ'אט
+    try {
+      await handleMessageClick()
+    } catch (err) {
+      console.error('Error creating or opening chat:', err)
+      showNotification({
+        message: 'Failed to open chat.',
+        variant: 'danger',
+      })
     }
   }
 
@@ -155,7 +242,6 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
                         src={profileUser.profilePic || placeHolder}
                         alt="avatar"
                       />
-
                       {isOwner && <div className="avatar-overlay"></div>}
                     </div>
 
@@ -163,7 +249,7 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
                       <div className="text-sm-start text-center">
                         <h1 className="mb-0 h5 d-flex align-items-center justify-content-center justify-content-sm-start">
                           {profileUser.firstName} {profileUser.lastName}
-                          <BsPatchCheckFill className="text-success small ms-2" />
+                          {isExpert && <BsPatchCheckFill className="text-warning small ms-2" title="Verified Expert" />}
                         </h1>
                       </div>
 
@@ -191,41 +277,34 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
                           <Button variant="danger-soft" onClick={() => navigate('/settings/account')}>
                             <BsPencilFill size={19} className="pe-1" /> Edit profile
                           </Button>
+                          {isExpert && isOwner && (
+                            <Button variant="warning" onClick={() => setShowExpertEdit(true)}>
+                              Edit Expert Info
+                            </Button>
+                          )}
+
                           <Dropdown>
                             <DropdownToggle as="a" className="icon-md btn btn-light content-none" id="profileAction2">
                               <BsThreeDots />
                             </DropdownToggle>
-                            <DropdownMenu className="dropdown-menu-end" aria-labelledby="profileAction2">
-                              <li>
-                                <DropdownItem>
-                                  <BsBookmark size={22} className="fa-fw pe-2" /> Share profile in a message
-                                </DropdownItem>
-                              </li>
-                              <li>
-                                <DropdownItem>
-                                  <BsFileEarmarkPdf size={22} className="fa-fw pe-2" /> Save your profile to PDF
-                                </DropdownItem>
-                              </li>
-                              <li>
-                                <DropdownItem>
-                                  <BsLock size={22} className="fa-fw pe-2" /> Lock profile
-                                </DropdownItem>
-                              </li>
-                              <li>
-                                <hr className="dropdown-divider" />
-                              </li>
-                              <li>
-                                <DropdownItem>
-                                  <BsGear size={22} className="fa-fw pe-2" /> Profile settings
-                                </DropdownItem>
-                              </li>
-                            </DropdownMenu>
+                            <DropdownMenu className="dropdown-menu-end" aria-labelledby="profileAction2"></DropdownMenu>
                           </Dropdown>
                         </>
                       ) : (
-                        <Button variant={isFollowed ? 'outline-primary' : 'primary'} onClick={handleFollowToggle} className="px-4">
-                          {isFollowed ? 'Unfollow' : 'Follow'}
-                        </Button>
+                        <>
+                          <Button variant={isFollowed ? 'outline-primary' : 'primary'} onClick={handleFollowToggle} className="px-4">
+                            {isFollowed ? 'Unfollow' : 'Follow'}
+                          </Button>
+                          {isExpert ? (
+                            <Button variant="success" className="px-4" onClick={handleExpertChatClick}>
+                              <BsChatDots className="me-1" /> Chat with Expert
+                            </Button>
+                          ) : !user?.expertiseArea ? (
+                            <Button variant="outline-primary" onClick={handleMessageClick} className="px-4">
+                              Message
+                            </Button>
+                          ) : null}
+                        </>
                       )}
                     </div>
                   </div>
@@ -251,6 +330,30 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
                       </ul>
                     </CardBody>
                   </Card>
+
+                  {isExpert && (
+                    <Card className="mt-4">
+                      <CardHeader className="border-0 pb-0">
+                        <CardTitle>Expert Details</CardTitle>
+                      </CardHeader>
+                      <CardBody className="pt-0">
+                        <ul className="list-unstyled mb-0">
+                          <li className="mb-2">
+                            <strong>Expertise:</strong> {profileUser.expertiseArea}
+                          </li>
+                          <li className="mb-2">
+                            <strong>Rate:</strong> ${profileUser.price}
+                          </li>
+                          <li className="mb-2">
+                            <strong>Available for chat:</strong> {profileUser.availableForChat ? 'Yes' : 'No'}
+                          </li>
+                          <li className="mb-2">
+                            <strong>Rating:</strong> ⭐ {profileUser.rating}
+                          </li>
+                        </ul>
+                      </CardBody>
+                    </Card>
+                  )}
                 </Col>
               </Row>
             </Col>
@@ -259,6 +362,44 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
       </main>
 
       {isOwner && <CameraModal show={showCamera} onClose={() => setShowCamera(false)} onUploadSuccess={handleImageUpload} />}
+      {isOwner && isExpert && (
+        <ExpertEditModal
+          show={showExpertEdit}
+          onClose={() => setShowExpertEdit(false)}
+          currentExpertData={{
+            expertiseArea: profileUser.expertiseArea || '',
+            price: profileUser.price || 0,
+            availableForChat: profileUser.availableForChat || false,
+          }}
+          onSave={async (updated) => {
+            try {
+              const payload = {
+                userId: profileUser.userId,
+                ...updated,
+              }
+
+              await authFetch(`${API_URL}/Expert/update-expert`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload),
+              })
+
+              setProfileUser((prev) =>
+                prev
+                  ? {
+                      ...prev,
+                      expertiseArea: updated.expertiseArea,
+                      price: updated.price,
+                      availableForChat: updated.availableForChat,
+                    }
+                  : prev,
+              )
+            } catch (err) {
+              console.error('Failed to update expert info:', err)
+            }
+          }}
+        />
+      )}
     </>
   )
 }
