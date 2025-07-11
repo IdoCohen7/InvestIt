@@ -332,7 +332,6 @@ namespace InvestItAPI.DAL
             try
             {
                 con = connect("myProjDB");
-                con.Open();
 
                 cmd = new SqlCommand("SP_GetPersonalizedFeed", con);
                 cmd.CommandType = CommandType.StoredProcedure;
@@ -342,7 +341,7 @@ namespace InvestItAPI.DAL
                 cmd.Parameters.AddWithValue("@PageSize", pageSize);
 
                 List<object> posts = new List<object>();
-                SqlDataReader dataReader = cmd.ExecuteReader();
+                SqlDataReader dataReader = cmd.ExecuteReader(CommandBehavior.CloseConnection); // שים לב לשינוי כאן
 
                 while (dataReader.Read())
                 {
@@ -383,10 +382,11 @@ namespace InvestItAPI.DAL
             {
                 if (con != null)
                 {
-                    con.Close();
+                    con.Close(); 
                 }
             }
         }
+
 
 
 

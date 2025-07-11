@@ -22,6 +22,8 @@ const CreatePostCard = ({ onPostCreated }: Props) => {
   const { showNotification } = useNotificationContext()
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
   const authFetch = useAuthFetch()
 
   const { transcript, listening, resetTranscript, browserSupportsSpeechRecognition } = useSpeechRecognition()
@@ -29,6 +31,7 @@ const CreatePostCard = ({ onPostCreated }: Props) => {
 
   const handlePostSubmit = async () => {
     if (!newPost.trim()) return
+    setIsSubmitting(true)
 
     try {
       // שלב 1: יצירת הפוסט ללא תמונה
@@ -52,7 +55,7 @@ const CreatePostCard = ({ onPostCreated }: Props) => {
       const newPostId = created?.postId
       if (!newPostId) throw new Error('Post creation failed: no ID returned.')
 
-      let imgPath = UPLOAD_URL
+      let imgPath: string | null = null
 
       // שלב 2: המתנה קצרה כדי לוודא שהפוסט נשמר לפני ניסיון לעדכן אותו
       await new Promise((resolve) => setTimeout(resolve, 150))
@@ -68,9 +71,9 @@ const CreatePostCard = ({ onPostCreated }: Props) => {
         })
 
         if (Array.isArray(uploadResponse) && uploadResponse.length > 0) {
-          imgPath += uploadResponse[0]
+          imgPath = UPLOAD_URL + uploadResponse[0]
 
-          // שלב 4: עדכון התמונה במסד — עטוף ב־try כדי לא להפיל את הכול
+          // עדכון התמונה במסד
           try {
             await authFetch(`${API_URL}/Post/${newPostId}/image`, {
               method: 'PUT',
@@ -80,8 +83,6 @@ const CreatePostCard = ({ onPostCreated }: Props) => {
           } catch (imgErr) {
             console.warn('⚠️ Image update failed, but continuing:', imgErr)
           }
-        } else {
-          throw new Error('No image path returned from server.')
         }
       }
 
@@ -92,7 +93,6 @@ const CreatePostCard = ({ onPostCreated }: Props) => {
         img: imgPath,
         fullName: `${user?.firstName} ${user?.lastName}`,
         userProfilePic: user?.profilePic || '',
-        userExperienceLevel: user?.experienceLevel || '',
         commentsCount: 0,
         likesCount: 0,
         hasLiked: false,
@@ -110,6 +110,8 @@ const CreatePostCard = ({ onPostCreated }: Props) => {
     } catch (err) {
       console.error('❌ Post creation failed:', err)
       showNotification({ message: err instanceof Error ? err.message : String(err), variant: 'danger' })
+    } finally {
+      setIsSubmitting(false)
     }
   }
 
@@ -206,7 +208,8 @@ const CreatePostCard = ({ onPostCreated }: Props) => {
               </a>
             </li>
             <div className="nav-item ms-lg-auto">
-              <button type="submit" className="btn btn-success-soft">
+              <button type="submit" className="btn btn-success-soft d-flex align-items-center gap-2" disabled={isSubmitting}>
+                {isSubmitting && <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>}
                 Post
               </button>
             </div>

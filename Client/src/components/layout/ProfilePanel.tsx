@@ -11,6 +11,14 @@ type ProfilePanelProps = {
   links: ProfilePanelLink[]
 }
 
+const hebrewToEnglishInterestMap: { [key: string]: string } = {
+  'שוק ההון': 'Stock Market',
+  קריפטו: 'Crypto',
+  'נדל״ן': 'Real Estate',
+  'חיסכון וניהול תקציב': 'Savings and Budgeting',
+  'פנסיה והשקעות סולידיות': 'Pension and Conservative Investments',
+}
+
 const ProfilePanel = ({ links }: ProfilePanelProps) => {
   const { user } = useAuthContext()
 
@@ -45,14 +53,16 @@ const ProfilePanel = ({ links }: ProfilePanelProps) => {
               <Link to={`/profile/feed/${user?.userId}`}>{user ? user.firstName + ' ' + user.lastName : 'Guest'}</Link>
             </h5>
 
-            <small>{user ? user.experienceLevel : 'No Level of Experience'}</small>
             <p className="mt-3" style={{ overflowWrap: 'anywhere' }}>
               {user ? user.bio : 'No bio available'}
             </p>
 
             <div className="hstack gap-2 gap-xl-3 justify-content-center">
               <div>
-                <h6 className="mb-0 small">{user ? user.interestCategory || 'No Level' : 'No Level'}</h6>
+                <h6 className="mb-0 small">
+                  {user && user.interestCategory ? hebrewToEnglishInterestMap[user.interestCategory] || user.interestCategory : 'No Interest'}
+                </h6>
+
                 <small className="text-muted fs-xs">Interest</small>
               </div>
               <div className="vr" />

@@ -7,7 +7,9 @@ import { useAuthFetch } from '@/hooks/useAuthFetch'
 import { API_URL } from '@/utils/env'
 import { AnimatePresence, motion } from 'framer-motion'
 
-const Feeds = ({ newPost, followedOnly }: { newPost: SocialPostType | null; followedOnly: boolean }) => {
+type FeedType = 'fresh' | 'following' | 'personalized'
+
+const Feeds = ({ newPost, feedType }: { newPost: SocialPostType | null; feedType: FeedType }) => {
   const [posts, setPosts] = useState<SocialPostType[]>([])
   const [isLoading, setIsLoading] = useState(false)
   const [hasMore, setHasMore] = useState(true)
@@ -20,9 +22,12 @@ const Feeds = ({ newPost, followedOnly }: { newPost: SocialPostType | null; foll
   const fetchPage = async (pageToFetch: number, reset = false) => {
     setIsLoading(true)
     try {
-      const endpoint = followedOnly
-        ? `${API_URL}/Post/Followed?userId=${user?.userId}&page=${pageToFetch}&pageSize=3`
-        : `${API_URL}/Post?userId=${user?.userId}&page=${pageToFetch}&pageSize=3`
+      const endpoint =
+        feedType === 'following'
+          ? `${API_URL}/Post/Followed?userId=${user?.userId}&page=${pageToFetch}&pageSize=3`
+          : feedType === 'personalized'
+            ? `${API_URL}/Post/Personalized?userId=${user?.userId}&page=${pageToFetch}&pageSize=3`
+            : `${API_URL}/Post?userId=${user?.userId}&page=${pageToFetch}&pageSize=3`
 
       const res = await authFetch(endpoint)
 
@@ -36,7 +41,6 @@ const Feeds = ({ newPost, followedOnly }: { newPost: SocialPostType | null; foll
 
       setCurrentPage(pageToFetch)
     } catch (err: any) {
-      // בדיקה האם מדובר ב-404
       const isNotFound = err?.message?.includes('404') || err?.status === 404
       if (isNotFound) {
         setHasMore(false)
@@ -51,7 +55,7 @@ const Feeds = ({ newPost, followedOnly }: { newPost: SocialPostType | null; foll
     fetchPage(1, true)
     setDeletedPostIds([])
     setHasMore(true)
-  }, [followedOnly])
+  }, [feedType])
 
   useEffect(() => {
     if (newPost && !posts.some((p) => p.postId === newPost.postId)) {

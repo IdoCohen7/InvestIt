@@ -155,7 +155,6 @@ const AccountSettings = () => {
       email: user.email,
       passwordHash: user.passwordHash || '********',
       profilePic: user.profilePic || '',
-      experienceLevel: user.experienceLevel || 'No Level',
       bio: formData.bio,
       interestCategory: interestMap[selectedInterest] || '',
       createdAt: user.createdAt,

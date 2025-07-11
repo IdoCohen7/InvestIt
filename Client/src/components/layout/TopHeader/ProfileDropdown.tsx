@@ -58,7 +58,6 @@ const ProfileDropdown = () => {
               <Link className="h6 stretched-link" to="">
                 {user ? user.firstName + ' ' + user.lastName : 'Guest'}
               </Link>
-              <p className="small m-0">{user?.experienceLevel || 'No Level'}</p>
             </div>
           </div>
 

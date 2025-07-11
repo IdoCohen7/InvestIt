@@ -85,7 +85,6 @@ const SearchResultsComponent = ({ query }: Props) => {
                       <p className="card-text text-truncate" title={user.bio ? user.bio : 'No bio available'}>
                         {user.bio}
                       </p>
-                      <small className="text-muted">Experience: {user.experienceLevel ? user.experienceLevel : 'No Level'}</small>
                     </div>
                   </div>
                 </Link>
