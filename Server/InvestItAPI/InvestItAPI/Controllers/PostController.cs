@@ -10,7 +10,7 @@ namespace InvestItAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //    [Authorize]
     public class PostController : ControllerBase
     {
         [HttpGet]
@@ -36,6 +36,34 @@ namespace InvestItAPI.Controllers
                 });
             }
         }
+
+        [HttpGet("Personalized")]
+        public IActionResult GetPersonalizedFeed([FromQuery] int userId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        {
+            try
+            {
+                var posts = InvestItAPI.Models.Post.GetPersonalizedFeed(userId, page, pageSize);
+
+                if (posts == null || posts.Count == 0)
+                {
+                    return NotFound(new { message = "No personalized posts found." });
+                }
+
+                return Ok(posts);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    error = "An error occurred while retrieving personalized feed.",
+                    details = ex.Message,
+                    inner = ex.InnerException?.Message 
+                });
+            }
+        }
+
+
+
 
         [HttpGet("Followed")]
         public IActionResult GetFollowedPosts([FromQuery] int userId, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)

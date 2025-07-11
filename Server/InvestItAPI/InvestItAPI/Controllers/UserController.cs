@@ -139,6 +139,25 @@ namespace InvestItAPI.Controllers
             }
         }
 
+        [HttpPut("{userId}/Interest")]
+        public IActionResult SetUserInterest(int userId, [FromBody] string interest)
+        {
+            try
+            {
+                bool result = InvestItAPI.Models.User.SetUserInterest(userId, interest);
+
+                if (result)
+                    return Ok(new { message = $"Interest category updated to '{interest}' for user {userId}." });
+
+                return NotFound(new { error = "User not found or interest update failed." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "An error occurred while updating interest category.", details = ex.Message });
+            }
+        }
+
+
         [HttpPut("ChangePassword")]
         public IActionResult ChangePassword([FromBody] ChangePasswordRequest request)
         {

@@ -54,7 +54,6 @@ namespace InvestItAPI.Tools
                         if (result.MessageType == WebSocketMessageType.Text)
                         {
                             var json = Encoding.UTF8.GetString(buffer, 0, result.Count);
-                            Console.WriteLine("Finnhub → " + json);
                             OnPriceUpdate?.Invoke(json);
                         }
                         else if (result.MessageType == WebSocketMessageType.Close)

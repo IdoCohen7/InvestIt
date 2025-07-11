@@ -18,6 +18,7 @@ namespace InvestItAPI.Models
         public Boolean IsActive { get; set; }
         public int? Connections { get; set; }
         public string? Location { get; set; }
+        public string InterestCategory { get; set; }
 
         public User(int userId, string firstName, string lastName, string email, string passwordHash, string? profilePic, string? experienceLevel, string? bio, string createdAt)
         {
@@ -198,6 +199,12 @@ namespace InvestItAPI.Models
         {
             DBservices dBservices = new DBservices();
             return dBservices.IsConsultationValid(userId, expertId);
+        }
+
+        public static bool SetUserInterest(int userId, string interest)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.SetUserInterest(userId, interest);
         }
     }
 }

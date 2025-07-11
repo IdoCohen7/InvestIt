@@ -112,9 +112,11 @@ namespace InvestItAPI.DAL
             cmd.Parameters.AddWithValue("@firstName", user.FirstName);
             cmd.Parameters.AddWithValue("@lastName", user.LastName);
             cmd.Parameters.AddWithValue("@bio", (object?)user.Bio ?? DBNull.Value);
+            cmd.Parameters.AddWithValue("@interestCategory", (object?)user.InterestCategory ?? DBNull.Value); // ✅ חדש
 
             return cmd;
         }
+
 
         private SqlCommand CreateCommandWithStoredProcedure_PostContent(String spName, SqlConnection con, String content, int postId, int userId)
         {
@@ -149,6 +151,7 @@ namespace InvestItAPI.DAL
 
             cmd.Parameters.AddWithValue("@user_id", post.UserId);
             cmd.Parameters.AddWithValue("@content", post.Content);
+            cmd.Parameters.AddWithValue("@category", post.Category ?? (object)DBNull.Value);
             cmd.Parameters.Add("@post_vector", SqlDbType.NVarChar, -1).Value =
      (object?)post.Vector ?? DBNull.Value;
 
@@ -320,6 +323,72 @@ namespace InvestItAPI.DAL
                 }
             }
         }
+
+        public List<object> GetPersonalizedFeed(int userId, int page, int pageSize)
+        {
+            SqlConnection con = null;
+            SqlCommand cmd;
+
+            try
+            {
+                con = connect("myProjDB");
+                con.Open();
+
+                cmd = new SqlCommand("SP_GetPersonalizedFeed", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+
+                cmd.Parameters.AddWithValue("@UserId", userId);
+                cmd.Parameters.AddWithValue("@Page", page);
+                cmd.Parameters.AddWithValue("@PageSize", pageSize);
+
+                List<object> posts = new List<object>();
+                SqlDataReader dataReader = cmd.ExecuteReader();
+
+                while (dataReader.Read())
+                {
+                    var post = new
+                    {
+                        PostId = Convert.ToInt32(dataReader["post_id"]),
+                        UserId = Convert.ToInt32(dataReader["user_id"]),
+                        Content = dataReader["content"].ToString(),
+                        CreatedAt = Convert.ToDateTime(dataReader["created_at"]).ToString("dd/MM/yyyy"),
+                        UpdatedAt = dataReader["updated_at"] != DBNull.Value
+                            ? Convert.ToDateTime(dataReader["updated_at"]).ToString("o")
+                            : null,
+                        Vector = dataReader["post_vector"] != DBNull.Value ? dataReader["post_vector"].ToString() : null,
+                        LikesCount = Convert.ToInt32(dataReader["likesCount"]),
+                        CommentsCount = Convert.ToInt32(dataReader["commentsCount"]),
+                        FullName = dataReader["fullName"].ToString(),
+                        UserProfilePic = dataReader["userProfilePic"].ToString(),
+                        UserExperienceLevel = dataReader["userExperienceLevel"].ToString(),
+                        HasLiked = Convert.ToBoolean(dataReader["hasLiked"]),
+                        IsExpert = Convert.ToBoolean(dataReader["isExpert"]),
+                        Img = dataReader["img"] != DBNull.Value ? dataReader["img"].ToString() : null,
+                        Category = dataReader["category"] != DBNull.Value ? dataReader["category"].ToString() : null,
+                        WeightedScore = dataReader["weightedScore"] != DBNull.Value
+                            ? Convert.ToDouble(dataReader["weightedScore"])
+                            : 0
+                    };
+
+                    posts.Add(post);
+                }
+
+                return posts;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error while retrieving personalized feed", ex);
+            }
+            finally
+            {
+                if (con != null)
+                {
+                    con.Close();
+                }
+            }
+        }
+
+
 
         public List<object> GetFollowedPosts(int userId, int page, int pageSize)
         {
@@ -546,17 +615,17 @@ namespace InvestItAPI.DAL
 
             try
             {
-                con = connect("myProjDB"); // יצירת חיבור
-                cmd = CreateCommandWithStoredProcedure_UpdateUser("SP_UpdateUser", con, user); // הכנת הפקודה
+                con = connect("myProjDB");
+                cmd = CreateCommandWithStoredProcedure_UpdateUser("SP_UpdateUser", con, user);
 
-                object result = cmd.ExecuteScalar(); // מחזיר את מספר השורות שהושפעו
+                object result = cmd.ExecuteScalar();
 
                 if (result == null || Convert.ToInt32(result) == 0)
                 {
-                    return -1; // לא בוצע עדכון (אולי המשתמש לא קיים)
+                    return -1; // No update
                 }
 
-                return 1; // הצלחה
+                return 1;
             }
             catch (Exception ex)
             {
@@ -571,6 +640,7 @@ namespace InvestItAPI.DAL
                 }
             }
         }
+
         public int DeleteUser(int userId)
         {
             SqlConnection con = null;
@@ -1381,6 +1451,57 @@ namespace InvestItAPI.DAL
                     con.Close();
             }
         }
+
+        public List<Post> GetPostsWithoutCategory()
+        {
+            List<Post> posts = new List<Post>();
+
+            using SqlConnection con = connect("myProjDB");
+            using SqlCommand cmd = new SqlCommand("SPֹ_GetPostsUncategorized", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            using SqlDataReader reader = cmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                Post post = new Post
+                {
+                    PostId = Convert.ToInt32(reader["post_id"]),
+                    Content = reader["content"].ToString()
+                };
+
+                posts.Add(post);
+            }
+
+            return posts;
+        }
+
+        public bool UpdatePostCategory(int postId, string category)
+        {
+            using SqlConnection con = connect("myProjDB");
+            using SqlCommand cmd = new SqlCommand("SP_UpdatePostCategory", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@post_id", postId);
+            cmd.Parameters.AddWithValue("@category", category);
+
+            int affected = cmd.ExecuteNonQuery();
+            return affected > 0;
+        }
+
+        public bool SetUserInterest(int userId, string interest)
+        {
+            using SqlConnection con = connect("myProjDB");
+            using SqlCommand cmd = new SqlCommand("SP_SetUserInterest", con);
+            cmd.CommandType = CommandType.StoredProcedure;
+
+            cmd.Parameters.AddWithValue("@user_id", userId);
+            cmd.Parameters.AddWithValue("@interest", interest);
+
+            int affected = cmd.ExecuteNonQuery();
+            return affected > 0;
+        }
+
 
 
 

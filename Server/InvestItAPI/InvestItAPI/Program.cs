@@ -165,4 +165,5 @@ app.Map("/ws/prices", async context =>
 });
 
 app.MapControllers();
+
 app.Run();

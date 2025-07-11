@@ -14,7 +14,9 @@ namespace InvestItAPI.Models
         public double SimilarityScore { get; set; } // runtime variable, not saved in DB
         public string Vector { get; set; } // nullable
         public string UpdatedAt { get; set; }
-        public string? Img { get; set; } 
+        public string? Img { get; set; }
+        public string? Category { get; set; }
+
 
 
         public Post(int postId, int userId, string content, string createdAt, string updatedAt)
@@ -34,6 +36,13 @@ namespace InvestItAPI.Models
             return dBservices.GetPosts(userId, page, pageSize);
         }
 
+        public static List<object> GetPersonalizedFeed(int userId, int page, int pageSize)
+        {
+            DBservices dBservices = new DBservices();
+            return dBservices.GetPersonalizedFeed(userId, page, pageSize);
+        }
+
+
         public static List<object> GetFollowedPosts(int userId, int page, int pageSize)
         {
             DBservices dBservices = new DBservices();
@@ -45,11 +54,11 @@ namespace InvestItAPI.Models
         {
             DBservices dbServices = new DBservices();
 
-            //  מחשבים את הווקטור מהתוכן לפני השמירה
-            post.Vector = PostService.updatePostVector(post.Content);
+            post.Category = HuggingFaceClassifier.ClassifyTextAsync(post.Content).Result;
 
-            return dbServices.AddPost(post); //  שמירת הפוסט עם הווקטור במסד הנתונים
+            return dbServices.AddPost(post);
         }
+
 
         static public float[] GetVector(string text)
         {

@@ -52,8 +52,8 @@ const ProfilePanel = ({ links }: ProfilePanelProps) => {
 
             <div className="hstack gap-2 gap-xl-3 justify-content-center">
               <div>
-                <h6 className="mb-0 small">{user ? user.experienceLevel || 'No Level' : 'No Level'}</h6>
-                <small className="text-muted fs-xs">Experience</small>
+                <h6 className="mb-0 small">{user ? user.interestCategory || 'No Level' : 'No Level'}</h6>
+                <small className="text-muted fs-xs">Interest</small>
               </div>
               <div className="vr" />
               <div>
