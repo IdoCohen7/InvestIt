@@ -1,4 +1,4 @@
-const stage = 'dev'
+const stage = 'prod'
 
 const config = {
   dev: {

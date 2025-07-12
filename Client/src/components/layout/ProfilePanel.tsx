@@ -5,6 +5,7 @@ import { useAuthContext } from '@/context/useAuthContext'
 import placeHolder from '@/assets/images/avatar/placeholder.jpg'
 import { Link } from 'react-router-dom'
 import Banner from '@/assets/images/bg/banner2.png'
+import ExpertBanner from '@/assets/images/bg/Banner1.jpeg'
 import { formatDateToDDMMYYYY } from '@/utils/date'
 
 type ProfilePanelProps = {
@@ -28,7 +29,7 @@ const ProfilePanel = ({ links }: ProfilePanelProps) => {
         <div
           className="h-50px"
           style={{
-            backgroundImage: `url(${Banner})`,
+            backgroundImage: `url(${user?.expertiseArea ? ExpertBanner : Banner})`,
             backgroundPosition: 'center',
             backgroundSize: 'cover',
             backgroundRepeat: 'no-repeat',

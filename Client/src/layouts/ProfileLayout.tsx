@@ -12,6 +12,7 @@ import { useAuthFetch } from '@/hooks/useAuthFetch'
 import type { ChildrenType } from '@/types/component'
 import type { UserPage } from '@/types/data'
 import Banner from '@/assets/images/bg/banner2.png'
+import ExpertBanner from '@/assets/images/bg/Banner1.jpeg'
 import ExpertEditModal from '@/components/cards/EditExpertModal'
 import { useNotificationContext } from '@/context/useNotificationContext'
 
@@ -277,13 +278,14 @@ const ProfileLayout = ({ userId, children }: ProfileLayoutProps) => {
                 <div
                   className="h-200px rounded-top"
                   style={{
-                    backgroundImage: `url(${Banner})`,
+                    backgroundImage: `url(${profileUser?.expertiseArea ? ExpertBanner : Banner})`,
                     backgroundPosition: 'top',
                     backgroundSize: '100% auto',
                     backgroundRepeat: 'no-repeat',
                     height: '150px',
                   }}
                 />
+
                 <CardBody className="py-0">
                   <div className="d-sm-flex align-items-center text-center text-sm-start justify-content-between flex-wrap gap-3">
                     <div

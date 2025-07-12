@@ -1,4 +1,5 @@
 export type UserType = {
+  interestCategory: string
   userId: number
   firstName: string
   lastName: string
