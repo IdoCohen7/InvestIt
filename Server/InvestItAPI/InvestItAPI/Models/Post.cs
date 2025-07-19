@@ -11,8 +11,6 @@ namespace InvestItAPI.Models
         public int UserId { get; set; } 
         public string Content { get; set; } 
         public string CreatedAt { get; set; }
-        public double SimilarityScore { get; set; } // runtime variable, not saved in DB
-        public string Vector { get; set; } // nullable
         public string UpdatedAt { get; set; }
         public string? Img { get; set; }
         public string? Category { get; set; }
@@ -60,10 +58,7 @@ namespace InvestItAPI.Models
         }
 
 
-        static public float[] GetVector(string text)
-        {
-            return VectorHelper.ConvertTextToVector(text);
-        }
+
 
         static public bool UpdatePostContent(int postId, int userId, string content)
         {

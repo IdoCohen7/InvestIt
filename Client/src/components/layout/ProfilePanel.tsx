@@ -22,7 +22,6 @@ const hebrewToEnglishInterestMap: { [key: string]: string } = {
 
 const ProfilePanel = ({ links }: ProfilePanelProps) => {
   const { user } = useAuthContext()
-
   return (
     <>
       <Card className="overflow-hidden h-100">

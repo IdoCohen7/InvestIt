@@ -124,12 +124,6 @@ namespace InvestItAPI.Controllers
             return "value";
         }
 
-        // POST api/<PostController>
-        [HttpPost("Vector")]
-        public float[] GetVector(string text)
-        {
-            return InvestItAPI.Models.Post.GetVector(text);
-        }
 
         [HttpPost("add")]
         public IActionResult AddPost([FromBody] Post post)

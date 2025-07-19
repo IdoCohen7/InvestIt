@@ -37,7 +37,6 @@ namespace InvestItAPI.Controllers
                         expert.Email,
                         expert.PasswordHash,
                         expert.ProfilePic,
-                        expert.ExperienceLevel,
                         expert.Bio,
                         expert.CreatedAt,
                         expert.IsActive,
@@ -60,11 +59,10 @@ namespace InvestItAPI.Controllers
                     user.Email,
                     user.PasswordHash,
                     user.ProfilePic,
-                    user.ExperienceLevel,
+                    user.InterestCategory,
                     user.Bio,
                     user.CreatedAt,
-                    user.IsActive
-                },
+                    user.IsActive                },
                 token
             });
         }

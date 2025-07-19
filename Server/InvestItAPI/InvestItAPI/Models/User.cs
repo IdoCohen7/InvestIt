@@ -12,7 +12,6 @@ namespace InvestItAPI.Models
         public string Email { get; set; }
         public string PasswordHash { get; set; }
         public string? ProfilePic { get; set; }
-        public string? ExperienceLevel { get; set; }
         public string? Bio { get; set; }
         public string CreatedAt { get; set; }
         public Boolean IsActive { get; set; }
@@ -28,7 +27,6 @@ namespace InvestItAPI.Models
             Email = email;
             PasswordHash = passwordHash;
             ProfilePic = profilePic;
-            ExperienceLevel = experienceLevel;
             Bio = bio;
             CreatedAt = createdAt;
             IsActive = true;

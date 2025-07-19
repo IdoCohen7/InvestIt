@@ -61,7 +61,6 @@ namespace InvestItAPI.DAL
             cmd.Parameters.AddWithValue("@Email", user.Email);
             cmd.Parameters.AddWithValue("@PasswordHash", user.PasswordHash);
             cmd.Parameters.AddWithValue("@ProfilePic", (object?)user.ProfilePic ?? DBNull.Value);
-            cmd.Parameters.AddWithValue("@ExperienceLevel", (object?)user.ExperienceLevel ?? DBNull.Value);
             cmd.Parameters.AddWithValue("@Bio", (object?)user.Bio ?? DBNull.Value);
 
             return cmd;
@@ -152,8 +151,7 @@ namespace InvestItAPI.DAL
             cmd.Parameters.AddWithValue("@user_id", post.UserId);
             cmd.Parameters.AddWithValue("@content", post.Content);
             cmd.Parameters.AddWithValue("@category", post.Category ?? (object)DBNull.Value);
-            cmd.Parameters.Add("@post_vector", SqlDbType.NVarChar, -1).Value =
-     (object?)post.Vector ?? DBNull.Value;
+
 
             return cmd;
         }
@@ -201,7 +199,6 @@ namespace InvestItAPI.DAL
                     string email = dataReader["email"].ToString();
                     string passwordHash = dataReader["password_hash"].ToString();
                     string profilePic = dataReader["profile_pic"] != DBNull.Value ? dataReader["profile_pic"].ToString() : null;
-                    string experienceLevel = dataReader["experience_level"] != DBNull.Value ? dataReader["experience_level"].ToString() : null;
                     string bio = dataReader["bio"] != DBNull.Value ? dataReader["bio"].ToString() : null;
                     string createdAt = Convert.ToDateTime(dataReader["created_at"]).ToString("dd/MM/yyyy");
                     bool isActive = Convert.ToBoolean(dataReader["isActive"]);
@@ -218,7 +215,6 @@ namespace InvestItAPI.DAL
                             Email = email,
                             PasswordHash = passwordHash,
                             ProfilePic = profilePic,
-                            ExperienceLevel = experienceLevel,
                             Bio = bio,
                             CreatedAt = createdAt,
                             IsActive = isActive,
@@ -241,7 +237,6 @@ namespace InvestItAPI.DAL
                             Email = email,
                             PasswordHash = passwordHash,
                             ProfilePic = profilePic,
-                            ExperienceLevel = experienceLevel,
                             Bio = bio,
                             CreatedAt = createdAt,
                             IsActive = isActive
@@ -294,12 +289,10 @@ namespace InvestItAPI.DAL
                         UpdatedAt = dataReader["updated_at"] != DBNull.Value
                             ? Convert.ToDateTime(dataReader["updated_at"]).ToString("o")
                             : null,
-                        Vector = dataReader["post_vector"] != DBNull.Value ? dataReader["post_vector"].ToString() : null,
                         LikesCount = Convert.ToInt32(dataReader["likesCount"]),
                         CommentsCount = Convert.ToInt32(dataReader["commentsCount"]),
                         FullName = dataReader["fullName"].ToString(),
                         UserProfilePic = dataReader["userProfilePic"].ToString(),
-                        UserExperienceLevel = dataReader["userExperienceLevel"].ToString(),
                         HasLiked = Convert.ToBoolean(dataReader["hasLiked"]),
                         IsExpert = Convert.ToBoolean(dataReader["isExpert"]),
                         img = dataReader["img"].ToString()
@@ -354,12 +347,10 @@ namespace InvestItAPI.DAL
                         UpdatedAt = dataReader["updated_at"] != DBNull.Value
                             ? Convert.ToDateTime(dataReader["updated_at"]).ToString("o")
                             : null,
-                        Vector = dataReader["post_vector"] != DBNull.Value ? dataReader["post_vector"].ToString() : null,
                         LikesCount = Convert.ToInt32(dataReader["likesCount"]),
                         CommentsCount = Convert.ToInt32(dataReader["commentsCount"]),
                         FullName = dataReader["fullName"].ToString(),
                         UserProfilePic = dataReader["userProfilePic"].ToString(),
-                        UserExperienceLevel = dataReader["userExperienceLevel"].ToString(),
                         HasLiked = Convert.ToBoolean(dataReader["hasLiked"]),
                         IsExpert = Convert.ToBoolean(dataReader["isExpert"]),
                         Img = dataReader["img"] != DBNull.Value ? dataReader["img"].ToString() : null,
@@ -420,12 +411,10 @@ namespace InvestItAPI.DAL
                         UpdatedAt = dataReader["updated_at"] != DBNull.Value
                             ? Convert.ToDateTime(dataReader["updated_at"]).ToString("o")
                             : null,
-                        Vector = dataReader["post_vector"] != DBNull.Value ? dataReader["post_vector"].ToString() : null,
                         LikesCount = Convert.ToInt32(dataReader["likesCount"]),
                         CommentsCount = Convert.ToInt32(dataReader["commentsCount"]),
                         FullName = dataReader["fullName"].ToString(),
                         UserProfilePic = dataReader["userProfilePic"].ToString(),
-                        UserExperienceLevel = dataReader["userExperienceLevel"].ToString(),
                         HasLiked = Convert.ToBoolean(dataReader["hasLiked"]),
                         IsExpert = Convert.ToBoolean(dataReader["isExpert"]),
                         img = dataReader["img"].ToString()
@@ -473,7 +462,6 @@ namespace InvestItAPI.DAL
                         Email = reader["email"].ToString(),
                         PasswordHash = reader["password_hash"].ToString(),
                         ProfilePic = reader["profile_pic"] != DBNull.Value ? reader["profile_pic"].ToString() : null,
-                        ExperienceLevel = reader["experience_level"] != DBNull.Value ? reader["experience_level"].ToString() : null,
                         Bio = reader["bio"] != DBNull.Value ? reader["bio"].ToString() : null,
                         CreatedAt = Convert.ToDateTime(reader["created_at"]).ToString("dd/MM/yyyy"),
                         IsActive = true
@@ -545,10 +533,10 @@ namespace InvestItAPI.DAL
                     u.Email = dataReader["email"].ToString();
                     u.PasswordHash = dataReader["password_hash"].ToString();
                     u.ProfilePic = dataReader["profile_pic"].ToString();
-                    u.ExperienceLevel = dataReader["experience_level"].ToString();
                     u.Bio = dataReader["bio"].ToString();
                     u.CreatedAt = Convert.ToDateTime(dataReader["created_at"]).ToString("dd/MM/yyyy");
                     u.IsActive = Convert.ToBoolean(dataReader["isActive"]);
+                    u.InterestCategory = dataReader["interest_category"].ToString();
                 }
 
                 return u;
@@ -873,7 +861,6 @@ namespace InvestItAPI.DAL
                         Email = reader["email"].ToString(),
                         PasswordHash = reader["password_hash"].ToString(),
                         ProfilePic = reader["profile_pic"] != DBNull.Value ? reader["profile_pic"].ToString() : null,
-                        ExperienceLevel = reader["experience_level"] != DBNull.Value ? reader["experience_level"].ToString() : null,
                         Bio = reader["bio"] != DBNull.Value ? reader["bio"].ToString() : null,
                         CreatedAt = Convert.ToDateTime(reader["created_at"]).ToString("dd/MM/yyyy"),
 
@@ -1069,7 +1056,6 @@ namespace InvestItAPI.DAL
                     Email = reader["email"].ToString(),
                     PasswordHash = reader["password_hash"].ToString(),
                     ProfilePic = reader["profile_pic"]?.ToString(),
-                    ExperienceLevel = reader["experience_level"]?.ToString(),
                     Bio = reader["bio"]?.ToString(),
                     CreatedAt = Convert.ToDateTime(reader["created_at"]).ToString("dd/MM/yyyy"),
                     IsActive = Convert.ToBoolean(reader["isActive"])
@@ -1110,7 +1096,6 @@ namespace InvestItAPI.DAL
                         email = reader["email"].ToString(),
                         profilePic = reader["profile_pic"].ToString(),
                         bio = reader["bio"].ToString(),
-                        experienceLevel = reader["experience_level"].ToString(),
                         createdAt = Convert.ToDateTime(reader["created_at"]).ToString("yyyy-MM-dd"),
                         isActive = Convert.ToBoolean(reader["isActive"]),
                         expertiseArea = reader["expertise_area"]?.ToString(),
@@ -1164,12 +1149,10 @@ namespace InvestItAPI.DAL
                         Content = reader["content"].ToString(),
                         CreatedAt = Convert.ToDateTime(reader["created_at"]).ToString("dd/MM/yyyy"),
                         UpdatedAt = reader["updated_at"] != DBNull.Value ? Convert.ToDateTime(reader["updated_at"]).ToString("o") : null,
-                        Vector = reader["post_vector"] != DBNull.Value ? reader["post_vector"].ToString() : null,
                         LikesCount = Convert.ToInt32(reader["likesCount"]),
                         CommentsCount = Convert.ToInt32(reader["commentsCount"]),
                         FullName = reader["fullName"].ToString(),
                         UserProfilePic = reader["userProfilePic"].ToString(),
-                        UserExperienceLevel = reader["userExperienceLevel"].ToString(),
                         HasLiked = Convert.ToBoolean(reader["hasLiked"]),
                         img = reader["img"].ToString()
 
